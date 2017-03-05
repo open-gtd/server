@@ -1,0 +1,89 @@
+{% block rows_collection_widget %}
+    {% spaceless %}
+        {% if form|length > 1 %}
+        <table class="rows_collection table table-striped table-hover">
+            <thead>
+                <tr>
+                    <th>Lp.</th>
+                    {% for field in form.0 %}
+                        <th>{{ form_label(field) }}</th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody {% if not form.vars.prototype is null %}data-prototype="{% filter escape %}
+                <tr>
+                    <th>__name__</th>
+                    {% for field in form.vars.prototype %}
+                        <td>{{ form_widget(field) }}</td>
+                    {% endfor %}
+                        <td><button class="remove-button btn btn-default">Delete</button></td>
+                </tr>
+{% endfilter %}"{%  endif %}>
+                {% for child in form %}
+                <tr>
+                    <th>{{ loop.index }}</th>
+                    {% for field in child %}
+                        <td>{{ form_widget(field) }}</td>
+                    {% endfor %}
+                    {% if form.vars.allow_delete == true %}
+                        <td><button class="remove-button btn btn-default">Delete</button></td>
+                    {% endif %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {%  endif %}
+
+        {% if form.vars.allow_add == true %}
+            <a class="btn btn-default add_row" href="#">Add</a>
+        {% endif %}
+
+        <script>
+            jQuery(document).ready(function() {
+                $collectionHolder = $('.rows_collection').find('tbody');
+
+                {% if form.vars.allow_delete == true %}
+                function attachOnClick(parent) {
+                    var remove_button = parent.find('.remove-button');
+                    remove_button.on('click', function(e) {
+                        // prevent the link from creating a "#" on the URL
+                        e.preventDefault();
+
+                        // remove the li for the tag form
+                        $(this).parent('td').parent('tr').remove();
+                    });
+                }
+
+                attachOnClick($(this));
+                {% endif %}
+
+                {% if form.vars.allow_add == true %}
+                $collectionHolder.data('index', $collectionHolder.children('tr').length + 1);
+
+                $('.add_row').on('click', function(e) {
+                    e.preventDefault();
+
+                    addRow($collectionHolder);
+                });
+
+                function addRow(collectionHolder, $newLinkLi) {
+                    var prototype = collectionHolder.data('prototype');
+                    var index = collectionHolder.data('index');
+
+                    // Replace '__name__' in the prototype's HTML to
+                    // instead be a number based on how many items we have
+                    var newForm = prototype.replace(/__name__/g, index);
+
+                    collectionHolder.data('index', index + 1);
+                    var $newForm = $(newForm)
+                    collectionHolder.append($newForm);
+                    {% if form.vars.allow_delete == true %}
+                    attachOnClick($newForm);
+                    {% endif %}
+                }
+            });
+            {% endif %}
+
+        </script>
+    {% endspaceless %}
+{% endblock %}
