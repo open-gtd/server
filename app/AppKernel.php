@@ -18,7 +18,6 @@ class AppKernel extends Kernel
             new AppBundle\AppBundle(),
             new FOS\UserBundle\FOSUserBundle(),
             new Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle(),
-            new ApiBundle\ApiBundle(),
             new Symfony\Bundle\AsseticBundle\AsseticBundle(),
             new Ornicar\GravatarBundle\OrnicarGravatarBundle(),
             new FOS\RestBundle\FOSRestBundle(),
