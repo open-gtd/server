@@ -6,10 +6,7 @@
         {% block stylesheets %}{% endblock %}
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
 
-        <!-- bower:css -->
-        <!-- endbower -->
-
-        {#<link rel="stylesheet" href="{{ asset('assets/vendor/bootstrap/dist/css/bootstrap.min.css') }}">#}
+        <link rel="stylesheet" href="{{ asset('assets/vendor/bootstrap/dist/css/bootstrap.min.css') }}">
         {% include "::stylesheets.html.twig" %}
     </head>
     <body>
@@ -96,12 +93,7 @@
 
         {% block javascripts %}{% endblock %}
 
-        <!-- bower:js -->
-        <script src="../../../bower_components/jquery/dist/jquery.js"></script>
-        <script src="../../../bower_components/bootstrap/dist/js/bootstrap.js"></script>
-        <!-- endbower -->
-
-        {#<script src="{{ asset('assets/vendor/jquery/dist/jquery.min.js') }}"></script>#}
-        {#<script src="{{ asset('assets/vendor/bootstrap/dist/js/bootstrap.min.js') }}"></script>#}
+        <script src="{{ asset('assets/vendor/jquery/dist/jquery.min.js') }}"></script>
+        <script src="{{ asset('assets/vendor/bootstrap/dist/js/bootstrap.min.js') }}"></script>
     </body>
 </html>
