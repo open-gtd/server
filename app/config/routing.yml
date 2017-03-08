@@ -3,14 +3,12 @@ api:
     type:     annotation
     prefix:   /api
 
-app_management:
-    resource: "@AppBundle/Controller/Management"
-    type:     annotation
-
-
 app:
     resource: "@AppBundle/Controller/"
     type:     annotation
 
 fos_user:
     resource: "@FOSUserBundle/Resources/config/routing/all.xml"
+
+api_login_check:
+    path: /api/login_check
