@@ -1,0 +1,10 @@
+imports:
+  - { resource: 'Repository/services.yml' }
+
+parameters:
+    class.purger: Doctrine\Common\DataFixtures\Purger\ORMPurger
+    class.executor: Doctrine\Common\DataFixtures\Executor\ORMExecutor
+    class.loader: Doctrine\Common\DataFixtures\Loader
+    class.yaml.parser: Symfony\Component\Yaml\Parser
+
+services:

@@ -1,10 +1,8 @@
 <?php
 
-namespace AppBundle\Form;
+namespace AppBundle\Presentation\Form;
 
-use AppBundle\Form\Booking\BookTypes;
-use Doctrine\ORM\EntityRepository;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use AppBundle\DataAccess\Contract\Entities\User;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -29,7 +27,7 @@ class UserType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'AppBundle\Entity\User'
+            'data_class' => User::class
         ));
     }
 }

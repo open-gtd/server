@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Entity;
+namespace AppBundle\DataAccess\Contract\Entities;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
@@ -14,7 +14,7 @@ use Doctrine\ORM\Mapping\OneToOne;
  * Task
  *
  * @ORM\Table(name="task")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\TaskRepository")
+ * @ORM\Entities(repositoryClass="AppBundle\Repository\TaskRepository")
  */
 class Task
 {

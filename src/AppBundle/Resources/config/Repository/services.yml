@@ -1,0 +1,14 @@
+parameters:
+    entity.user: AppBundle\Entity\User
+
+services:
+    metadata.user:
+        class: Doctrine\ORM\Mapping\ClassMetadata
+        arguments:
+            entityName: '%entity.user%'
+
+    repository.user:
+        class: AppBundle\Repository\UserRepository
+        arguments:
+            em: '@doctrine.orm.entity_manager'
+            class: '@metadata.user'

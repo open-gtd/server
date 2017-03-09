@@ -6,7 +6,7 @@
  * Time: 01:28
  */
 
-namespace AppBundle\Entity;
+namespace AppBundle\DataAccess\Contract\Entities;
 
 
 class Flags

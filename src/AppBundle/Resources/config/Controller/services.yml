@@ -1,0 +1,5 @@
+services:
+    controller.user:
+        class: AppBundle\Controller\UserController
+        arguments:
+            userRepository: '@repository.user'

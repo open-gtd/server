@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Entity;
+namespace AppBundle\DataAccess\Contract\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Tag
  *
  * @ORM\Table(name="tag")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\TagRepository")
+ * @ORM\Entities(repositoryClass="AppBundle\Repository\TagRepository")
  */
 class Tag
 {

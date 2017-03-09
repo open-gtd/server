@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Entity;
+namespace AppBundle\DataAccess\Contract\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\JoinColumn;
@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping\ManyToOne;
  * Checklist
  *
  * @ORM\Table(name="checklist")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\checklistRepository")
+ * @ORM\Entities(repositoryClass="AppBundle\Repository\checklistRepository")
  */
 class Checklist
 {

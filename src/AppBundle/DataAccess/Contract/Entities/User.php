@@ -1,11 +1,11 @@
 <?php
-    namespace AppBundle\Entity;
+    namespace AppBundle\DataAccess\Contract\Entities;
 
     use FOS\UserBundle\Model\User as BaseUser;
     use Doctrine\ORM\Mapping as ORM;
 
     /**
-     * @ORM\Entity
+     * @ORM\Entities
      * @ORM\Table(name="fos_user")
      */
     class User extends BaseUser

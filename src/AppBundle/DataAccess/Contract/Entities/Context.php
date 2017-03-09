@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Entity;
+namespace AppBundle\DataAccess\Contract\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Context
  *
  * @ORM\Table(name="context")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\ContextRepository")
+ * @ORM\Entities(repositoryClass="AppBundle\Repository\ContextRepository")
  */
 class Context
 {
