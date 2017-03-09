@@ -6,10 +6,7 @@
         {% block stylesheets %}{% endblock %}
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
 
-        <!-- bower:css -->
-        <!-- endbower -->
-
-        {#<link rel="stylesheet" href="{{ asset('assets/vendor/bootstrap/dist/css/bootstrap.min.css') }}">#}
+        <link rel="stylesheet" href="{{ asset('assets/vendor/bootstrap/dist/css/bootstrap.min.css') }}">
         {% include "::stylesheets.html.twig" %}
     </head>
     <body>
@@ -24,7 +21,7 @@
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
                         </button>
-                        <a class="navbar-brand" href="#">Open GTD</a>
+                        <a class="navbar-brand" href="#">Open GTD Management Console</a>
                     </div>
 
                     <!-- Collect the nav links, forms, and other content for toggling -->
@@ -38,7 +35,7 @@
                             {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
                                 <li class="dropdown">
                                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                                        <img src="{{ gravatar('alias@domain.tld') }}" /> {{ app.user.username }} <span class="caret"></span>
+                                        <img src="{{ gravatar(app.user.email) }}" /> {{ app.user.username }} <span class="caret"></span>
                                     </a>
                                     <ul class="dropdown-menu">
                                         <li><a href="{{ path('fos_user_profile_edit') }}">Profile</a></li>
@@ -48,7 +45,7 @@
                                     </ul>
                                 </li>
                             {% else %}
-                                <li><a href="{{ path('fos_user_registration_register') }}">{{ 'layout.register'|trans({}, 'FOSUserBundle') }}</a></li>
+                                {#<li><a href="{{ path('fos_user_registration_register') }}">{{ 'layout.register'|trans({}, 'FOSUserBundle') }}</a></li>#}
                                 <li><a href="{{ path('fos_user_security_login') }}">{{ 'layout.login'|trans({}, 'FOSUserBundle') }}</a></li>
                             {% endif %}
                         </ul>
@@ -90,18 +87,13 @@
             {% block body %}{% endblock %}
         </div>
 
-        <div class="footer">
-            <a href="https://github.com/open-gtd/server">Open GTD</a>
+        <div id="footer">
+            Powered by: <a href="https://github.com/open-gtd/server">Open GTD</a>
         </div>
 
         {% block javascripts %}{% endblock %}
 
-        <!-- bower:js -->
-        <script src="../../../bower_components/jquery/dist/jquery.js"></script>
-        <script src="../../../bower_components/bootstrap/dist/js/bootstrap.js"></script>
-        <!-- endbower -->
-
-        {#<script src="{{ asset('assets/vendor/jquery/dist/jquery.min.js') }}"></script>#}
-        {#<script src="{{ asset('assets/vendor/bootstrap/dist/js/bootstrap.min.js') }}"></script>#}
+        <script src="{{ asset('assets/vendor/jquery/dist/jquery.min.js') }}"></script>
+        <script src="{{ asset('assets/vendor/bootstrap/dist/js/bootstrap.min.js') }}"></script>
     </body>
 </html>

@@ -4,9 +4,12 @@
     <div id="wrapper">
         <div id="container">
             <div id="welcome">
-                <h1><span>Welcome to</span> Open GTD</h1>
-            </div>
+                <h1><span>Welcome to</span> Open GTD Management Console</h1>
 
+                {% if not is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+                <p>You are not logged. Please login to start.</p>
+                {% endif %}
+            </div>
         </div>
     </div>
 {% endblock %}
