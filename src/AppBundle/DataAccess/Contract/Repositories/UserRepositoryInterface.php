@@ -5,5 +5,5 @@ namespace AppBundle\DataAccess\Contract\Repositories;
 
 interface UserRepositoryInterface
 {
-    function getAllUsers();
+    function getUsers();
 }

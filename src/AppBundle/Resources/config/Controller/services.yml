@@ -1,5 +1,6 @@
 services:
-    controller.user:
-        class: AppBundle\Controller\UserController
+    controller.user.index:
+        class: AppBundle\Controller\UserIndexController
         arguments:
             userRepository: '@repository.user'
+            container: '@service_container'

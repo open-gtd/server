@@ -1,11 +1,15 @@
 api:
-    resource: "@AppBundle/Controller/Api"
+    resource: "@AppBundle/Presentation/Controller/Api"
     type:     annotation
     prefix:   /api
 
-app:
-    resource: "@AppBundle/Controller/"
+app_daefault:
+    resource: "@AppBundle/Presentation/Controller"
     type:     annotation
+    prefix:   /
+
+app:
+    resource: "@AppBundle/Resources/config/routing/routing.yml"
 
 fos_user:
     resource: "../Resources/config/routing/user.yml"

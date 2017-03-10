@@ -1,0 +1,15 @@
+default:
+    path: /
+
+users.user.index:
+    path: /users/index
+    defaults: { _controller: controller.user.index:run }
+    methods: [GET]
+    options:
+        expose: true
+
+fos_user:
+    resource: "../Resources/config/routing/user.yml"
+
+api_login_check:
+    path: /api/login_check

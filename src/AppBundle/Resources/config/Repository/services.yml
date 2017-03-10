@@ -1,5 +1,5 @@
 parameters:
-    entity.user: AppBundle\Entity\User
+    entity.user: AppBundle\DataAccess\Contract\Entities\User
 
 services:
     metadata.user:
@@ -8,7 +8,7 @@ services:
             entityName: '%entity.user%'
 
     repository.user:
-        class: AppBundle\Repository\UserRepository
+        class: AppBundle\DataAccess\Orm\UserRepository
         arguments:
             em: '@doctrine.orm.entity_manager'
             class: '@metadata.user'

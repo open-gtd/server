@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Controller;
+namespace AppBundle\Presentation\Controller\User;
 
 use AppBundle\DataAccess\Contract\Entities\User;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;

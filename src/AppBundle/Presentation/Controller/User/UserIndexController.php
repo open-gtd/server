@@ -1,39 +1,35 @@
 <?php
 
-namespace AppBundle\Controller;
+namespace AppBundle\Presentation\Controller\User;
 
-use AppBundle\DataAccess\Contract\Repositories\UserRepositoryInterface;
+use AppBundle\Business\Contract\User\UserListInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * User controller.
- *
- * @Route("/user")
  */
 class UserIndexController extends Controller
 {
-    /** @var UserRepositoryInterface */
-    private $userRepository;
+    /** @var UserListInterface */
+    private $userList;
 
     /**
-     * @param UserRepositoryInterface $userRepository
+     * @param UserListInterface $userList
+     * @param ContainerInterface $container
      */
-    public function __construct(UserRepositoryInterface $userRepository)
+    public function __construct(UserListInterface $userList, ContainerInterface $container)
     {
-        $this->userRepository = $userRepository;
+        $this->userList = $userList;
+        $this->setContainer($container);
     }
 
     /**
-     * Lists all User entities.
-     *
-     * @Route("/", name="user_index")
-     * @Method("GET")
+     * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function indexAction()
+    public function run()
     {
-        $users = $this->userRepository->getAllUsers();
+        $users = $this->userList->getAllUsers();
 
         return $this->render('user/index.html.twig', array(
             'users' => $users,

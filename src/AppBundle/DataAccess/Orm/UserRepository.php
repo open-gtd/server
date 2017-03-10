@@ -19,7 +19,7 @@ class UserRepository
     /**
      * @return User[]
      */
-    public function getAllUsers() {
+    public function getUsers() {
         return $this->createQueryBuilder('u')
             ->where('u.roles NOT LIKE :role')
             ->setParameter('role', '%ROLE_SUPER_ADMIN%')
