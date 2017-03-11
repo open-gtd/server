@@ -20,6 +20,22 @@ class Hydrators
     }
 
     /**
+     * @param $class
+     * @param array $value
+     *
+     * @return mixed
+     */
+    public static function asEntityCollection($class, array $value) {
+        $result = [];
+
+        foreach ($value as $entity) {
+            $result[] = self::asEntity($class, $entity);
+        }
+
+        return $result;
+    }
+
+    /**
      * @param $value
      *
      * @return string

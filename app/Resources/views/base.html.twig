@@ -28,7 +28,7 @@
                     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                         <ul class="nav navbar-nav">
                             {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
-                            <li><a href="{{ path('user_index') }}">Users</a></li>
+                            <li><a href="{{ path('users.user.index') }}">Users</a></li>
                             {% endif %}
                         </ul>
                         <ul class="nav navbar-nav navbar-right">

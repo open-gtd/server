@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Context
  *
  * @ORM\Table(name="context")
- * @ORM\Entities(repositoryClass="AppBundle\Repository\ContextRepository")
+ * @ORM\Entity(repositoryClass="AppBundle\DataAccess\Orm\ContextRepository")
  */
 class Context
 {

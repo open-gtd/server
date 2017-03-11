@@ -6,6 +6,7 @@ parameters:
 assetic:
     debug:          '%kernel.debug%'
     use_controller: false
+    write_to:       %kernel.root_dir%/../web/assets/
     filters:
         sass:    ~
         compass: ~

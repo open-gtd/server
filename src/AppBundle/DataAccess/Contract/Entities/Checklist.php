@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping\ManyToOne;
  * Checklist
  *
  * @ORM\Table(name="checklist")
- * @ORM\Entities(repositoryClass="AppBundle\Repository\checklistRepository")
+ * @ORM\Entity(repositoryClass="AppBundle\DataAccess\Orm\ChecklistRepository")
  */
 class Checklist
 {

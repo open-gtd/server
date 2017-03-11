@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping\OneToOne;
  * Project
  *
  * @ORM\Table(name="project")
- * @ORM\Entities(repositoryClass="AppBundle\Repository\projectRepository")
+ * @ORM\Entity(repositoryClass="AppBundle\DataAccess\Orm\ProjectRepository")
  */
 class Project
 {

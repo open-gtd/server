@@ -14,7 +14,7 @@ use Doctrine\ORM\Mapping\OneToOne;
  * Task
  *
  * @ORM\Table(name="task")
- * @ORM\Entities(repositoryClass="AppBundle\Repository\TaskRepository")
+ * @ORM\Entity(repositoryClass="AppBundle\DataAccess\Orm\TaskRepository")
  */
 class Task
 {

@@ -1,0 +1,9 @@
+fos_user:
+    db_driver: orm # other valid values are 'mongodb', 'couchdb' and 'propel'
+    firewall_name: main
+    user_class: AppBundle\DataAccess\Contract\Entities\User
+    service:
+        mailer: fos_user.mailer.noop
+    from_email:
+        address: you@example.com
+        sender_name: You

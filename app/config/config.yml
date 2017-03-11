@@ -4,6 +4,7 @@ imports:
     - { resource: services.yml }
     - { resource: assetic.yml }
     - { resource: jwt.yml }
+    - { resource: fos_user.yml }
 #    - { resource: "@ApiBundle/Resources/config/services.yml" }
 
 # Put parameters here that don't need to change on each machine where the app is deployed
@@ -69,7 +70,12 @@ doctrine:
     orm:
         auto_generate_proxy_classes: "%kernel.debug%"
         naming_strategy: doctrine.orm.naming_strategy.underscore
-        auto_mapping: true
+        auto_mapping: false
+        mappings:
+            name:
+                type: annotation
+                dir: %kernel.root_dir%/../src/AppBundle/DataAccess/Contract/Entities
+                prefix: AppBundle\DataAccess\Contract\Entities
 
 # Swiftmailer Configuration
 swiftmailer:
@@ -78,16 +84,6 @@ swiftmailer:
     username:  "%mailer_user%"
     password:  "%mailer_password%"
     spool:     { type: memory }
-
-fos_user:
-    db_driver: orm # other valid values are 'mongodb', 'couchdb' and 'propel'
-    firewall_name: main
-    user_class: AppBundle\DataAccess\Contract\Entities\User
-    service:
-        mailer: fos_user.mailer.noop
-    from_email:
-        address: you@example.com
-        sender_name: You
 
 ornicar_gravatar:
     rating: g
