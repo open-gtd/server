@@ -53,38 +53,42 @@
                 </div><!-- /.container-fluid -->
             </nav>
 
-            {% for type, messages in app.session.flashbag.all() %}
-                {% if type == 'success' %}
-                    {% for message in messages %}
-                        <div class="alert alert-success">
-                            <strong>Success!</strong> {{ message }}
-                        </div>
-                    {% endfor %}
-                {% endif %}
-                {% if type == 'info' %}
-                    {% for message in messages %}
-                        <div class="alert alert-info">
-                            <strong>Info!</strong> {{ message }}
-                        </div>
-                    {% endfor %}
-                {% endif %}
-                {% if type == 'warning' %}
-                    {% for message in messages %}
-                        <div class="alert alert-warning">
-                            <strong>Warning!</strong> {{ message }}
-                        </div>
-                    {% endfor %}
-                {% endif %}
-                {% if type == 'error' %}
-                    {% for message in messages %}
-                        <div class="alert alert-danger">
-                            <strong>Error!</strong> {{ message }}
-                        </div>
-                    {% endfor %}
-                {% endif %}
-            {% endfor %}
+            <div class="floating-container">
+                <div class="col-xs-12">
+                    {% for type, messages in app.session.flashbag.all() %}
+                    {% if type == 'success' %}
+                        {% for message in messages %}
+                            <div class="alert alert-success">
+                                <strong>Success!</strong> {{ message }}
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                    {% if type == 'info' %}
+                        {% for message in messages %}
+                            <div class="alert alert-info">
+                                <strong>Info!</strong> {{ message }}
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                    {% if type == 'warning' %}
+                        {% for message in messages %}
+                            <div class="alert alert-warning">
+                                <strong>Warning!</strong> {{ message }}
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                    {% if type == 'error' %}
+                        {% for message in messages %}
+                            <div class="alert alert-danger">
+                                <strong>Error!</strong> {{ message }}
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                {% endfor %}
 
-            {% block body %}{% endblock %}
+                    {% block body %}{% endblock %}
+                </div>
+            </div>
         </div>
 
         <div id="footer">

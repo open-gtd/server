@@ -1,0 +1,6 @@
+services:
+    api.controller.user.index:
+        class: AppBundle\View\Controller\Api\User\UsersController
+        arguments:
+            userRepository: '@business.user.list'
+            container: '@service_container'
