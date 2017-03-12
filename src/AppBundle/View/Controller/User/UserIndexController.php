@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Presentation\Controller\User;
+namespace AppBundle\View\Controller\User;
 
 use AppBundle\Business\Contract\User\UserListInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -31,7 +31,7 @@ class UserIndexController extends Controller
     {
         $users = $this->userList->getAllUsers();
 
-        return $this->render('user/index.html.twig', array(
+        return $this->render('@App/user/index.html.twig', array(
             'users' => $users,
         ));
     }

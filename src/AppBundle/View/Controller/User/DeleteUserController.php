@@ -1,27 +1,14 @@
 <?php
 
-namespace AppBundle\Presentation\Controller\User;
+namespace AppBundle\View\Controller\User;
 
 use AppBundle\DataAccess\Contract\Entities\User;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
 
-/**
- * User controller.
- *
- * @Route("/user")
- */
 class DeleteUserController extends Controller
 {
-    /**
-     * Deletes a User entity.
-     *
-     * @Route("/{id}", name="user_delete")
-     * @Method("DELETE")
-     */
     public function deleteAction(Request $request, User $user)
     {
         $form = $this->createDeleteForm($user);
@@ -46,7 +33,7 @@ class DeleteUserController extends Controller
     private function createDeleteForm(User $user)
     {
         return $this->createFormBuilder()
-            ->setAction($this->generateUrl('user_delete', array('id' => $user->getId())))
+            ->setAction($this->generateUrl('users.user.delete', array('id' => $user->getId())))
             ->setMethod('DELETE')
             ->getForm()
         ;

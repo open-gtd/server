@@ -1,10 +1,10 @@
 api:
-    resource: "@AppBundle/Presentation/Controller/Api"
+    resource: "@AppBundle/View/Controller/Api"
     type:     annotation
     prefix:   /api
 
 app_daefault:
-    resource: "@AppBundle/Presentation/Controller"
+    resource: "@AppBundle/View/Controller"
     type:     annotation
     prefix:   /
 

@@ -1,0 +1,8 @@
+parameters:
+    entity.user: AppBundle\DataAccess\Contract\Entities\User
+
+services:
+    business.user.list:
+        class: AppBundle\Business\UserList
+        arguments:
+            userRepository: '@repository.user'

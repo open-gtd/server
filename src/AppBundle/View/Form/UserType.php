@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Presentation\Form;
+namespace AppBundle\View\Form;
 
 use AppBundle\DataAccess\Contract\Entities\User;
 use Symfony\Component\Form\AbstractType;

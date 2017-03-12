@@ -1,10 +1,11 @@
 <?php
 
 
-namespace AppBundle\Business\Contract\User;
+namespace AppBundle\Business;
 
 
 use AppBundle\Business\Contract\Entities\User;
+use AppBundle\Business\Contract\User\UserListInterface;
 use AppBundle\DataAccess\Contract\Entities\User as DbUser;
 use AppBundle\DataAccess\Contract\Repositories\UserRepositoryInterface;
 

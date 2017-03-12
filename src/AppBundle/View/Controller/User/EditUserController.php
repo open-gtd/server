@@ -1,30 +1,18 @@
 <?php
 
-namespace AppBundle\Presentation\Controller\User;
+namespace AppBundle\View\Controller\User;
 
 use AppBundle\DataAccess\Contract\Entities\User;
+use AppBundle\View\Form\UserType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
-/**
- * User controller.
- *
- * @Route("/user")
- */
 class EditUserController extends Controller
 {
-    /**
-     * Displays a form to edit an existing User entity.
-     *
-     * @Route("/{id}/edit", name="user_edit")
-     * @Method({"GET", "POST"})
-     */
     public function editAction(Request $request, User $user)
     {
         $deleteForm = $this->createDeleteForm($user);
-        $editForm = $this->createForm('AppBundle\Form\UserType', $user);
+        $editForm = $this->createForm(UserType::class, $user);
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
@@ -32,10 +20,10 @@ class EditUserController extends Controller
             $em->persist($user);
             $em->flush();
 
-            return $this->redirectToRoute('user_edit', array('id' => $user->getId()));
+            return $this->redirectToRoute('users.user.edit', array('id' => $user->getId()));
         }
 
-        return $this->render('user/edit.html.twig', array(
+        return $this->render('@App/user/edit.html.twig', array(
             'user' => $user,
             'edit_form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
@@ -52,7 +40,7 @@ class EditUserController extends Controller
     private function createDeleteForm(User $user)
     {
         return $this->createFormBuilder()
-            ->setAction($this->generateUrl('user_delete', array('id' => $user->getId())))
+            ->setAction($this->generateUrl('users.user.delete', array('id' => $user->getId())))
             ->setMethod('DELETE')
             ->getForm()
         ;

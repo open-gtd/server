@@ -4,7 +4,3 @@ parameters:
 #    parameter_name: value
 
 services:
-    commit_journal:
-        class: AppBundle\Business\CommitJournal
-        arguments:
-            entityManager: "@doctrine.orm.entity_manager"
