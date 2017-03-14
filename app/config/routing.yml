@@ -1,6 +1,6 @@
 api:
     resource: "@AppBundle/Resources/config/routing/Api/routing.yml"
-    prefix:   /api/v1
+    prefix:   /api/v1/
 
 app_daefault:
     resource: "@AppBundle/View/Controller"
@@ -14,4 +14,4 @@ fos_user:
     resource: "../Resources/config/routing/user.yml"
 
 api_login_check:
-    path: /api/login_check
+    path: /api/v1/login_check

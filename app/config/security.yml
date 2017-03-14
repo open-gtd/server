@@ -19,11 +19,12 @@ security:
     firewalls:
 
         login:
-            pattern:  ^/api/login
+            pattern:  ^/api/v1/login
             stateless: true
             anonymous: true
             form_login:
-                check_path:               /api/login_check
+                provider: fos_userbundle
+                check_path:               /api/v1/login_check
                 success_handler:          lexik_jwt_authentication.handler.authentication_success
                 failure_handler:          lexik_jwt_authentication.handler.authentication_failure
                 require_previous_session: false
@@ -62,5 +63,5 @@ security:
         - { path: ^/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/admin/, role: ROLE_SUPER_ADMIN }
-        - { path: ^/api/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/api/v1/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/api,       roles: IS_AUTHENTICATED_FULLY }

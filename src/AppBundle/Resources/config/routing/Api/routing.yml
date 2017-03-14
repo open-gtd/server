@@ -1,4 +1,4 @@
-api.users.user.index:
+api.v1.users.user.index:
     path: /users
     defaults: { _controller: controller.user.index:run }
     methods: [GET]
