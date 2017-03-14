@@ -4,11 +4,10 @@ namespace AppBundle\View\Controller\Api\User;
 
 
 use AppBundle\Business\Contract\User\UserListInterface;
-use FOS\RestBundle\Controller\Annotations\QueryParam;
 use FOS\RestBundle\Controller\FOSRestController;
-use FOS\RestBundle\Request\ParamFetcherInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Response;
+use FOS\RestBundle\View\View;
 
 
 class UsersController extends FOSRestController
@@ -30,15 +29,14 @@ class UsersController extends FOSRestController
      *
 //     * @param ParamFetcherInterface $paramFetcher
      *
-     * @return Response
+     * @return mixed
      */
     public function run()//ParamFetcherInterface $paramFetcher)
     {
-        $data = $this->userList->getAllUsers();
-        $view = $this->view($data, 200)
-            ->setTemplate("MyBundle:Users:getUsers.html.twig")
-            ->setTemplateVar('users');
-
-        return $this->handleView($view);
+        $result = $this->userList->getAllUsers();
+        if ($result === null) {
+            return new View("there are no users exist", Response::HTTP_NOT_FOUND);
+        }
+        return $result;
     }
 }

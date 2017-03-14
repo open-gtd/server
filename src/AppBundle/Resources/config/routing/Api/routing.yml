@@ -1,6 +1,6 @@
 api.v1.users.user.index:
     path: /users
-    defaults: { _controller: controller.user.index:run }
+    defaults: { _controller: api.controller.user.index:run }
     methods: [GET]
     options:
         expose: true
