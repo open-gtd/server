@@ -4,3 +4,10 @@ api.v1.users.user.index:
     methods: [GET]
     options:
         expose: true
+
+api.v1.users.user.get:
+    path: /users/{userId}
+    defaults: { _controller: api.controller.user.get:run }
+    methods: [GET]
+    options:
+        expose: true

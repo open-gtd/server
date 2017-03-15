@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\Response;
 use FOS\RestBundle\View\View;
 
 
-class UsersController extends FOSRestController
+class GetUsersController extends FOSRestController
 {
     /** @var UserListInterface */
     private $userList;

@@ -17,7 +17,7 @@ class UserRepository
     implements UserRepositoryInterface
 {
     /**
-     * @return User[]
+     * {@inheritdoc}
      */
     public function getUsers() {
         return $this->createQueryBuilder('u')
@@ -25,5 +25,19 @@ class UserRepository
             ->setParameter('role', '%ROLE_SUPER_ADMIN%')
             ->getQuery()
             ->getResult();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getUser($userId)
+    {
+        return $this->createQueryBuilder('u')
+            ->where('u.roles NOT LIKE :role')
+            ->setParameter('role', '%ROLE_SUPER_ADMIN%')
+            ->andWhere('u.id = :user_id')
+            ->setParameter('user_id', $userId)
+            ->getQuery()
+            ->getSingleResult();
     }
 }

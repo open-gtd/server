@@ -6,3 +6,8 @@ services:
         class: AppBundle\Business\UserList
         arguments:
             userRepository: '@repository.user'
+
+    business.user.get:
+        class: AppBundle\Business\GetUser
+        arguments:
+            userRepository: '@repository.user'
