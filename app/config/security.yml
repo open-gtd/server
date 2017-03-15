@@ -13,6 +13,8 @@ security:
     providers:
         fos_userbundle:
             id: fos_user.user_provider.username
+        in_memory:
+            memory: ~
 
     firewalls:
 
@@ -21,6 +23,7 @@ security:
             stateless: true
             anonymous: true
             form_login:
+                provider: fos_userbundle
                 check_path:               /api/v1/login_check
                 success_handler:          lexik_jwt_authentication.handler.authentication_success
                 failure_handler:          lexik_jwt_authentication.handler.authentication_failure
@@ -36,6 +39,7 @@ security:
             anonymous: ~
             pattern: ^/
             form_login:
+                provider: in_memory
                 csrf_token_generator: security.csrf.token_manager
 
             logout:       true
