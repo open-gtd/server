@@ -1,5 +1,6 @@
 imports:
-  - { resource: 'Repository/services.yml' }
+  - { resource: 'DataAccess/Repository/services.yml' }
+  - { resource: 'DataAccess/Business/services.yml' }
   - { resource: 'Controller/services.yml' }
   - { resource: 'Controller/Api/services.yml' }
   - { resource: 'Business/services.yml' }

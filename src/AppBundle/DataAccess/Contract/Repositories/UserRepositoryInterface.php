@@ -12,10 +12,5 @@ interface UserRepositoryInterface
      */
     public function getUsers();
 
-    /**
-     * @param int $userId
-     *
-     * @return User
-     */
-    public function getUser($userId);
+    public function getUserByName($userName);
 }

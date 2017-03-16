@@ -1,0 +1,10 @@
+services:
+    data_access.business.user_list:
+        class: AppBundle\DataAccess\Business\UserListDataAccess
+        arguments:
+            userRepository: '@repository.user'
+
+    data_access.business.get_user:
+        class: AppBundle\DataAccess\Business\GetUserDataAccess
+        arguments:
+            userRepository: '@repository.user'

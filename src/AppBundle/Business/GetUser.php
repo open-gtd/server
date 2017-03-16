@@ -4,36 +4,26 @@
 namespace AppBundle\Business;
 
 
-use AppBundle\Business\Contract\Entities\User;
+use AppBundle\Business\Contract\DataAccess\GetUserDataAccessInterface;
 use AppBundle\Business\Contract\User\GetUserInterface;
-use AppBundle\Business\Contract\User\UserListInterface;
-use AppBundle\DataAccess\Contract\Entities\User as DbUser;
-use AppBundle\DataAccess\Contract\Repositories\UserRepositoryInterface;
 
 class GetUser implements GetUserInterface
 {
-    private $userRepository;
+    private $getUserDataAccess;
 
     /**
-     * @param $userRepository
+     * @param $getUserDataAccess
      */
-    public function __construct(UserRepositoryInterface $userRepository)
+    public function __construct(GetUserDataAccessInterface $getUserDataAccess)
     {
-        $this->userRepository = $userRepository;
+        $this->getUserDataAccess = $getUserDataAccess;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getUser($userId)
+    public function getUser($userName)
     {
-        $user = $this->userRepository->getUser($userId);
-        return new User([
-            User::USER_NAME => $user->getUsername(),
-            User::EMAIL => $user->getEmail(),
-            User::ENABLED => $user->isEnabled(),
-            User::LAST_LOGIN => $user->getLastLogin(),
-            User::ROLES => $user->getRoles()
-        ]);
+        return $this->getUserDataAccess->getUser($userName);
     }
 }

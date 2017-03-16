@@ -5,9 +5,9 @@ services:
     business.user.list:
         class: AppBundle\Business\UserList
         arguments:
-            userRepository: '@repository.user'
+            userListDataAccess: '@data_access.business.user_list'
 
     business.user.get:
         class: AppBundle\Business\GetUser
         arguments:
-            userRepository: '@repository.user'
+            getUserDataAccess: '@data_access.business.get_user'

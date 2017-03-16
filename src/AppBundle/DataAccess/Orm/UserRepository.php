@@ -30,14 +30,14 @@ class UserRepository
     /**
      * {@inheritdoc}
      */
-    public function getUser($userId)
+    public function getUserByName($userName)
     {
         return $this->createQueryBuilder('u')
             ->where('u.roles NOT LIKE :role')
             ->setParameter('role', '%ROLE_SUPER_ADMIN%')
-            ->andWhere('u.id = :user_id')
-            ->setParameter('user_id', $userId)
+            ->andWhere('u.username = :user_name')
+            ->setParameter('user_name', $userName)
             ->getQuery()
-            ->getSingleResult();
+            ->getOneOrNullResult();
     }
 }
