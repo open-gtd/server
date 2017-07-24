@@ -6,9 +6,10 @@ type (
 )
 
 const (
-	Label   TypeEnum = 1
-	Area    TypeEnum = 2
-	Contact TypeEnum = 3
+	EmptyType TypeEnum = iota
+	Label
+	Area
+	Contact
 )
 
 type tag struct {
