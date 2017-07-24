@@ -1,9 +1,0 @@
-{
-  "name": "open-gtd",
-  "version": "0.0.1",
-  "license": "MIT",
-  "repository": "https://github.com/open-gtd/server",
-  "devDependencies": {
-    "bower": "^1.8.0"
-  }
-}

@@ -1,51 +1,17 @@
 # Created by .ignore support plugin (hsz.mobi)
-### Symfony template
-# Cache and logs (Symfony2)
-/app/cache/*
-/app/logs/*
-!app/cache/.gitkeep
-!app/logs/.gitkeep
+### Go template
+# Binaries for programs and plugins
+*.exe
+*.dll
+*.so
+*.dylib
 
-# Email spool folder
-/app/spool/*
+# Test binary, build with `go test -c`
+*.test
 
-# Cache, session files and logs (Symfony3)
-/var/cache/*
-/var/logs/*
-/var/sessions/*
-!var/cache/.gitkeep
-!var/logs/.gitkeep
-!var/sessions/.gitkeep
+# Output of the go coverage tool, specifically when used with LiteIDE
+*.out
 
-# Parameters
-/app/config/parameters.yml
-/app/config/parameters.ini
+# Project-local glide cache, RE: https://github.com/Masterminds/glide/issues/736
+.glide/
 
-# Managed by Composer
-/app/bootstrap.php.cache
-/var/bootstrap.php.cache
-/bin/*
-!bin/console
-!bin/symfony_requirements
-/vendor/
-
-# Assets and user uploads
-/web/bundles/
-/web/uploads/
-/web/assets/
-
-# PHPUnit
-/app/phpunit.xml
-/phpunit.xml
-
-# Build data
-/build/
-
-# Composer PHAR
-/composer.phar
-
-# Backup entities generated with doctrine:generate:entities command
-**/Entity/*~
-/.idea/
-/bower_components/
-/node_modules/
