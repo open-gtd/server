@@ -6,6 +6,7 @@ import (
 	"github.com/labstack/echo"
 	"github.com/open-gtd/server/tags/business"
 	"github.com/open-gtd/server/tags/domain"
+	"github.com/open-gtd/server/tags/presentation/converters"
 )
 
 type create struct {
@@ -17,5 +18,9 @@ func NewCreate(c echo.Context) business.CreatePresenter {
 }
 
 func (c create) Show(t domain.Tag) error {
-	return c.c.JSON(http.StatusOK, t)
+	tag, err := converters.ConvertToPresentation(t)
+	if err != nil {
+		return err
+	}
+	return c.c.JSON(http.StatusOK, tag)
 }

@@ -4,7 +4,7 @@ import (
 	"time"
 
 	"github.com/open-gtd/server/common"
-	tags "github.com/open-gtd/server/tags/api"
+	tags "github.com/open-gtd/server/tags/presentation"
 )
 
 type (

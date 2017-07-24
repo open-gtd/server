@@ -6,6 +6,7 @@ import (
 	"github.com/labstack/echo"
 	"github.com/open-gtd/server/tags/business"
 	"github.com/open-gtd/server/tags/domain"
+	"github.com/open-gtd/server/tags/presentation/converters"
 )
 
 type getAll struct {
@@ -17,5 +18,9 @@ func NewGetAll(c echo.Context) business.GetAllPresenter {
 }
 
 func (ga getAll) Show(t []domain.Tag) error {
-	return ga.c.JSON(http.StatusOK, t)
+	tags, err := converters.ConvertAllToPresentation(t)
+	if err != nil {
+		return err
+	}
+	return ga.c.JSON(http.StatusOK, tags)
 }

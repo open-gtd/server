@@ -6,6 +6,7 @@ import (
 	"github.com/labstack/echo"
 	"github.com/open-gtd/server/tags/business"
 	"github.com/open-gtd/server/tags/domain"
+	"github.com/open-gtd/server/tags/presentation/converters"
 )
 
 type update struct {
@@ -17,5 +18,9 @@ func NewUpdate(c echo.Context) business.UpdatePresenter {
 }
 
 func (u update) Show(t domain.Tag) error {
-	return u.c.JSON(http.StatusOK, t)
+	tag, err := converters.ConvertToPresentation(t)
+	if err != nil {
+		return err
+	}
+	return u.c.JSON(http.StatusOK, tag)
 }

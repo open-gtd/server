@@ -8,7 +8,7 @@ type (
 const (
 	Label   TypeEnum = 1
 	Area    TypeEnum = 2
-	Context TypeEnum = 3
+	Contact TypeEnum = 3
 )
 
 type tag struct {
@@ -28,20 +28,25 @@ func (tag *tag) ConvertToArea() {
 	tag.t = Area
 }
 
-func (tag *tag) ConvertToContext() {
-	tag.t = Context
+func (tag *tag) ConvertToContact() {
+	tag.t = Contact
 }
 
-func (t *tag) GetType() TypeEnum {
+func (t tag) GetType() TypeEnum {
 	return t.t
+}
+
+func (t tag) GetName() Name {
+	return t.n
 }
 
 type Tag interface {
 	Rename(name Name)
 	ConvertToLabel()
 	ConvertToArea()
-	ConvertToContext()
+	ConvertToContact()
 	GetType() TypeEnum
+	GetName() Name
 }
 
 func CreateLabel(name Name) Tag {
@@ -58,9 +63,9 @@ func CreateArea(name Name) Tag {
 	}
 }
 
-func CreateContext(name Name) Tag {
+func CreateContact(name Name) Tag {
 	return &tag{
 		n: name,
-		t: Context,
+		t: Contact,
 	}
 }

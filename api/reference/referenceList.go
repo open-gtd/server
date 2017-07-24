@@ -1,6 +1,6 @@
 package reference
 
-import tags "github.com/open-gtd/server/tags/api"
+import tags "github.com/open-gtd/server/tags/presentation"
 
 type (
 	Name  string
