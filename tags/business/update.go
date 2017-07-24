@@ -11,7 +11,7 @@ type UpdatePresenter interface {
 
 type UpdateDao interface {
 	Get(name domain.Name) (domain.Tag, error)
-	Save(tag domain.Tag) error
+	Save(name domain.Name, tag domain.Tag) error
 }
 
 type UpdateController interface {
@@ -59,7 +59,7 @@ func (u update) Run(ud UpdateData) error {
 		}
 	}
 
-	err = u.dao.Save(tag)
+	err = u.dao.Save(ud.OriginalName, tag)
 	if err != nil {
 		return err
 	}

@@ -3,19 +3,26 @@ package dao
 import (
 	"github.com/open-gtd/server/tags/business"
 	"github.com/open-gtd/server/tags/domain"
+	"github.com/open-gtd/server/tags/storage"
 )
 
 type update struct {
+	dao storage.Dao
 }
 
-func NewUpdate() business.UpdateDao {
-	return update{}
+func NewUpdate(dao storage.Dao) business.UpdateDao {
+	return update{dao: dao}
 }
 
 func (u update) Get(name domain.Name) (domain.Tag, error) {
-	return domain.CreateArea(name), nil
+	return GetTagByName(u.dao, name)
 }
 
-func (u update) Save(tag domain.Tag) error {
-	return nil
+func (u update) Save(name domain.Name, tag domain.Tag) error {
+	t, err := ConvertToStorage(tag)
+	if err != nil {
+		return err
+	}
+
+	return u.dao.Update(string(name), t)
 }

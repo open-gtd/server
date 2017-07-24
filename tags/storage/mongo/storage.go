@@ -1,24 +1,22 @@
 package mongo
 
 import (
-	dtags "github.com/open-gtd/server/domain/tags"
-	"github.com/open-gtd/server/storage/tags"
+	"github.com/open-gtd/server/tags/storage"
 	"labix.org/v2/mgo"
+	"labix.org/v2/mgo/bson"
 )
 
-type storage struct {
+type dao struct {
 	session    *mgo.Session
 	database   string
 	collection string
 }
 
-const getAllQuery = ""
-
-func (s storage) GetAll() ([]dtags.Tag, error) {
-	var result []dtags.Tag
+func (s dao) GetList() ([]storage.Tag, error) {
+	var result []storage.Tag
 	c := s.session.DB(s.database).C(s.collection)
 
-	err := c.Find(getAllQuery).All(&result)
+	err := c.Find(nil).All(&result)
 	if err != nil {
 		return nil, err
 	}
@@ -26,8 +24,53 @@ func (s storage) GetAll() ([]dtags.Tag, error) {
 	return result, nil
 }
 
-func CreateStorage(url string) (tags.Storage, error) {
-	s := storage{}
+func (s dao) Get(name string) (storage.Tag, error) {
+	c := s.session.DB(s.database).C(s.collection)
+
+	tag := storage.Tag{}
+	err := c.Find(bson.M{"name": name}).One(&tag)
+	if err != nil {
+		return storage.Tag{}, err
+	}
+
+	return tag, nil
+}
+
+func (s dao) Update(name string, tag storage.Tag) error {
+	c := s.session.DB(s.database).C(s.collection)
+
+	err := c.Update(bson.M{"name": name}, tag)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (s dao) Insert(tag storage.Tag) error {
+	c := s.session.DB(s.database).C(s.collection)
+
+	err := c.Insert(tag)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (s dao) Delete(name string) error {
+	c := s.session.DB(s.database).C(s.collection)
+
+	err := c.Remove(bson.M{"name": name})
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func CreateDao(url string) (storage.Dao, error) {
+	s := dao{}
 	session, err := mgo.Dial(url)
 	if err != nil {
 		return nil, err

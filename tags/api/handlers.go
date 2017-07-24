@@ -15,21 +15,46 @@ func RegisterHandlers(g *echo.Group) {
 }
 
 func GetList(c echo.Context) error {
-	return factories.NewGetList(c).Run()
+	controller, err := factories.NewGetList(c)
+	if err != nil {
+		return err
+	}
+
+	return controller.Run()
 }
 
 func Get(c echo.Context) error {
-	return factories.NewGet(c).Run()
+	controller, err := factories.NewGet(c)
+	if err != nil {
+		return err
+	}
+
+	return controller.Run()
 }
 
 func Create(c echo.Context) error {
-	return factories.NewCreate(c).Run()
+	controller, err := factories.NewCreate(c)
+	if err != nil {
+		return err
+	}
+
+	return controller.Run()
 }
 
 func Update(c echo.Context) error {
-	return factories.NewUpdate(c).Run()
+	controller, err := factories.NewUpdate(c)
+	if err != nil {
+		return err
+	}
+
+	return controller.Run()
 }
 
 func Delete(c echo.Context) error {
-	return factories.NewDelete(c).Run()
+	controller, err := factories.NewDelete(c)
+	if err != nil {
+		return err
+	}
+
+	return controller.Run()
 }
