@@ -8,8 +8,9 @@ import (
 )
 
 var createStrategy map[domain.TypeEnum]CreateStrategy
+var convertStrategy map[domain.TypeEnum]ConvertStrategy
 
-func RegisterStrategy(typeEnum domain.TypeEnum, strategy CreateStrategy) {
+func RegisterCreateStrategy(typeEnum domain.TypeEnum, strategy CreateStrategy) {
 	if createStrategy == nil {
 		createStrategy = make(map[domain.TypeEnum]CreateStrategy)
 	}
@@ -17,14 +18,35 @@ func RegisterStrategy(typeEnum domain.TypeEnum, strategy CreateStrategy) {
 	createStrategy[typeEnum] = strategy
 }
 
+func RegisterConvertStrategy(typeEnum domain.TypeEnum, strategy ConvertStrategy) {
+	if convertStrategy == nil {
+		convertStrategy = make(map[domain.TypeEnum]ConvertStrategy)
+	}
+
+	convertStrategy[typeEnum] = strategy
+}
+
 type CreateStrategy interface {
 	Create(name domain.Name) (domain.Tag, error)
 }
 
-func GetStrategy(typeEnum domain.TypeEnum) (CreateStrategy, error) {
+type ConvertStrategy interface {
+	Convert(tag domain.Tag) (domain.Tag, error)
+}
+
+func GetCreateStrategy(typeEnum domain.TypeEnum) (CreateStrategy, error) {
 	s, ok := createStrategy[typeEnum]
 	if ok != true {
-		return nil, errors.New(fmt.Sprintf("Unknown strategy for create '%v'", typeEnum))
+		return nil, errors.New(fmt.Sprintf("Unknown create strategy for create '%v'", typeEnum))
+	}
+
+	return s, nil
+}
+
+func GetConvertStrategy(typeEnum domain.TypeEnum) (ConvertStrategy, error) {
+	s, ok := convertStrategy[typeEnum]
+	if ok != true {
+		return nil, errors.New(fmt.Sprintf("Unknown convert strategy for create '%v'", typeEnum))
 	}
 
 	return s, nil

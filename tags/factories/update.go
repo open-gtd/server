@@ -5,6 +5,7 @@ import (
 	"github.com/open-gtd/server/tags/business"
 	"github.com/open-gtd/server/tags/presentation/controllers"
 	"github.com/open-gtd/server/tags/presentation/presenters"
+	"github.com/open-gtd/server/tags/storage/dao"
 )
 
 func NewUpdate(c echo.Context) business.UpdateController {
@@ -12,6 +13,7 @@ func NewUpdate(c echo.Context) business.UpdateController {
 		c,
 		business.NewUpdate(
 			presenters.NewUpdate(c),
+			dao.NewUpdate(),
 		),
 	)
 }

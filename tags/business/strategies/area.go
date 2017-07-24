@@ -5,12 +5,18 @@ import (
 )
 
 func init() {
-	RegisterStrategy(domain.Area, createArea{})
+	RegisterCreateStrategy(domain.Area, areaStrategy{})
+	RegisterConvertStrategy(domain.Area, areaStrategy{})
 }
 
-type createArea struct {
+type areaStrategy struct {
 }
 
-func (cl createArea) Create(name domain.Name) (domain.Tag, error) {
+func (as areaStrategy) Create(name domain.Name) (domain.Tag, error) {
 	return domain.CreateArea(name), nil
+}
+
+func (as areaStrategy) Convert(tag domain.Tag) (domain.Tag, error) {
+	tag.ConvertToArea()
+	return tag, nil
 }

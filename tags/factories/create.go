@@ -5,6 +5,7 @@ import (
 	"github.com/open-gtd/server/tags/business"
 	"github.com/open-gtd/server/tags/presentation/controllers"
 	"github.com/open-gtd/server/tags/presentation/presenters"
+	"github.com/open-gtd/server/tags/storage/dao"
 )
 
 func NewCreate(c echo.Context) business.CreateController {
@@ -12,6 +13,7 @@ func NewCreate(c echo.Context) business.CreateController {
 		c,
 		business.NewCreate(
 			presenters.NewCreate(c),
+			dao.NewCreate(),
 		),
 	)
 }

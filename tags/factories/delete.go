@@ -5,6 +5,7 @@ import (
 	"github.com/open-gtd/server/tags/business"
 	"github.com/open-gtd/server/tags/presentation/controllers"
 	"github.com/open-gtd/server/tags/presentation/presenters"
+	"github.com/open-gtd/server/tags/storage/dao"
 )
 
 func NewDelete(c echo.Context) business.DeleteController {
@@ -12,6 +13,7 @@ func NewDelete(c echo.Context) business.DeleteController {
 		c,
 		business.NewDelete(
 			presenters.NewDelete(c),
+			dao.NewDelete(),
 		),
 	)
 }

@@ -5,13 +5,15 @@ import (
 	"github.com/open-gtd/server/tags/business"
 	"github.com/open-gtd/server/tags/presentation/controllers"
 	"github.com/open-gtd/server/tags/presentation/presenters"
+	"github.com/open-gtd/server/tags/storage/dao"
 )
 
-func NewGetAll(c echo.Context) business.GetAllController {
-	return controllers.NewGetAll(
+func NewGetList(c echo.Context) business.GetListController {
+	return controllers.NewGetList(
 		c,
-		business.NewGetAll(
-			presenters.NewGetAll(c),
+		business.NewGetList(
+			presenters.NewGetList(c),
+			dao.NewGetList(),
 		),
 	)
 }

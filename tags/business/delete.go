@@ -1,7 +1,13 @@
 package business
 
+import "github.com/open-gtd/server/tags/domain"
+
 type DeletePresenter interface {
 	ShowSucced() error
+}
+
+type DeleteDao interface {
+	Delete(name domain.Name) error
 }
 
 type DeleteController interface {
@@ -14,10 +20,11 @@ type Delete interface {
 
 type delete struct {
 	presenter DeletePresenter
+	dao DeleteDao
 }
 
-func NewDelete(p DeletePresenter) Delete {
-	return delete{presenter: p}
+func NewDelete(p DeletePresenter, d DeleteDao) Delete {
+	return delete{presenter: p, dao: d}
 }
 
 func (d delete) Run() error {

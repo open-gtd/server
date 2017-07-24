@@ -5,12 +5,18 @@ import (
 )
 
 func init() {
-	RegisterStrategy(domain.Contact, createContact{})
+	RegisterCreateStrategy(domain.Contact, contactStrategy{})
+	RegisterConvertStrategy(domain.Contact, contactStrategy{})
 }
 
-type createContact struct {
+type contactStrategy struct {
 }
 
-func (cl createContact) Create(name domain.Name) (domain.Tag, error) {
+func (cs contactStrategy) Create(name domain.Name) (domain.Tag, error) {
 	return domain.CreateContact(name), nil
+}
+
+func (cs contactStrategy) Convert(tag domain.Tag) (domain.Tag, error) {
+	tag.ConvertToContact()
+	return tag, nil
 }

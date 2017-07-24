@@ -5,12 +5,18 @@ import (
 )
 
 func init() {
-	RegisterStrategy(domain.Label, createLabel{})
+	RegisterCreateStrategy(domain.Label, labelStrategy{})
+	RegisterConvertStrategy(domain.Label, labelStrategy{})
 }
 
-type createLabel struct {
+type labelStrategy struct {
 }
 
-func (cl createLabel) Create(name domain.Name) (domain.Tag, error) {
+func (ls labelStrategy) Create(name domain.Name) (domain.Tag, error) {
 	return domain.CreateLabel(name), nil
+}
+
+func (ls labelStrategy) Convert(tag domain.Tag) (domain.Tag, error) {
+	tag.ConvertToLabel()
+	return tag, nil
 }

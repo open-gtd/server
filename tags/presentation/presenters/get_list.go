@@ -9,18 +9,18 @@ import (
 	"github.com/open-gtd/server/tags/presentation/converters"
 )
 
-type getAll struct {
+type getList struct {
 	c echo.Context
 }
 
-func NewGetAll(c echo.Context) business.GetAllPresenter {
-	return getAll{c: c}
+func NewGetList(c echo.Context) business.GetListPresenter {
+	return getList{c: c}
 }
 
-func (ga getAll) Show(t []domain.Tag) error {
+func (gl getList) Show(t []domain.Tag) error {
 	tags, err := converters.ConvertAllToPresentation(t)
 	if err != nil {
 		return err
 	}
-	return ga.c.JSON(http.StatusOK, tags)
+	return gl.c.JSON(http.StatusOK, tags)
 }
