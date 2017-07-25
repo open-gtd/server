@@ -24,3 +24,7 @@ func (g get) Show(t domain.Tag) error {
 	}
 	return g.c.JSON(http.StatusOK, tag)
 }
+
+func (g get) ShowNotFound() error {
+	return g.c.NoContent(http.StatusNotFound)
+}

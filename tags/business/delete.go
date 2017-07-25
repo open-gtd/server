@@ -4,6 +4,7 @@ import "github.com/open-gtd/server/tags/domain"
 
 type DeletePresenter interface {
 	ShowSucced() error
+	ShowNotFound() error
 }
 
 type DeleteDao interface {
@@ -15,18 +16,27 @@ type DeleteController interface {
 }
 
 type Delete interface {
-	Run() error
+	Run(name domain.Name) error
 }
 
 type delete struct {
 	presenter DeletePresenter
-	dao DeleteDao
+	dao       DeleteDao
 }
 
 func NewDelete(p DeletePresenter, d DeleteDao) Delete {
 	return delete{presenter: p, dao: d}
 }
 
-func (d delete) Run() error {
+func (d delete) Run(name domain.Name) error {
+	if err := d.dao.Delete(name); err != nil {
+
+		if err.Error() == notFoundError {
+			return d.presenter.ShowNotFound()
+		}
+
+		return err
+	}
+
 	return d.presenter.ShowSucced()
 }

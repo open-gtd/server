@@ -23,7 +23,7 @@ func NewUpdate(c echo.Context, i business.Update) business.UpdateController {
 }
 
 func (u update) Run() error {
-	originalName := u.c.QueryParam(NameQueryParam)
+	originalName := u.c.Param(NameQueryParam)
 	ud := business.UpdateData{
 		OriginalName: domain.Name(originalName),
 	}

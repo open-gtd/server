@@ -22,5 +22,5 @@ func (c create) Show(t domain.Tag) error {
 	if err != nil {
 		return err
 	}
-	return c.c.JSON(http.StatusOK, tag)
+	return c.c.JSON(http.StatusCreated, tag)
 }

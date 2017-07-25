@@ -18,3 +18,7 @@ func NewDelete(c echo.Context) business.DeletePresenter {
 func (c delete) ShowSucced() error {
 	return c.c.NoContent(http.StatusOK)
 }
+
+func (c delete) ShowNotFound() error {
+	return c.c.NoContent(http.StatusNotFound)
+}

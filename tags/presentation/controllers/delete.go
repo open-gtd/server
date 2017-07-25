@@ -3,6 +3,7 @@ package controllers
 import (
 	"github.com/labstack/echo"
 	"github.com/open-gtd/server/tags/business"
+	"github.com/open-gtd/server/tags/domain"
 )
 
 type delete struct {
@@ -15,5 +16,6 @@ func NewDelete(c echo.Context, i business.Delete) business.DeleteController {
 }
 
 func (d delete) Run() error {
-	return d.interactor.Run()
+	name := d.c.Param(NameQueryParam)
+	return d.interactor.Run(domain.Name(name))
 }

@@ -77,6 +77,8 @@ func CreateDao(url string) (storage.Dao, error) {
 	}
 
 	s.session = session
+	s.database = "open-gtd"
+	s.collection = "tags"
 
 	return s, nil
 }

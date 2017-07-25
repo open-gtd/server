@@ -16,6 +16,6 @@ func NewGet(c echo.Context, i business.Get) business.GetController {
 }
 
 func (g get) Run() error {
-	name := g.c.QueryParam(NameQueryParam)
+	name := g.c.Param(NameQueryParam)
 	return g.interactor.Run(domain.Name(name))
 }
