@@ -3,22 +3,22 @@ package presenters
 import (
 	"net/http"
 
-	"github.com/labstack/echo"
+	"github.com/open-gtd/server/api"
 	"github.com/open-gtd/server/tags/business"
 )
 
-type delete struct {
-	c echo.Context
+type deleteTag struct {
+	response api.Response
 }
 
-func NewDelete(c echo.Context) business.DeletePresenter {
-	return delete{c: c}
+func NewDelete(rs api.Response) business.DeletePresenter {
+	return deleteTag{response: rs}
 }
 
-func (c delete) ShowSucceed() error {
-	return c.c.NoContent(http.StatusOK)
+func (c deleteTag) ShowSucceed() error {
+	return c.response.NoContent(http.StatusOK)
 }
 
-func (c delete) ShowNotFound() error {
-	return c.c.NoContent(http.StatusNotFound)
+func (c deleteTag) ShowNotFound() error {
+	return c.response.NoContent(http.StatusNotFound)
 }

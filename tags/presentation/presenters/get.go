@@ -3,18 +3,18 @@ package presenters
 import (
 	"net/http"
 
-	"github.com/labstack/echo"
+	"github.com/open-gtd/server/api"
 	"github.com/open-gtd/server/tags/business"
 	"github.com/open-gtd/server/tags/domain"
 	"github.com/open-gtd/server/tags/presentation/converters"
 )
 
 type get struct {
-	c echo.Context
+	response api.Response
 }
 
-func NewGet(c echo.Context) business.GetPresenter {
-	return get{c: c}
+func NewGet(rs api.Response) business.GetPresenter {
+	return get{response: rs}
 }
 
 func (g get) Show(t domain.Tag) error {
@@ -22,9 +22,9 @@ func (g get) Show(t domain.Tag) error {
 	if err != nil {
 		return err
 	}
-	return g.c.JSON(http.StatusOK, tag)
+	return g.response.JSON(http.StatusOK, tag)
 }
 
 func (g get) ShowNotFound() error {
-	return g.c.NoContent(http.StatusNotFound)
+	return g.response.NoContent(http.StatusNotFound)
 }

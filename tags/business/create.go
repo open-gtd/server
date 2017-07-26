@@ -13,9 +13,7 @@ type CreateDao interface {
 	Insert(t domain.Tag) error
 }
 
-type CreateController interface {
-	Run() error
-}
+type CreateController Controller
 
 type Create interface {
 	Run(cd CreateData) error

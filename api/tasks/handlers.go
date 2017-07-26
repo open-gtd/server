@@ -3,33 +3,33 @@ package tasks
 import (
 	"net/http"
 
-	"github.com/labstack/echo"
+	"github.com/open-gtd/server/api"
 )
 
-func RegisterHandlers(g *echo.Group) {
-	g.GET("/tasks", GetAll)
-	g.GET("/tasks/:name", Get)
-	g.POST("/tasks", Create)
-	g.PUT("/tasks/:name", Update)
-	g.DELETE("/tasks/:name", Delete)
+func RegisterHandlers(r api.Registerer) {
+	r.GET("/tasks", GetAll)
+	r.GET("/tasks/:name", Get)
+	r.POST("/tasks", Create)
+	r.PUT("/tasks/:name", Update)
+	r.DELETE("/tasks/:name", Delete)
 }
 
-func GetAll(c echo.Context) error {
-	return c.String(http.StatusOK, "Tasks!")
+func GetAll(rq api.Request, rs api.Response) error {
+	return rs.String(http.StatusOK, "Tasks!")
 }
 
-func Get(c echo.Context) error {
-	return c.String(http.StatusOK, "Task!")
+func Get(rq api.Request, rs api.Response) error {
+	return rs.String(http.StatusOK, "Task!")
 }
 
-func Create(c echo.Context) error {
-	return c.String(http.StatusOK, "Task created!")
+func Create(rq api.Request, rs api.Response) error {
+	return rs.String(http.StatusOK, "Task created!")
 }
 
-func Update(c echo.Context) error {
-	return c.String(http.StatusOK, "Task updated!")
+func Update(rq api.Request, rs api.Response) error {
+	return rs.String(http.StatusOK, "Task updated!")
 }
 
-func Delete(c echo.Context) error {
-	return c.String(http.StatusOK, "Task deleted!")
+func Delete(rq api.Request, rs api.Response) error {
+	return rs.String(http.StatusOK, "Task deleted!")
 }

@@ -1,7 +1,7 @@
 package controllers
 
 import (
-	"github.com/labstack/echo"
+	"github.com/open-gtd/server/api"
 	"github.com/open-gtd/server/tags/business"
 	"github.com/open-gtd/server/tags/domain"
 	"github.com/open-gtd/server/tags/presentation"
@@ -9,7 +9,7 @@ import (
 )
 
 type update struct {
-	c          echo.Context
+	request    api.Request
 	interactor business.Update
 }
 
@@ -18,18 +18,18 @@ type tag struct {
 	Type *presentation.TypeDescriptor `json: "type"`
 }
 
-func NewUpdate(c echo.Context, i business.Update) business.UpdateController {
-	return update{c: c, interactor: i}
+func NewUpdate(rq api.Request, i business.Update) business.UpdateController {
+	return update{request: rq, interactor: i}
 }
 
 func (u update) Run() error {
-	originalName := u.c.Param(NameQueryParam)
+	originalName := u.request.Param(NameQueryParam)
 	ud := business.UpdateData{
 		OriginalName: domain.Name(originalName),
 	}
 
 	t := tag{}
-	u.c.Bind(&t)
+	u.request.Bind(&t)
 
 	if t.Name != nil {
 		name := domain.Name(*t.Name)

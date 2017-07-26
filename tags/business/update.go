@@ -16,9 +16,7 @@ type UpdateDao interface {
 	Save(name domain.Name, tag domain.Tag) error
 }
 
-type UpdateController interface {
-	Run() error
-}
+type UpdateController Controller
 
 type Update interface {
 	Run(ud UpdateData) error

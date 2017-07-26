@@ -3,33 +3,33 @@ package projects
 import (
 	"net/http"
 
-	"github.com/labstack/echo"
+	"github.com/open-gtd/server/api"
 )
 
-func RegisterHandlers(g *echo.Group) {
-	g.GET("/projects", GetAll)
-	g.GET("/projects/:name", Get)
-	g.POST("/projects", Create)
-	g.PUT("/projects/:name", Update)
-	g.DELETE("/projects/:name", Delete)
+func RegisterHandlers(r api.Registerer) {
+	r.GET("/projects", GetAll)
+	r.GET("/projects/:name", Get)
+	r.POST("/projects", Create)
+	r.PUT("/projects/:name", Update)
+	r.DELETE("/projects/:name", Delete)
 }
 
-func GetAll(c echo.Context) error {
-	return c.String(http.StatusOK, "Projects!")
+func GetAll(rq api.Request, rs api.Response) error {
+	return rs.String(http.StatusOK, "Projects!")
 }
 
-func Get(c echo.Context) error {
-	return c.String(http.StatusOK, "Project!")
+func Get(rq api.Request, rs api.Response) error {
+	return rs.String(http.StatusOK, "Project!")
 }
 
-func Create(c echo.Context) error {
-	return c.String(http.StatusOK, "Project created!")
+func Create(rq api.Request, rs api.Response) error {
+	return rs.String(http.StatusOK, "Project created!")
 }
 
-func Update(c echo.Context) error {
-	return c.String(http.StatusOK, "Project updated!")
+func Update(rq api.Request, rs api.Response) error {
+	return rs.String(http.StatusOK, "Project updated!")
 }
 
-func Delete(c echo.Context) error {
-	return c.String(http.StatusOK, "Project deleted!")
+func Delete(rq api.Request, rs api.Response) error {
+	return rs.String(http.StatusOK, "Project deleted!")
 }

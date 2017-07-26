@@ -14,9 +14,7 @@ type GetDao interface {
 	Get(name domain.Name) (domain.Tag, error)
 }
 
-type GetController interface {
-	Run() error
-}
+type GetController Controller
 
 type Get interface {
 	Run(name domain.Name) error

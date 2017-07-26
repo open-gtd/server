@@ -3,33 +3,33 @@ package reference
 import (
 	"net/http"
 
-	"github.com/labstack/echo"
+	"github.com/open-gtd/server/api"
 )
 
-func RegisterHandlers(g *echo.Group) {
-	g.GET("/reference", GetAll)
-	g.GET("/reference/:name", Get)
-	g.POST("/reference", Create)
-	g.PUT("/reference/:name", Update)
-	g.DELETE("/reference/:name", Delete)
+func RegisterHandlers(r api.Registerer) {
+	r.GET("/reference", GetAll)
+	r.GET("/reference/:name", Get)
+	r.POST("/reference", Create)
+	r.PUT("/reference/:name", Update)
+	r.DELETE("/reference/:name", Delete)
 }
 
-func GetAll(c echo.Context) error {
-	return c.String(http.StatusOK, "ReferenceLists!")
+func GetAll(rq api.Request, rs api.Response) error {
+	return rs.String(http.StatusOK, "ReferenceLists!")
 }
 
-func Get(c echo.Context) error {
-	return c.String(http.StatusOK, "ReferenceList!")
+func Get(rq api.Request, rs api.Response) error {
+	return rs.String(http.StatusOK, "ReferenceList!")
 }
 
-func Create(c echo.Context) error {
-	return c.String(http.StatusOK, "ReferenceList created!")
+func Create(rq api.Request, rs api.Response) error {
+	return rs.String(http.StatusOK, "ReferenceList created!")
 }
 
-func Update(c echo.Context) error {
-	return c.String(http.StatusOK, "ReferenceList updated!")
+func Update(rq api.Request, rs api.Response) error {
+	return rs.String(http.StatusOK, "ReferenceList updated!")
 }
 
-func Delete(c echo.Context) error {
-	return c.String(http.StatusOK, "ReferenceList deleted!")
+func Delete(rq api.Request, rs api.Response) error {
+	return rs.String(http.StatusOK, "ReferenceList deleted!")
 }

@@ -9,10 +9,11 @@ import (
 
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
+	api_echo "github.com/open-gtd/server/api/echo"
 	"github.com/open-gtd/server/api/projects"
 	"github.com/open-gtd/server/api/reference"
 	"github.com/open-gtd/server/api/tasks"
-	tags "github.com/open-gtd/server/tags/api"
+	"github.com/open-gtd/server/tags/api"
 )
 
 func LogErrorDetails() echo.MiddlewareFunc {
@@ -32,22 +33,23 @@ func main() {
 	e := echo.New()
 	e.Pre(middleware.RemoveTrailingSlash())
 
-	e.Use(middleware.Recover())
-	e.Use(middleware.Logger())
-	e.Use(middleware.Gzip())
-	e.Use(LogErrorDetails())
+	e.Use(
+		middleware.Recover(),
+		middleware.Logger(),
+		middleware.Gzip(),
+		LogErrorDetails(),
+	)
 
 	e.GET("/", func(c echo.Context) error {
 		return c.String(http.StatusOK, "Welcome in Open GTD!")
 	})
 
 	//jwt := middleware.JWT([]byte("secret"))
-	//apiGroup := e.Group("/api", jwt)
-	apiGroup := e.Group("/api")
-	projects.RegisterHandlers(apiGroup)
-	reference.RegisterHandlers(apiGroup)
-	tags.RegisterHandlers(apiGroup)
-	tasks.RegisterHandlers(apiGroup)
+	registerer := api_echo.NewRegisterer(e, "/api") //, jwt)
+	projects.RegisterHandlers(registerer)
+	reference.RegisterHandlers(registerer)
+	api.RegisterHandlers(registerer)
+	tasks.RegisterHandlers(registerer)
 
 	e.Logger.Fatal(e.Start(":1323"))
 }

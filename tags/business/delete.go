@@ -14,9 +14,7 @@ type DeleteDao interface {
 	Delete(name domain.Name) error
 }
 
-type DeleteController interface {
-	Run() error
-}
+type DeleteController Controller
 
 type Delete interface {
 	Run(name domain.Name) error

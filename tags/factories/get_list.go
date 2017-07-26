@@ -1,7 +1,7 @@
 package factories
 
 import (
-	"github.com/labstack/echo"
+	"github.com/open-gtd/server/api"
 	"github.com/open-gtd/server/tags/business"
 	"github.com/open-gtd/server/tags/presentation/controllers"
 	"github.com/open-gtd/server/tags/presentation/presenters"
@@ -9,16 +9,16 @@ import (
 	"github.com/open-gtd/server/tags/storage/mongo"
 )
 
-func NewGetList(c echo.Context) (business.GetListController, error) {
+func NewGetList(rq api.Request, rs api.Response) (business.Controller, error) {
 	conn, err := mongo.CreateDao("localhost")
 	if err != nil {
 		return nil, err
 	}
 
 	return controllers.NewGetList(
-		c,
+		rq,
 		business.NewGetList(
-			presenters.NewGetList(c),
+			presenters.NewGetList(rs),
 			dao.NewGetList(conn),
 		),
 	), nil

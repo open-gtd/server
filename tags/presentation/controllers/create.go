@@ -1,7 +1,7 @@
 package controllers
 
 import (
-	"github.com/labstack/echo"
+	"github.com/open-gtd/server/api"
 	"github.com/open-gtd/server/tags/business"
 	"github.com/open-gtd/server/tags/domain"
 	"github.com/open-gtd/server/tags/presentation"
@@ -9,19 +9,19 @@ import (
 )
 
 type create struct {
-	c          echo.Context
+	request    api.Request
 	interactor business.Create
 }
 
 type Tag presentation.Tag
 
-func NewCreate(c echo.Context, i business.Create) business.CreateController {
-	return create{c: c, interactor: i}
+func NewCreate(rq api.Request, i business.Create) business.CreateController {
+	return create{request: rq, interactor: i}
 }
 
 func (c create) Run() error {
 	tag := &Tag{}
-	if err := c.c.Bind(tag); err != nil {
+	if err := c.request.Bind(tag); err != nil {
 		return err
 	}
 

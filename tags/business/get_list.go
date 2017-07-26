@@ -10,9 +10,7 @@ type GetListDao interface {
 	Get() ([]domain.Tag, error)
 }
 
-type GetListController interface {
-	Run() error
-}
+type GetListController Controller
 
 type GetList interface {
 	Run() error

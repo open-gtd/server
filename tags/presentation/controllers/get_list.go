@@ -1,17 +1,17 @@
 package controllers
 
 import (
-	"github.com/labstack/echo"
+	"github.com/open-gtd/server/api"
 	"github.com/open-gtd/server/tags/business"
 )
 
 type getList struct {
-	c          echo.Context
+	request    api.Request
 	interactor business.GetList
 }
 
-func NewGetList(c echo.Context, i business.GetList) business.GetListController {
-	return getList{c: c, interactor: i}
+func NewGetList(r api.Request, i business.GetList) business.GetListController {
+	return getList{request: r, interactor: i}
 }
 
 func (ga getList) Run() error {
