@@ -3,7 +3,7 @@ package business
 import "github.com/open-gtd/server/tags/domain"
 
 type DeletePresenter interface {
-	ShowSucced() error
+	ShowSucceed() error
 	ShowNotFound() error
 }
 
@@ -19,24 +19,24 @@ type Delete interface {
 	Run(name domain.Name) error
 }
 
-type delete struct {
+type deleteTag struct {
 	presenter DeletePresenter
 	dao       DeleteDao
 }
 
 func NewDelete(p DeletePresenter, d DeleteDao) Delete {
-	return delete{presenter: p, dao: d}
+	return deleteTag{presenter: p, dao: d}
 }
 
-func (d delete) Run(name domain.Name) error {
+func (d deleteTag) Run(name domain.Name) error {
 	if err := d.dao.Delete(name); err != nil {
 
-		if err.Error() == notFoundError {
+		if err.Error() == NotFoundError {
 			return d.presenter.ShowNotFound()
 		}
 
 		return err
 	}
 
-	return d.presenter.ShowSucced()
+	return d.presenter.ShowSucceed()
 }

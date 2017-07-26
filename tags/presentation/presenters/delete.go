@@ -15,7 +15,7 @@ func NewDelete(c echo.Context) business.DeletePresenter {
 	return delete{c: c}
 }
 
-func (c delete) ShowSucced() error {
+func (c delete) ShowSucceed() error {
 	return c.c.NoContent(http.StatusOK)
 }
 

@@ -1,6 +1,8 @@
 package dao
 
 import (
+	"errors"
+
 	"github.com/open-gtd/server/tags/business"
 	"github.com/open-gtd/server/tags/domain"
 	"github.com/open-gtd/server/tags/storage"
@@ -21,6 +23,10 @@ func (u update) Get(name domain.Name) (domain.Tag, error) {
 func (u update) Save(name domain.Name, tag domain.Tag) error {
 	t, err := ConvertToStorage(tag)
 	if err != nil {
+		if err.Error() == storage.NotFoundError {
+			return errors.New(business.NotFoundError)
+		}
+
 		return err
 	}
 

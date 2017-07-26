@@ -1,10 +1,14 @@
 package mongo
 
 import (
+	"errors"
+
 	"github.com/open-gtd/server/tags/storage"
 	"labix.org/v2/mgo"
 	"labix.org/v2/mgo/bson"
 )
+
+const notFoundError = "not found"
 
 type dao struct {
 	session    *mgo.Session
@@ -30,7 +34,11 @@ func (s dao) Get(name string) (storage.Tag, error) {
 	tag := storage.Tag{}
 	err := c.Find(bson.M{"name": name}).One(&tag)
 	if err != nil {
-		return storage.Tag{}, err
+		if err.Error() == notFoundError {
+			err = errors.New(storage.NotFoundError)
+		}
+
+		return storage.EmptyTag, err
 	}
 
 	return tag, nil
@@ -41,6 +49,10 @@ func (s dao) Update(name string, tag storage.Tag) error {
 
 	err := c.Update(bson.M{"name": name}, tag)
 	if err != nil {
+		if err.Error() == notFoundError {
+			err = errors.New(storage.NotFoundError)
+		}
+
 		return err
 	}
 
@@ -63,6 +75,10 @@ func (s dao) Delete(name string) error {
 
 	err := c.Remove(bson.M{"name": name})
 	if err != nil {
+		if err.Error() == notFoundError {
+			return errors.New(storage.NotFoundError)
+		}
+
 		return err
 	}
 

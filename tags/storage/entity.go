@@ -11,3 +11,5 @@ type Tag struct {
 	Name string
 	Type uint8
 }
+
+var EmptyTag = Tag{}

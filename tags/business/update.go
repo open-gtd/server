@@ -7,6 +7,7 @@ import (
 
 type UpdatePresenter interface {
 	Show(t domain.Tag) error
+	ShowNotFound() error
 }
 
 type UpdateDao interface {
@@ -40,6 +41,10 @@ func NewUpdate(p UpdatePresenter, d UpdateDao) Update {
 func (u update) Run(ud UpdateData) error {
 	tag, err := u.dao.Get(ud.OriginalName)
 	if err != nil {
+		if err.Error() == NotFoundError {
+			return u.presenter.ShowNotFound()
+		}
+
 		return err
 	}
 

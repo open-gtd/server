@@ -1,5 +1,5 @@
 package business
 
 const (
-	notFoundError = "not found"
+	NotFoundError = "not found"
 )

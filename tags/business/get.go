@@ -31,7 +31,7 @@ func NewGet(p GetPresenter, d GetDao) Get {
 func (ga get) Run(name domain.Name) error {
 	tag, err := ga.dao.Get(name)
 	if err != nil {
-		if err.Error() == notFoundError {
+		if err.Error() == NotFoundError {
 			return ga.presenter.ShowNotFound()
 		}
 

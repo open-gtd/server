@@ -24,3 +24,7 @@ func (u update) Show(t domain.Tag) error {
 	}
 	return u.c.JSON(http.StatusOK, tag)
 }
+
+func (u update) ShowNotFound() error {
+	return u.c.NoContent(http.StatusNotFound)
+}
