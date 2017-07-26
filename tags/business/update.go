@@ -1,6 +1,7 @@
 package business
 
 import (
+	"github.com/open-gtd/server/tags/business/errors"
 	"github.com/open-gtd/server/tags/business/strategies"
 	"github.com/open-gtd/server/tags/domain"
 )
@@ -41,7 +42,7 @@ func NewUpdate(p UpdatePresenter, d UpdateDao) Update {
 func (u update) Run(ud UpdateData) error {
 	tag, err := u.dao.Get(ud.OriginalName)
 	if err != nil {
-		if err.Error() == NotFoundError {
+		if _, ok := err.(errors.NotFoundError); ok {
 			return u.presenter.ShowNotFound()
 		}
 

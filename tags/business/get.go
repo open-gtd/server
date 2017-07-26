@@ -1,6 +1,9 @@
 package business
 
-import "github.com/open-gtd/server/tags/domain"
+import (
+	"github.com/open-gtd/server/tags/business/errors"
+	"github.com/open-gtd/server/tags/domain"
+)
 
 type GetPresenter interface {
 	Show(t domain.Tag) error
@@ -31,7 +34,7 @@ func NewGet(p GetPresenter, d GetDao) Get {
 func (ga get) Run(name domain.Name) error {
 	tag, err := ga.dao.Get(name)
 	if err != nil {
-		if err.Error() == NotFoundError {
+		if _, ok := err.(errors.NotFoundError); ok {
 			return ga.presenter.ShowNotFound()
 		}
 

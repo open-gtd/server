@@ -1,6 +1,9 @@
 package business
 
-import "github.com/open-gtd/server/tags/domain"
+import (
+	"github.com/open-gtd/server/tags/business/errors"
+	"github.com/open-gtd/server/tags/domain"
+)
 
 type DeletePresenter interface {
 	ShowSucceed() error
@@ -31,7 +34,7 @@ func NewDelete(p DeletePresenter, d DeleteDao) Delete {
 func (d deleteTag) Run(name domain.Name) error {
 	if err := d.dao.Delete(name); err != nil {
 
-		if err.Error() == NotFoundError {
+		if _, ok := err.(errors.NotFoundError); ok {
 			return d.presenter.ShowNotFound()
 		}
 
