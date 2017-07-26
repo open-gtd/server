@@ -7,13 +7,9 @@ import (
 	"github.com/open-gtd/server/tags/domain"
 )
 
-var createStrategy map[uint8]CreateStrategy
+var createStrategy = map[uint8]CreateStrategy{}
 
 func RegisterCreateStrategy(t uint8, strategy CreateStrategy) {
-	if createStrategy == nil {
-		createStrategy = make(map[uint8]CreateStrategy)
-	}
-
 	createStrategy[t] = strategy
 }
 

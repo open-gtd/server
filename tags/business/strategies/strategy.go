@@ -7,14 +7,10 @@ import (
 	"github.com/open-gtd/server/tags/domain"
 )
 
-var createStrategy map[domain.TypeEnum]CreateStrategy
-var convertStrategy map[domain.TypeEnum]ConvertStrategy
+var createStrategy = map[domain.TypeEnum]CreateStrategy{}
+var convertStrategy = map[domain.TypeEnum]ConvertStrategy{}
 
 func RegisterCreateStrategy(typeEnum domain.TypeEnum, strategy CreateStrategy) {
-	if createStrategy == nil {
-		createStrategy = make(map[domain.TypeEnum]CreateStrategy)
-	}
-
 	createStrategy[typeEnum] = strategy
 }
 
