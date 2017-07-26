@@ -20,8 +20,8 @@ func LogErrorDetails() echo.MiddlewareFunc {
 	return func(next echo.HandlerFunc) echo.HandlerFunc {
 		return func(c echo.Context) error {
 			if err := next(c); err != nil {
-				fmt.Fprint(os.Stderr, reflect.TypeOf(err))
-				fmt.Fprint(os.Stderr, err)
+				fmt.Fprintln(os.Stderr, reflect.TypeOf(err))
+				fmt.Fprintln(os.Stderr, err)
 			}
 
 			return nil
