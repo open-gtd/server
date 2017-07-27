@@ -96,5 +96,5 @@ func CreateDao(url string) (storage.Dao, error) {
 	s.database = "open-gtd"
 	s.collection = "tags"
 
-	return s, nil
+	return &s, nil
 }

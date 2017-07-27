@@ -21,7 +21,11 @@ type Registerer interface {
 }
 
 func HandleRequest(controllerFactory ControllerFactoryFunc, rq Request, rs Response) error {
-	controller, err := controllerFactory(rq, rs)
+	controller, destroy, err := controllerFactory(rq, rs)
+	if destroy != nil {
+		defer destroy()
+	}
+
 	if err != nil {
 		return err
 	}
@@ -29,7 +33,8 @@ func HandleRequest(controllerFactory ControllerFactoryFunc, rq Request, rs Respo
 	return controller.Run()
 }
 
-type ControllerFactoryFunc func(Request, Response) (Controller, error)
+type ControllerDestroyFunc func() error
+type ControllerFactoryFunc func(Request, Response) (Controller, ControllerDestroyFunc, error)
 
 type Controller interface {
 	Run() error

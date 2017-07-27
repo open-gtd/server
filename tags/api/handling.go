@@ -5,31 +5,34 @@ import (
 	"github.com/open-gtd/server/tags/business"
 )
 
-type ControllerFactoryFunc func(api.Request, api.Response) (business.Controller, error)
+type ControllerFactoryFunc func(api.Request, api.Response) (business.Controller, api.ControllerDestroyFunc, error)
 
 type controller struct {
-	rq                api.Request
-	rs                api.Response
-	controllerFactory ControllerFactoryFunc
+	rq         api.Request
+	rs         api.Response
+	controller business.Controller
 }
 
-func (ac controller) Run() error {
-	c, err := ac.controllerFactory(ac.rq, ac.rs)
-	if err != nil {
-		return err
-	}
-
-	return c.Run()
+func (ac *controller) Run() error {
+	return ac.controller.Run()
 }
 
 func createController(controllerFactory ControllerFactoryFunc) api.ControllerFactoryFunc {
-	return func(rq api.Request, rs api.Response) (api.Controller, error) {
-		return controller{rq: rq, rs: rs, controllerFactory: controllerFactory}, nil
+	return func(rq api.Request, rs api.Response) (api.Controller, api.ControllerDestroyFunc, error) {
+		innerController, destroy, nil := controllerFactory(rq, rs)
+
+		c := &controller{
+			rq:         rq,
+			rs:         rs,
+			controller: innerController,
+		}
+		return c, destroy, nil
 	}
 }
 
 func handler(controllerFactory ControllerFactoryFunc) api.HandlerFunc {
 	return func(rq api.Request, rs api.Response) error {
-		return api.HandleRequest(createController(controllerFactory), rq, rs)
+		controller := createController(controllerFactory)
+		return api.HandleRequest(controller, rq, rs)
 	}
 }

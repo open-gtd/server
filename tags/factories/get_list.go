@@ -6,13 +6,12 @@ import (
 	"github.com/open-gtd/server/tags/presentation/controllers"
 	"github.com/open-gtd/server/tags/presentation/presenters"
 	"github.com/open-gtd/server/tags/storage/dao"
-	"github.com/open-gtd/server/tags/storage/mongo"
 )
 
-func NewGetList(rq api.Request, rs api.Response) (business.Controller, error) {
-	conn, err := mongo.CreateDao("localhost")
+func NewGetList(rq api.Request, rs api.Response) (business.Controller, api.ControllerDestroyFunc, error) {
+	conn, err := CreateDao()
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 
 	return controllers.NewGetList(
@@ -21,5 +20,7 @@ func NewGetList(rq api.Request, rs api.Response) (business.Controller, error) {
 			presenters.NewGetList(rs),
 			dao.NewGetList(conn),
 		),
-	), nil
+	), func() error {
+		return DestroyDao(conn)
+	}, nil
 }
