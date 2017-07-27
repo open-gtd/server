@@ -1,10 +1,10 @@
 package reference
 
-import tags "github.com/open-gtd/server/tags/presentation"
+import "github.com/open-gtd/server/tags/presentation"
 
 type (
 	Name  string
-	Tags  []tags.Tag
+	Tags  []presentation.Tag
 	Notes string
 	Focus bool
 )

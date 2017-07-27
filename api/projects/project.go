@@ -2,13 +2,13 @@ package projects
 
 import (
 	"github.com/open-gtd/server/common"
-	tags "github.com/open-gtd/server/tags/domain"
+	"github.com/open-gtd/server/tags/domain"
 )
 
 type (
 	Name            string
 	StateDescriptor common.StateDescriptor
-	Tags            []tags.Tag
+	Tags            []domain.Tag
 	Notes           string
 	Focus           bool
 )

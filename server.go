@@ -9,7 +9,7 @@ import (
 
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
-	api_echo "github.com/open-gtd/server/api/echo"
+	apiEcho "github.com/open-gtd/server/api/echo"
 	"github.com/open-gtd/server/api/projects"
 	"github.com/open-gtd/server/api/reference"
 	"github.com/open-gtd/server/api/tasks"
@@ -45,7 +45,7 @@ func main() {
 	})
 
 	//jwt := middleware.JWT([]byte("secret"))
-	registerer := api_echo.NewRegisterer(e, "/api") //, jwt)
+	registerer := apiEcho.NewRegisterer(e, "/api") //, jwt)
 	projects.RegisterHandlers(registerer)
 	reference.RegisterHandlers(registerer)
 	api.RegisterHandlers(registerer)

@@ -4,13 +4,13 @@ import (
 	"time"
 
 	"github.com/open-gtd/server/common"
-	tags "github.com/open-gtd/server/tags/presentation"
+	"github.com/open-gtd/server/tags/presentation"
 )
 
 type (
 	Name            string
 	StateDescriptor common.StateDescriptor
-	Tags            []tags.Tag
+	Tags            []presentation.Tag
 	Notes           string
 	Focus           bool
 	DueDate         time.Time
