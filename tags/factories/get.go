@@ -8,8 +8,8 @@ import (
 	"github.com/open-gtd/server/tags/storage/dao"
 )
 
-func NewGet(rq api.Request, rs api.Response) (business.Controller, api.ControllerDestroyFunc, error) {
-	conn, err := CreateDao()
+func Get(rq api.Request, rs api.Response) (business.Controller, api.ControllerDestroyFunc, error) {
+	conn, err := Dao()
 	if err != nil {
 		return nil, nil, err
 	}
@@ -21,6 +21,6 @@ func NewGet(rq api.Request, rs api.Response) (business.Controller, api.Controlle
 			dao.NewGet(conn),
 		),
 	), func() error {
-		return DestroyDao(conn)
+		return returnDao(conn)
 	}, nil
 }

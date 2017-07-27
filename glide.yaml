@@ -3,3 +3,4 @@ import:
   - package: labix.org/v2/mgo
   - package: github.com/spf13/viper
   - package: github.com/jolestar/go-commons-pool
+  - package: github.com/asaskevich/EventBus

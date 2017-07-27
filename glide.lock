@@ -1,6 +1,8 @@
-hash: 1111c4985caf04d2410e01a8708ed02470e2170db79192083d72af26134d0a30
-updated: 2017-07-27T12:40:42.785975805+02:00
+hash: da94d2142a8294c5fac10154aa082c38f0b430aa6f6a260a1829a345f6165b91
+updated: 2017-07-27T19:38:38.62612206+02:00
 imports:
+- name: github.com/asaskevich/EventBus
+  version: 9223ecd796146991d8ffc3b822d5aa02f15aee97
 - name: github.com/dgrijalva/jwt-go
   version: a539ee1a749a2b895533f979515ac7e6e0f5b650
 - name: github.com/jolestar/go-commons-pool
@@ -9,7 +11,7 @@ imports:
   - collections
   - concurrent
 - name: github.com/labstack/echo
-  version: f8c3008787c31a3542b2f8143a1480bc978c28ea
+  version: d79c13108c62b80d3dfa550bfe94ade4290b2bc8
   subpackages:
   - middleware
 - name: github.com/labstack/gommon
@@ -30,7 +32,7 @@ imports:
 - name: github.com/valyala/fasttemplate
   version: dcecefd839c4193db0d35b88ec65b4c12d360ab0
 - name: golang.org/x/crypto
-  version: 2faea1465de239e4babd8f5905cc25b781712442
+  version: dd85ac7e6a88fc6ca420478e934de5f1a42dd3c6
   subpackages:
   - acme
   - acme/autocert

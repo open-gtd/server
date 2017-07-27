@@ -21,7 +21,7 @@ var p = pool.NewObjectPool(
 	pool.NewDefaultPoolConfig(),
 )
 
-func CreateDao() (storage.Dao, error) {
+func Dao() (storage.Dao, error) {
 	obj, err := p.BorrowObject()
 	if err != nil {
 		return nil, err
@@ -35,6 +35,6 @@ func CreateDao() (storage.Dao, error) {
 	return dao, nil
 }
 
-func DestroyDao(dao storage.Dao) error {
+func returnDao(dao storage.Dao) error {
 	return p.ReturnObject(dao)
 }

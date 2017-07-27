@@ -10,10 +10,15 @@ import (
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
 	apiEcho "github.com/open-gtd/server/api/echo"
-	"github.com/open-gtd/server/api/projects"
-	"github.com/open-gtd/server/api/reference"
-	"github.com/open-gtd/server/api/tasks"
-	"github.com/open-gtd/server/tags/api"
+	projectsApi "github.com/open-gtd/server/api/projects"
+	referenceApi "github.com/open-gtd/server/api/reference"
+	tasksApi "github.com/open-gtd/server/api/tasks"
+	"github.com/open-gtd/server/eventBus"
+	projectsBus "github.com/open-gtd/server/eventBus/projects"
+	referenceBus "github.com/open-gtd/server/eventBus/reference"
+	tasksBus "github.com/open-gtd/server/eventBus/tasks"
+	tagsApi "github.com/open-gtd/server/tags/api"
+	tagsBus "github.com/open-gtd/server/tags/eventBus"
 )
 
 func LogErrorDetails() echo.MiddlewareFunc {
@@ -31,6 +36,16 @@ func LogErrorDetails() echo.MiddlewareFunc {
 
 func main() {
 	e := echo.New()
+	c := eventBus.New()
+
+	initializeRestApi(e)
+
+	initializeBus(c)
+
+	e.Logger.Fatal(e.Start(":1323"))
+}
+
+func initializeRestApi(e *echo.Echo) {
 	e.Pre(middleware.RemoveTrailingSlash())
 
 	e.Use(
@@ -46,10 +61,17 @@ func main() {
 
 	//jwt := middleware.JWT([]byte("secret"))
 	registerer := apiEcho.NewRegisterer(e, "/api") //, jwt)
-	projects.RegisterHandlers(registerer)
-	reference.RegisterHandlers(registerer)
-	api.RegisterHandlers(registerer)
-	tasks.RegisterHandlers(registerer)
+	projectsApi.RegisterHandlers(registerer)
+	referenceApi.RegisterHandlers(registerer)
+	tagsApi.RegisterHandlers(registerer)
+	tasksApi.RegisterHandlers(registerer)
+}
 
-	e.Logger.Fatal(e.Start(":1323"))
+func initializeBus(c eventBus.BusCollection) {
+	projectsBus.RegisterBus(c)
+	referenceBus.RegisterBus(c)
+	tagsBus.RegisterBus(c)
+	tasksBus.RegisterBus(c)
+
+	projectsBus.RegisterBusHandlers(c)
 }
