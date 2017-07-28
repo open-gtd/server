@@ -1,5 +1,5 @@
 hash: da94d2142a8294c5fac10154aa082c38f0b430aa6f6a260a1829a345f6165b91
-updated: 2017-07-27T19:38:38.62612206+02:00
+updated: 2017-07-28T07:42:50.262353727+02:00
 imports:
 - name: github.com/asaskevich/EventBus
   version: 9223ecd796146991d8ffc3b822d5aa02f15aee97
@@ -11,7 +11,7 @@ imports:
   - collections
   - concurrent
 - name: github.com/labstack/echo
-  version: d79c13108c62b80d3dfa550bfe94ade4290b2bc8
+  version: f8c3008787c31a3542b2f8143a1480bc978c28ea
   subpackages:
   - middleware
 - name: github.com/labstack/gommon
@@ -32,7 +32,7 @@ imports:
 - name: github.com/valyala/fasttemplate
   version: dcecefd839c4193db0d35b88ec65b4c12d360ab0
 - name: golang.org/x/crypto
-  version: dd85ac7e6a88fc6ca420478e934de5f1a42dd3c6
+  version: 2faea1465de239e4babd8f5905cc25b781712442
   subpackages:
   - acme
   - acme/autocert

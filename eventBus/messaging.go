@@ -4,7 +4,10 @@ import (
 	"github.com/asaskevich/EventBus"
 )
 
-type Bus EventBus.Bus
+type Bus interface {
+	Subscribe(topic string, fn interface{}) error
+	Publish(topic string, args ...interface{})
+}
 type Name string
 
 type BusCollection interface {

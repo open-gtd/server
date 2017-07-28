@@ -6,7 +6,7 @@ import (
 	"github.com/open-gtd/server/tags/presentation/controllers"
 )
 
-func RegisterHandlers(r api.Registerer) {
+func RegisterHandlers(r api.RestRegisterer) {
 	r.GET("/tags", handler(factories.GetList))
 	r.GET("/tags/:"+controllers.NameQueryParam, handler(factories.Get))
 	r.POST("/tags", handler(factories.Create))

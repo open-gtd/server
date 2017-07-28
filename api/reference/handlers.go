@@ -6,7 +6,7 @@ import (
 	"github.com/open-gtd/server/api"
 )
 
-func RegisterHandlers(r api.Registerer) {
+func RegisterHandlers(r api.RestRegisterer) {
 	r.GET("/reference", GetAll)
 	r.GET("/reference/:name", Get)
 	r.POST("/reference", Create)

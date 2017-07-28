@@ -9,6 +9,7 @@ import (
 
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
+	"github.com/open-gtd/server/api"
 	apiEcho "github.com/open-gtd/server/api/echo"
 	projectsApi "github.com/open-gtd/server/api/projects"
 	referenceApi "github.com/open-gtd/server/api/reference"
@@ -39,6 +40,7 @@ func main() {
 	c := eventBus.New()
 
 	initializeRestApi(e)
+	initializeSse(e)
 
 	initializeBus(c)
 
@@ -60,7 +62,7 @@ func initializeRestApi(e *echo.Echo) {
 	})
 
 	//jwt := middleware.JWT([]byte("secret"))
-	registerer := apiEcho.NewRegisterer(e, "/api") //, jwt)
+	registerer := apiEcho.NewRestRegisterer(e, "/api") //, jwt)
 	projectsApi.RegisterHandlers(registerer)
 	referenceApi.RegisterHandlers(registerer)
 	tagsApi.RegisterHandlers(registerer)
@@ -74,4 +76,11 @@ func initializeBus(c eventBus.BusCollection) {
 	tasksBus.RegisterBus(c)
 
 	projectsBus.RegisterBusHandlers(c)
+}
+
+func initializeSse(sr api.SseRegisterer) {
+	projectsBus.RegisterSse(sr)
+	referenceBus.RegisterSse(sr)
+	tagsBus.RegisterSse(sr)
+	tasksBus.RegisterSse(sr)
 }
