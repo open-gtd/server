@@ -4,8 +4,8 @@ import (
 	"errors"
 
 	"github.com/open-gtd/server/tags/storage"
-	"labix.org/v2/mgo"
-	"labix.org/v2/mgo/bson"
+	"gopkg.in/mgo.v2"
+	"gopkg.in/mgo.v2/bson"
 )
 
 const notFoundError = "not found"

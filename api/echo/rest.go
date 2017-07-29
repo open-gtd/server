@@ -5,8 +5,8 @@ import (
 	"github.com/open-gtd/server/api"
 )
 
-func NewRestRegisterer(e *echo.Echo, prefix string, m ...echo.MiddlewareFunc) api.RestRegisterer {
-	return &restRegisterer{group: e.Group(prefix, m...)}
+func NewRestRegisterer(g *echo.Group) api.RestRegisterer {
+	return &restRegisterer{group: g}
 }
 
 type restRegisterer struct {

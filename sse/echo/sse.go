@@ -5,13 +5,14 @@ import (
 	"net/http"
 
 	"github.com/labstack/echo"
-	"github.com/open-gtd/server/api"
+	"github.com/open-gtd/server/sse"
 )
 
-type PushDataToSseFunc func(v interface{})
-
-func NewSseRegisterer(e *echo.Echo, prefix string, m ...echo.MiddlewareFunc) api.RestRegisterer {
-	return &restRegisterer{group: e.Group(prefix, m...)}
+func NewSseRegisterer(g *echo.Group) sse.SseRegisterer {
+	return &sseRegisterer{
+		group:   g,
+		channel: make(chan interface{}),
+	}
 }
 
 type sseRegisterer struct {
@@ -19,8 +20,8 @@ type sseRegisterer struct {
 	channel chan interface{}
 }
 
-func (sr sseRegisterer) CreatePushDataFunc() PushDataToSseFunc {
-	sr.group.GET("/", func(c echo.Context) error {
+func (sr sseRegisterer) CreatePushDataFunc(prefix sse.Prefix) sse.PushDataToSseFunc {
+	sr.group.GET("/"+string(prefix), func(c echo.Context) error {
 		c.Response().Header().Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
 		c.Response().WriteHeader(http.StatusOK)
 		for {
@@ -33,7 +34,7 @@ func (sr sseRegisterer) CreatePushDataFunc() PushDataToSseFunc {
 		return nil
 	})
 
-	return func(v interface{}) {
-		sr.channel <- v
+	return func(topic sse.Topic, v interface{}) {
+		sr.channel <- sse.Envelope{Topic: topic, Data: v}
 	}
 }

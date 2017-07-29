@@ -1,6 +1,6 @@
 package: github.com/open-gtd/server
 import:
-  - package: labix.org/v2/mgo
+  - package: gopkg.in/mgo.v2
   - package: github.com/spf13/viper
   - package: github.com/jolestar/go-commons-pool
   - package: github.com/asaskevich/EventBus

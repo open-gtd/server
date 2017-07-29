@@ -1,5 +1,5 @@
-hash: da94d2142a8294c5fac10154aa082c38f0b430aa6f6a260a1829a345f6165b91
-updated: 2017-07-28T07:42:50.262353727+02:00
+hash: 8aae2ac38ec77f15ee8f99b66c8ca561bc813a30107690015e0fadbce4c40aff
+updated: 2017-07-28T21:50:59.628088106+02:00
 imports:
 - name: github.com/asaskevich/EventBus
   version: 9223ecd796146991d8ffc3b822d5aa02f15aee97
@@ -26,23 +26,25 @@ imports:
 - name: github.com/mattn/go-isatty
   version: fc9e8d8ef48496124e79ae0df75490096eccf6fe
 - name: github.com/spf13/viper
-  version: c1de95864d73a5465492829d7cb2dd422b19ac96
+  version: 25b30aa063fc18e48662b86996252eabdcf2f0c7
 - name: github.com/valyala/bytebufferpool
   version: e746df99fe4a3986f4d4f79e13c1e0117ce9c2f7
 - name: github.com/valyala/fasttemplate
   version: dcecefd839c4193db0d35b88ec65b4c12d360ab0
 - name: golang.org/x/crypto
-  version: 2faea1465de239e4babd8f5905cc25b781712442
+  version: 558b6879de74bc843225cde5686419267ff707ca
   subpackages:
   - acme
   - acme/autocert
 - name: golang.org/x/sys
-  version: 94b76065f2d2081d0fef24a6e67c571f51a6408a
+  version: 0f826bdd13b500be0f1d4004938ad978fcc6031e
   subpackages:
   - unix
-- name: labix.org/v2/mgo
-  version: "287"
+- name: gopkg.in/mgo.v2
+  version: 3f83fa5005286a7fe593b055f0d7771a7dce4655
   subpackages:
   - bson
-  - sasl
+  - internal/json
+  - internal/sasl
+  - internal/scram
 testImports: []

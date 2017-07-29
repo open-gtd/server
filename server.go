@@ -15,11 +15,15 @@ import (
 	referenceApi "github.com/open-gtd/server/api/reference"
 	tasksApi "github.com/open-gtd/server/api/tasks"
 	"github.com/open-gtd/server/eventBus"
+	"github.com/open-gtd/server/eventBus/eBus"
 	projectsBus "github.com/open-gtd/server/eventBus/projects"
 	referenceBus "github.com/open-gtd/server/eventBus/reference"
 	tasksBus "github.com/open-gtd/server/eventBus/tasks"
+	"github.com/open-gtd/server/sse"
+	sseEcho "github.com/open-gtd/server/sse/echo"
 	tagsApi "github.com/open-gtd/server/tags/api"
 	tagsBus "github.com/open-gtd/server/tags/eventBus"
+	tagsSse "github.com/open-gtd/server/tags/sse"
 )
 
 func LogErrorDetails() echo.MiddlewareFunc {
@@ -37,17 +41,15 @@ func LogErrorDetails() echo.MiddlewareFunc {
 
 func main() {
 	e := echo.New()
-	c := eventBus.New()
-
-	initializeRestApi(e)
-	initializeSse(e)
+	c := eBus.NewCollection()
 
 	initializeBus(c)
+	initializeApi(e)
 
 	e.Logger.Fatal(e.Start(":1323"))
 }
 
-func initializeRestApi(e *echo.Echo) {
+func initializeApi(e *echo.Echo) {
 	e.Pre(middleware.RemoveTrailingSlash())
 
 	e.Use(
@@ -62,11 +64,24 @@ func initializeRestApi(e *echo.Echo) {
 	})
 
 	//jwt := middleware.JWT([]byte("secret"))
-	registerer := apiEcho.NewRestRegisterer(e, "/api") //, jwt)
+	apiGroup := e.Group("/api") //, jwt)
+	initializeRestModules(apiEcho.NewRestRegisterer(apiGroup))
+	sseGroup := e.Group("/events") //, jwt)
+	initializeSseModules(sseEcho.NewSseRegisterer(sseGroup))
+}
+
+func initializeRestModules(registerer api.RestRegisterer) {
 	projectsApi.RegisterHandlers(registerer)
 	referenceApi.RegisterHandlers(registerer)
 	tagsApi.RegisterHandlers(registerer)
 	tasksApi.RegisterHandlers(registerer)
+}
+
+func initializeSseModules(sr sse.SseRegisterer) {
+	//projectsBus.RegisterSse(sr)
+	//referenceBus.RegisterSse(sr)
+	tagsSse.RegisterSse(sr)
+	//tasksBus.RegisterSse(sr)
 }
 
 func initializeBus(c eventBus.BusCollection) {
@@ -76,11 +91,4 @@ func initializeBus(c eventBus.BusCollection) {
 	tasksBus.RegisterBus(c)
 
 	projectsBus.RegisterBusHandlers(c)
-}
-
-func initializeSse(sr api.SseRegisterer) {
-	projectsBus.RegisterSse(sr)
-	referenceBus.RegisterSse(sr)
-	tagsBus.RegisterSse(sr)
-	tasksBus.RegisterSse(sr)
 }
