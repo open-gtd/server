@@ -1,27 +1,58 @@
 package sse
 
 import (
+	"github.com/open-gtd/server/eventBus"
 	"github.com/open-gtd/server/sse"
 	"github.com/open-gtd/server/tags/eventBus/topics"
 	"github.com/open-gtd/server/tags/factories"
 )
 
-var sseRegisterer sse.SseRegisterer
+var registerer sse.SseRegisterer
 var pushDataFunc sse.PushDataToSseFunc
 
+type registration struct {
+	topic   eventBus.Topic
+	handler func(v interface{})
+}
+
 func RegisterSse(sr sse.SseRegisterer) {
-	sseRegisterer = sr
-	pushDataFunc = sseRegisterer.CreatePushDataFunc("tags")
+	registerer = sr
 
-	factories.GetBus().Subscribe(topics.Created, func(v interface{}) {
+	handlers := createRegistrations()
+
+	pushDataFunc = registerer.CreatePushDataFunc("tags", func() {
+		unregisterTopics(handlers)
+	})
+
+	registerTopics(handlers)
+}
+
+func createRegistrations() []registration {
+	result := []registration{}
+
+	result = append(result, registration{topics.Created, func(v interface{}) {
 		pushDataFunc(sse.Topic(topics.Created), v)
-	})
+	}})
 
-	factories.GetBus().Subscribe(topics.Modified, func(v interface{}) {
+	result = append(result, registration{topics.Modified, func(v interface{}) {
 		pushDataFunc(sse.Topic(topics.Modified), v)
-	})
+	}})
 
-	factories.GetBus().Subscribe(topics.Deleted, func(v interface{}) {
+	result = append(result, registration{topics.Deleted, func(v interface{}) {
 		pushDataFunc(sse.Topic(topics.Deleted), v)
-	})
+	}})
+
+	return result
+}
+
+func registerTopics(registrations []registration) {
+	for _, r := range registrations {
+		factories.GetBus().Subscribe(r.topic, r.handler)
+	}
+}
+
+func unregisterTopics(registrations []registration) {
+	for _, r := range registrations {
+		factories.GetBus().Unsubscribe(r.topic, r.handler)
+	}
 }

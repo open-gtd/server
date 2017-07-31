@@ -1,5 +1,5 @@
 hash: 8aae2ac38ec77f15ee8f99b66c8ca561bc813a30107690015e0fadbce4c40aff
-updated: 2017-07-28T21:50:59.628088106+02:00
+updated: 2017-07-31T07:45:04.379412953+02:00
 imports:
 - name: github.com/asaskevich/EventBus
   version: 9223ecd796146991d8ffc3b822d5aa02f15aee97
@@ -22,11 +22,11 @@ imports:
   - log
   - random
 - name: github.com/mattn/go-colorable
-  version: 3fa8c76f9daed4067e4a806fb7e4dc86455c6d6a
+  version: 5ffa492f0a052801e332fdc7eb2ad8dcac2d1aa4
 - name: github.com/mattn/go-isatty
   version: fc9e8d8ef48496124e79ae0df75490096eccf6fe
 - name: github.com/spf13/viper
-  version: 25b30aa063fc18e48662b86996252eabdcf2f0c7
+  version: c1de95864d73a5465492829d7cb2dd422b19ac96
 - name: github.com/valyala/bytebufferpool
   version: e746df99fe4a3986f4d4f79e13c1e0117ce9c2f7
 - name: github.com/valyala/fasttemplate
@@ -37,7 +37,7 @@ imports:
   - acme
   - acme/autocert
 - name: golang.org/x/sys
-  version: 0f826bdd13b500be0f1d4004938ad978fcc6031e
+  version: 94b76065f2d2081d0fef24a6e67c571f51a6408a
   subpackages:
   - unix
 - name: gopkg.in/mgo.v2

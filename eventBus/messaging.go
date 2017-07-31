@@ -4,6 +4,7 @@ type Topic string
 
 type Bus interface {
 	Subscribe(topic Topic, fn interface{}) error
+	Unsubscribe(topic Topic, handler interface{}) error
 	Publish(topic Topic, arg interface{})
 }
 

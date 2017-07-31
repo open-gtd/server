@@ -20,10 +20,18 @@ type sseRegisterer struct {
 	channel chan interface{}
 }
 
-func (sr sseRegisterer) CreatePushDataFunc(prefix sse.Prefix) sse.PushDataToSseFunc {
+func (sr sseRegisterer) CreatePushDataFunc(prefix sse.Prefix, closeNotify sse.ClientClosedNotificationFunc) sse.PushDataToSseFunc {
 	sr.group.GET("/"+string(prefix), func(c echo.Context) error {
 		c.Response().Header().Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
 		c.Response().WriteHeader(http.StatusOK)
+
+		notify := c.Response().CloseNotify()
+
+		go func() {
+			<-notify
+			closeNotify()
+		}()
+
 		for {
 			v := <-sr.channel
 			if err := json.NewEncoder(c.Response()).Encode(v); err != nil {
@@ -31,6 +39,9 @@ func (sr sseRegisterer) CreatePushDataFunc(prefix sse.Prefix) sse.PushDataToSseF
 			}
 			c.Response().Flush()
 		}
+
+		closeNotify()
+
 		return nil
 	})
 

@@ -1,5 +1,6 @@
 package: github.com/open-gtd/server
 import:
+  - package: github.com/labstack/echo
   - package: gopkg.in/mgo.v2
   - package: github.com/spf13/viper
   - package: github.com/jolestar/go-commons-pool
