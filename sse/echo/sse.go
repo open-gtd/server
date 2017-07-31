@@ -4,8 +4,6 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"fmt"
-
 	"github.com/labstack/echo"
 	"github.com/open-gtd/server/sse"
 )
@@ -33,17 +31,13 @@ func (sr sseRegisterer) CreatePushDataFunc(prefix sse.Prefix, closeNotify sse.Cl
 
 		go func() {
 			<-notify
-			fmt.Println("notify")
-
 			sr.exit <- true
 			closeNotify()
 		}()
 
 		for {
-			fmt.Println("new loop iteratinon")
 			select {
 			case <-sr.exit:
-				fmt.Println("exit")
 				return nil
 			case v := <-sr.channel:
 				if err := json.NewEncoder(c.Response()).Encode(v); err != nil {
@@ -53,7 +47,6 @@ func (sr sseRegisterer) CreatePushDataFunc(prefix sse.Prefix, closeNotify sse.Cl
 			}
 		}
 
-		fmt.Println("exit")
 		closeNotify()
 
 		return nil
