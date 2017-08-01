@@ -14,8 +14,8 @@ type update struct {
 }
 
 type tag struct {
-	Name *presentation.Name           `json: "name"`
-	Type *presentation.TypeDescriptor `json: "type"`
+	Name *presentation.Name           `json:"name"`
+	Type *presentation.TypeDescriptor `json:"type"`
 }
 
 func NewUpdate(rq api.Request, i business.Update) business.UpdateController {

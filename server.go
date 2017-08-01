@@ -3,11 +3,13 @@ package main
 import (
 	"net/http"
 	"reflect"
+
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
 	"github.com/labstack/gommon/log"
 	"github.com/open-gtd/server/api"
 	apiEcho "github.com/open-gtd/server/api/echo"
+	"github.com/open-gtd/server/auth"
 	"github.com/open-gtd/server/eventBus"
 	"github.com/open-gtd/server/eventBus/eBus"
 	"github.com/open-gtd/server/logging"
@@ -25,6 +27,7 @@ func LogErrorDetails(l echo.Logger) echo.MiddlewareFunc {
 		return func(c echo.Context) error {
 			if err := next(c); err != nil {
 				l.Error(reflect.TypeOf(err), err)
+				return err
 			}
 
 			return nil
@@ -38,10 +41,12 @@ func main() {
 
 	e.Logger.SetLevel(log.DEBUG)
 
+	auth.Initialize(apiEcho.NewEchoRegisterer(e), c, e.Logger)
 	initializeModules(c, e)
 
 	e.Logger.Fatal(e.Start(":1323"))
 }
+
 func initializeModules(c eventBus.BusCollection, e *echo.Echo) {
 	registeredModules := getModules()
 
@@ -75,11 +80,11 @@ func initializeApi(modules []modules.Module, e *echo.Echo) {
 		return c.String(http.StatusOK, "Welcome in Open GTD!")
 	})
 
-	//jwt := middleware.JWT([]byte("secret"))
-	apiGroup := e.Group("/api")    //, jwt)
-	sseGroup := e.Group("/events") //, jwt)
+	jwt := middleware.JWT([]byte("secret"))
+	apiGroup := e.Group("/api", jwt)
+	sseGroup := e.Group("/events", jwt)
 
-	initializeRestModules(modules, apiEcho.NewRestRegisterer(apiGroup))
+	initializeRestModules(modules, apiEcho.NewGroupRestRegisterer(apiGroup))
 	initializeSseModules(modules, sseEcho.NewSseRegisterer(sseGroup))
 }
 
