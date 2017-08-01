@@ -8,8 +8,6 @@ import (
 	"gopkg.in/mgo.v2/bson"
 )
 
-const notFoundError = "not found"
-
 type dao struct {
 	session    *mgo.Session
 	database   string
@@ -34,7 +32,7 @@ func (s dao) Get(name string) (storage.Tag, error) {
 	tag := storage.Tag{}
 	err := c.Find(bson.M{"name": name}).One(&tag)
 	if err != nil {
-		if err.Error() == notFoundError {
+		if isNotFound(err) {
 			err = errors.New(storage.NotFoundError)
 		}
 
@@ -49,7 +47,7 @@ func (s dao) Update(name string, tag storage.Tag) error {
 
 	err := c.Update(bson.M{"name": name}, tag)
 	if err != nil {
-		if err.Error() == notFoundError {
+		if isNotFound(err) {
 			err = errors.New(storage.NotFoundError)
 		}
 
@@ -64,6 +62,11 @@ func (s dao) Insert(tag storage.Tag) error {
 
 	err := c.Insert(tag)
 	if err != nil {
+
+		if isDuplicateKey(err) {
+			return errors.New(storage.NotUniqueError)
+		}
+
 		return err
 	}
 
@@ -75,7 +78,7 @@ func (s dao) Delete(name string) error {
 
 	err := c.Remove(bson.M{"name": name})
 	if err != nil {
-		if err.Error() == notFoundError {
+		if isNotFound(err) {
 			return errors.New(storage.NotFoundError)
 		}
 

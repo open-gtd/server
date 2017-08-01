@@ -2,6 +2,7 @@ package dao
 
 import (
 	"github.com/open-gtd/server/tags/business"
+	"github.com/open-gtd/server/tags/business/errors"
 	"github.com/open-gtd/server/tags/domain"
 	"github.com/open-gtd/server/tags/storage"
 )
@@ -20,5 +21,10 @@ func (c create) Insert(tag domain.Tag) error {
 		return err
 	}
 
-	return c.dao.Insert(t)
+	err = c.dao.Insert(t)
+	if err.Error() == storage.NotUniqueError {
+		return errors.NewNotUnique()
+	}
+
+	return err
 }

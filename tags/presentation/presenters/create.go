@@ -7,8 +7,8 @@ import (
 	"github.com/open-gtd/server/eventBus"
 	"github.com/open-gtd/server/tags/business"
 	"github.com/open-gtd/server/tags/domain"
-	"github.com/open-gtd/server/tags/presentation/converters"
 	"github.com/open-gtd/server/tags/eventBus/topics"
+	"github.com/open-gtd/server/tags/presentation/converters"
 )
 
 type create struct {
@@ -26,6 +26,10 @@ func (c create) Show(t domain.Tag) error {
 		return err
 	}
 
-	c.bus.Publish( topics.Created, tag)
+	c.bus.Publish(topics.Created, tag)
 	return c.response.JSON(http.StatusCreated, tag)
+}
+
+func (c create) ShowNotUnique() error {
+	return c.response.JSON(http.StatusConflict, "Tag name is not unique")
 }

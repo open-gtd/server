@@ -1,12 +1,14 @@
 package business
 
 import (
+	"github.com/open-gtd/server/tags/business/errors"
 	"github.com/open-gtd/server/tags/business/strategies"
 	"github.com/open-gtd/server/tags/domain"
 )
 
 type CreatePresenter interface {
 	Show(t domain.Tag) error
+	ShowNotUnique() error
 }
 
 type CreateDao interface {
@@ -15,7 +17,7 @@ type CreateDao interface {
 
 type CreateController Controller
 
-type CreateLogger interface{
+type CreateLogger interface {
 	TagCreated(tag domain.Tag)
 }
 
@@ -52,6 +54,11 @@ func (c create) Run(cd CreateData) error {
 
 	err = c.dao.Insert(tag)
 	if err != nil {
+
+		if _, ok := err.(errors.NotUniqueError); ok {
+			return c.presenter.ShowNotUnique()
+		}
+
 		return err
 	}
 

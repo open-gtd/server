@@ -1,7 +1,8 @@
 package storage
 
 const (
-	NotFoundError = "not found"
+	NotFoundError  = "not found"
+	NotUniqueError = "not unique"
 )
 
 type Dao interface {
