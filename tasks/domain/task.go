@@ -52,16 +52,16 @@ const (
 )
 
 type TaskDescriptor struct {
-	Name Name `json: "name"`
+	Name Name `json:"name"`
 }
 
 type Task struct {
 	TaskDescriptor
-	State         StateDescriptor `json: "state"`
-	Tags          Tags            `json: "tags"`
-	Notes         Notes           `json: "notes"`
-	DueDate       DueDate         `json: "due_date"`
-	ScheduledDate ScheduledDate   `json: "schedule_date"`
-	TimeRequired  TimeRequired    `json: "time_required"`
-	EnergyLevel   EnergyLevel     `json: "energy_level"`
+	State         StateDescriptor `json:"state"`
+	Tags          Tags            `json:"tags"`
+	Notes         Notes           `json:"notes"`
+	DueDate       DueDate         `json:"due_date"`
+	ScheduledDate ScheduledDate   `json:"schedule_date"`
+	TimeRequired  TimeRequired    `json:"time_required"`
+	EnergyLevel   EnergyLevel     `json:"energy_level"`
 }

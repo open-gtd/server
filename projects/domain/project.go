@@ -22,12 +22,12 @@ const (
 )
 
 type ProjectDescriptor struct {
-	Name Name `json: "name"`
+	Name Name `json:"name"`
 }
 
 type Project struct {
 	ProjectDescriptor
-	State StateDescriptor `json: "state"`
-	Tags  Tags            `json: "tags"`
-	Notes Notes           `json: "notes"`
+	State StateDescriptor `json:"state"`
+	Tags  Tags            `json:"tags"`
+	Notes Notes           `json:"notes"`
 }

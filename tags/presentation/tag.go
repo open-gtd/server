@@ -13,6 +13,6 @@ const (
 )
 
 type Tag struct {
-	Name Name           `json: "name"`
-	Type TypeDescriptor `json: "type"`
+	Name Name           `json:"name"`
+	Type TypeDescriptor `json:"type"`
 }

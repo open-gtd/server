@@ -3,11 +3,13 @@ package main
 import (
 	"net/http"
 	"reflect"
+
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
 	"github.com/labstack/gommon/log"
 	"github.com/open-gtd/server/api"
 	apiEcho "github.com/open-gtd/server/api/echo"
+	"github.com/open-gtd/server/auth"
 	"github.com/open-gtd/server/eventBus"
 	"github.com/open-gtd/server/eventBus/eBus"
 	"github.com/open-gtd/server/logging"
@@ -42,6 +44,7 @@ func main() {
 
 	e.Logger.Fatal(e.Start(":1323"))
 }
+
 func initializeModules(c eventBus.BusCollection, e *echo.Echo) {
 	registeredModules := getModules()
 
@@ -53,6 +56,7 @@ func initializeModules(c eventBus.BusCollection, e *echo.Echo) {
 func getModules() []modules.Module {
 	result := []modules.Module{}
 
+	result = append(result, auth.Module())
 	result = append(result, tags.Module())
 	result = append(result, referenceLists.Module())
 	result = append(result, tasks.Module())

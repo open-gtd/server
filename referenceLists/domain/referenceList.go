@@ -10,11 +10,11 @@ type (
 )
 
 type ReferenceListDescriptor struct {
-	Name Name `json: "name"`
+	Name Name `json:"name"`
 }
 
 type ReferenceList struct {
 	ReferenceListDescriptor
-	Tags  Tags  `json: "tags"`
-	Notes Notes `json: "notes"`
+	Tags  Tags  `json:"tags"`
+	Notes Notes `json:"notes"`
 }
