@@ -6,6 +6,7 @@ import (
 	"github.com/open-gtd/server/api"
 	"github.com/open-gtd/server/auth/business"
 	"github.com/open-gtd/server/auth/domain"
+	"github.com/open-gtd/server/auth/eventBus/topics"
 	"github.com/open-gtd/server/auth/presentation/converters"
 	"github.com/open-gtd/server/eventBus"
 )
@@ -25,6 +26,7 @@ func (c login) Show(cert domain.Cert) error {
 		return err
 	}
 
+	c.bus.Publish(topics.LoggedIn, cert)
 	return c.response.JSON(http.StatusOK, auth)
 }
 

@@ -10,19 +10,19 @@ import (
 )
 
 func Login(rq api.Request, rs api.Response) (business.Controller, api.ControllerDestroyFunc, error) {
-	conn, err := Dao()
-	if err != nil {
-		return nil, nil, err
-	}
+	//conn, err := Dao()
+	//if err != nil {
+	//	return nil, nil, err
+	//}
 
 	return controllers.NewLogin(
 			rq,
 			business.NewLogin(
 				presenters.NewLogin(rs, GetBus()),
-				dao.NewLogin(conn),
+				dao.NewLogin(), //conn),
 				loggers.NewLogin(GetLogger()),
 			),
 		), func() error {
-			return returnDao(conn)
+			return nil //returnDao(conn)
 		}, nil
 }

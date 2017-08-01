@@ -78,7 +78,7 @@ func generateToken(username string) (string, error) {
 
 	t, err := token.SignedString([]byte("secret"))
 	if err != nil {
-		return nil, err
+		return "", err
 	}
 
 	return t, nil
