@@ -18,6 +18,8 @@ type UpdateDao interface {
 
 type UpdateController Controller
 
+type UpdateLogger interface{}
+
 type Update interface {
 	Run(ud UpdateData) error
 }
@@ -31,10 +33,11 @@ type UpdateData struct {
 type update struct {
 	presenter UpdatePresenter
 	dao       UpdateDao
+	logger    UpdateLogger
 }
 
-func NewUpdate(p UpdatePresenter, d UpdateDao) Update {
-	return update{presenter: p, dao: d}
+func NewUpdate(p UpdatePresenter, d UpdateDao, l UpdateLogger) Update {
+	return update{presenter: p, dao: d, logger: l}
 }
 
 func (u update) Run(ud UpdateData) error {

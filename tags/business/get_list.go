@@ -12,6 +12,8 @@ type GetListDao interface {
 
 type GetListController Controller
 
+type GetListLogger interface {}
+
 type GetList interface {
 	Run() error
 }
@@ -19,10 +21,11 @@ type GetList interface {
 type getList struct {
 	presenter GetListPresenter
 	dao GetListDao
+	logger    GetListLogger
 }
 
-func NewGetList(p GetListPresenter, d GetListDao) GetList {
-	return getList{presenter: p, dao: d}
+func NewGetList(p GetListPresenter, d GetListDao, l GetListLogger) GetList {
+	return getList{presenter: p, dao: d, logger: l}
 }
 
 func (ga getList) Run() error {

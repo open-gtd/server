@@ -1,4 +1,4 @@
-package reference
+package api
 
 import (
 	"net/http"
@@ -7,11 +7,11 @@ import (
 )
 
 func RegisterHandlers(r api.RestRegisterer) {
-	r.GET("/reference", GetAll)
-	r.GET("/reference/:name", Get)
-	r.POST("/reference", Create)
-	r.PUT("/reference/:name", Update)
-	r.DELETE("/reference/:name", Delete)
+	r.GET("/referenceLists", GetAll)
+	r.GET("/referenceLists/:name", Get)
+	r.POST("/referenceLists", Create)
+	r.PUT("/referenceLists/:name", Update)
+	r.DELETE("/referenceLists/:name", Delete)
 }
 
 func GetAll(rq api.Request, rs api.Response) error {

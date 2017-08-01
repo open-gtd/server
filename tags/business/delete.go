@@ -16,6 +16,8 @@ type DeleteDao interface {
 
 type DeleteController Controller
 
+type DeleteLogger interface {}
+
 type Delete interface {
 	Run(name domain.Name) error
 }
@@ -23,10 +25,11 @@ type Delete interface {
 type deleteTag struct {
 	presenter DeletePresenter
 	dao       DeleteDao
+	logger    DeleteLogger
 }
 
-func NewDelete(p DeletePresenter, d DeleteDao) Delete {
-	return deleteTag{presenter: p, dao: d}
+func NewDelete(p DeletePresenter, d DeleteDao, l DeleteLogger) Delete {
+	return deleteTag{presenter: p, dao: d, logger: l}
 }
 
 func (d deleteTag) Run(name domain.Name) error {

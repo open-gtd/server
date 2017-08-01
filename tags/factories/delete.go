@@ -6,6 +6,7 @@ import (
 	"github.com/open-gtd/server/tags/presentation/controllers"
 	"github.com/open-gtd/server/tags/presentation/presenters"
 	"github.com/open-gtd/server/tags/storage/dao"
+	"github.com/open-gtd/server/tags/logging/loggers"
 )
 
 func Delete(rq api.Request, rs api.Response) (business.Controller, api.ControllerDestroyFunc, error) {
@@ -19,6 +20,7 @@ func Delete(rq api.Request, rs api.Response) (business.Controller, api.Controlle
 		business.NewDelete(
 			presenters.NewDelete(rs),
 			dao.NewDelete(conn),
+			loggers.NewDelete(GetLogger()),
 		),
 	), func() error {
 		return returnDao(conn)

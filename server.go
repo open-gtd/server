@@ -2,36 +2,29 @@ package main
 
 import (
 	"net/http"
-
-	"fmt"
-	"os"
 	"reflect"
-
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
+	"github.com/labstack/gommon/log"
 	"github.com/open-gtd/server/api"
 	apiEcho "github.com/open-gtd/server/api/echo"
-	projectsApi "github.com/open-gtd/server/api/projects"
-	referenceApi "github.com/open-gtd/server/api/reference"
-	tasksApi "github.com/open-gtd/server/api/tasks"
 	"github.com/open-gtd/server/eventBus"
 	"github.com/open-gtd/server/eventBus/eBus"
-	projectsBus "github.com/open-gtd/server/eventBus/projects"
-	referenceBus "github.com/open-gtd/server/eventBus/reference"
-	tasksBus "github.com/open-gtd/server/eventBus/tasks"
+	"github.com/open-gtd/server/logging"
+	"github.com/open-gtd/server/modules"
+	"github.com/open-gtd/server/projects"
+	"github.com/open-gtd/server/referenceLists"
 	"github.com/open-gtd/server/sse"
 	sseEcho "github.com/open-gtd/server/sse/echo"
-	tagsApi "github.com/open-gtd/server/tags/api"
-	tagsBus "github.com/open-gtd/server/tags/eventBus"
-	tagsSse "github.com/open-gtd/server/tags/sse"
+	"github.com/open-gtd/server/tags"
+	"github.com/open-gtd/server/tasks"
 )
 
-func LogErrorDetails() echo.MiddlewareFunc {
+func LogErrorDetails(l echo.Logger) echo.MiddlewareFunc {
 	return func(next echo.HandlerFunc) echo.HandlerFunc {
 		return func(c echo.Context) error {
 			if err := next(c); err != nil {
-				fmt.Fprintln(os.Stderr, reflect.TypeOf(err))
-				fmt.Fprintln(os.Stderr, err)
+				l.Error(reflect.TypeOf(err), err)
 			}
 
 			return nil
@@ -43,20 +36,39 @@ func main() {
 	e := echo.New()
 	c := eBus.NewCollection()
 
-	initializeBus(c)
-	initializeApi(e)
+	e.Logger.SetLevel(log.DEBUG)
+
+	initializeModules(c, e)
 
 	e.Logger.Fatal(e.Start(":1323"))
 }
+func initializeModules(c eventBus.BusCollection, e *echo.Echo) {
+	registeredModules := getModules()
 
-func initializeApi(e *echo.Echo) {
+	initializeBus(registeredModules, c)
+	initializeApi(registeredModules, e)
+	initializeLogger(registeredModules, e.Logger)
+}
+
+func getModules() []modules.Module {
+	result := []modules.Module{}
+
+	result = append(result, tags.Module())
+	result = append(result, referenceLists.Module())
+	result = append(result, tasks.Module())
+	result = append(result, projects.Module())
+
+	return result
+}
+
+func initializeApi(modules []modules.Module, e *echo.Echo) {
 	e.Pre(middleware.RemoveTrailingSlash())
 
 	e.Use(
 		middleware.Recover(),
 		middleware.Logger(),
 		middleware.Gzip(),
-		LogErrorDetails(),
+		LogErrorDetails(e.Logger),
 	)
 
 	e.GET("/", func(c echo.Context) error {
@@ -64,31 +76,33 @@ func initializeApi(e *echo.Echo) {
 	})
 
 	//jwt := middleware.JWT([]byte("secret"))
-	apiGroup := e.Group("/api") //, jwt)
-	initializeRestModules(apiEcho.NewRestRegisterer(apiGroup))
+	apiGroup := e.Group("/api")    //, jwt)
 	sseGroup := e.Group("/events") //, jwt)
-	initializeSseModules(sseEcho.NewSseRegisterer(sseGroup))
+
+	initializeRestModules(modules, apiEcho.NewRestRegisterer(apiGroup))
+	initializeSseModules(modules, sseEcho.NewSseRegisterer(sseGroup))
 }
 
-func initializeRestModules(registerer api.RestRegisterer) {
-	projectsApi.RegisterHandlers(registerer)
-	referenceApi.RegisterHandlers(registerer)
-	tagsApi.RegisterHandlers(registerer)
-	tasksApi.RegisterHandlers(registerer)
+func initializeRestModules(modules []modules.Module, registerer api.RestRegisterer) {
+	for _, module := range modules {
+		module.RegisterHandlers(registerer)
+	}
 }
 
-func initializeSseModules(sr sse.SseRegisterer) {
-	//projectsBus.RegisterSse(sr)
-	//referenceBus.RegisterSse(sr)
-	tagsSse.RegisterSse(sr)
-	//tasksBus.RegisterSse(sr)
+func initializeSseModules(modules []modules.Module, sr sse.SseRegisterer) {
+	for _, module := range modules {
+		module.RegisterSse(sr)
+	}
 }
 
-func initializeBus(c eventBus.BusCollection) {
-	projectsBus.RegisterBus(c)
-	referenceBus.RegisterBus(c)
-	tagsBus.RegisterBus(c)
-	tasksBus.RegisterBus(c)
+func initializeBus(modules []modules.Module, c eventBus.BusCollection) {
+	for _, module := range modules {
+		module.RegisterBus(c)
+	}
+}
 
-	projectsBus.RegisterBusHandlers(c)
+func initializeLogger(modules []modules.Module, l logging.Logger) {
+	for _, module := range modules {
+		module.RegisterLogger(l)
+	}
 }

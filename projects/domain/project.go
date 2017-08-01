@@ -1,4 +1,4 @@
-package projects
+package domain
 
 import (
 	"github.com/open-gtd/server/common"

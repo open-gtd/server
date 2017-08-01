@@ -1,4 +1,4 @@
-package reference
+package domain
 
 import "github.com/open-gtd/server/tags/presentation"
 

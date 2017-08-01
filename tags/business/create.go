@@ -15,6 +15,10 @@ type CreateDao interface {
 
 type CreateController Controller
 
+type CreateLogger interface{
+	TagCreated(tag domain.Tag)
+}
+
 type Create interface {
 	Run(cd CreateData) error
 }
@@ -27,13 +31,15 @@ type CreateData struct {
 type create struct {
 	presenter CreatePresenter
 	dao       CreateDao
+	logger    CreateLogger
 }
 
-func NewCreate(p CreatePresenter, d CreateDao) Create {
-	return create{presenter: p, dao: d}
+func NewCreate(p CreatePresenter, d CreateDao, l CreateLogger) Create {
+	return create{presenter: p, dao: d, logger: l}
 }
 
 func (c create) Run(cd CreateData) error {
+
 	s, err := strategies.GetCreateStrategy(cd.Type)
 	if err != nil {
 		return err
@@ -48,6 +54,8 @@ func (c create) Run(cd CreateData) error {
 	if err != nil {
 		return err
 	}
+
+	c.logger.TagCreated(tag)
 
 	return c.presenter.Show(tag)
 }

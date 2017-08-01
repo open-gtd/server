@@ -6,6 +6,7 @@ import (
 	"github.com/open-gtd/server/tags/presentation/controllers"
 	"github.com/open-gtd/server/tags/presentation/presenters"
 	"github.com/open-gtd/server/tags/storage/dao"
+	"github.com/open-gtd/server/tags/logging/loggers"
 )
 
 func GetList(rq api.Request, rs api.Response) (business.Controller, api.ControllerDestroyFunc, error) {
@@ -19,6 +20,7 @@ func GetList(rq api.Request, rs api.Response) (business.Controller, api.Controll
 		business.NewGetList(
 			presenters.NewGetList(rs),
 			dao.NewGetList(conn),
+			loggers.NewGetList(GetLogger()),
 		),
 	), func() error {
 		return returnDao(conn)

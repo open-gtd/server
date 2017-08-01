@@ -1,5 +1,5 @@
-hash: 8aae2ac38ec77f15ee8f99b66c8ca561bc813a30107690015e0fadbce4c40aff
-updated: 2017-07-31T07:45:04.379412953+02:00
+hash: da5ff31b6fe1efe2d43d1aedd1fdf7998c6f22031495b17a3275d1736082f3e4
+updated: 2017-07-31T22:02:30.902729606+02:00
 imports:
 - name: github.com/asaskevich/EventBus
   version: 9223ecd796146991d8ffc3b822d5aa02f15aee97
@@ -11,7 +11,7 @@ imports:
   - collections
   - concurrent
 - name: github.com/labstack/echo
-  version: f8c3008787c31a3542b2f8143a1480bc978c28ea
+  version: d79c13108c62b80d3dfa550bfe94ade4290b2bc8
   subpackages:
   - middleware
 - name: github.com/labstack/gommon
@@ -22,7 +22,7 @@ imports:
   - log
   - random
 - name: github.com/mattn/go-colorable
-  version: 5ffa492f0a052801e332fdc7eb2ad8dcac2d1aa4
+  version: 3fa8c76f9daed4067e4a806fb7e4dc86455c6d6a
 - name: github.com/mattn/go-isatty
   version: fc9e8d8ef48496124e79ae0df75490096eccf6fe
 - name: github.com/spf13/viper
@@ -32,7 +32,7 @@ imports:
 - name: github.com/valyala/fasttemplate
   version: dcecefd839c4193db0d35b88ec65b4c12d360ab0
 - name: golang.org/x/crypto
-  version: 558b6879de74bc843225cde5686419267ff707ca
+  version: dd85ac7e6a88fc6ca420478e934de5f1a42dd3c6
   subpackages:
   - acme
   - acme/autocert

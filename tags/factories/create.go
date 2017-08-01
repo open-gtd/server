@@ -3,6 +3,7 @@ package factories
 import (
 	"github.com/open-gtd/server/api"
 	"github.com/open-gtd/server/tags/business"
+	"github.com/open-gtd/server/tags/logging/loggers"
 	"github.com/open-gtd/server/tags/presentation/controllers"
 	"github.com/open-gtd/server/tags/presentation/presenters"
 	"github.com/open-gtd/server/tags/storage/dao"
@@ -15,12 +16,13 @@ func Create(rq api.Request, rs api.Response) (business.Controller, api.Controlle
 	}
 
 	return controllers.NewCreate(
-		rq,
-		business.NewCreate(
-			presenters.NewCreate(rs, GetBus()),
-			dao.NewCreate(conn),
-		),
-	), func() error {
-		return returnDao(conn)
-	}, nil
+			rq,
+			business.NewCreate(
+				presenters.NewCreate(rs, GetBus()),
+				dao.NewCreate(conn),
+				loggers.NewCreate(GetLogger()),
+			),
+		), func() error {
+			return returnDao(conn)
+		}, nil
 }

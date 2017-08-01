@@ -8,6 +8,9 @@ func RegisterBus(busCollection eventBus.BusCollection) {
 	bus = busCollection.New("tags")
 }
 
+//func RegisterBusHandlers(busCollection eventBus.BusCollection) {
+//}
+
 func Get() eventBus.Bus {
 	return bus
 }
