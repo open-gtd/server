@@ -8,6 +8,6 @@ import (
 func ConvertToPresentation(cert domain.Cert) (presentation.Cert, error) {
 
 	return presentation.Cert{
-		Token: presentation.Token(cert.Token),
+		Token: string(cert.Token),
 	}, nil
 }

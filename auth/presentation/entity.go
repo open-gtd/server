@@ -1,16 +1,10 @@
 package presentation
 
-type (
-	Token        string
-	UserName     string
-	SecurityCode string
-)
-
 type Cert struct {
-	Token Token `json:"token"`
+	Token string `json:"token"`
 }
 
 type LoginData struct {
-	UserName     UserName     `json:"user_name"`
-	SecurityCode SecurityCode `json:"security_code"`
+	UserName     string `json:"user_name"`
+	SecurityCode string `json:"security_code"`
 }

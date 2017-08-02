@@ -31,12 +31,12 @@ func ConvertToPresentation(t domain.Tag) (presentation.Tag, error) {
 	}
 
 	return presentation.Tag{
-		Name: presentation.Name(t.GetName()),
+		Name: string(t.GetName()),
 		Type: typeDescriptor,
 	}, nil
 }
 
-func ConvertTypeToPresentation(t domain.TypeEnum) (presentation.TypeDescriptor, error) {
+func ConvertTypeToPresentation(t domain.TypeEnum) (string, error) {
 	switch t {
 	case domain.Label:
 		return presentation.Label, nil
@@ -49,7 +49,7 @@ func ConvertTypeToPresentation(t domain.TypeEnum) (presentation.TypeDescriptor, 
 	return presentation.EmptyType, errors.New(fmt.Sprintf("Cannot convert TypeEnum '%v' to TypeDescriptor.", t))
 }
 
-func ConvertTypeToDomain(t presentation.TypeDescriptor) (domain.TypeEnum, error) {
+func ConvertTypeToDomain(t string) (domain.TypeEnum, error) {
 	switch t {
 	case presentation.Label:
 		return domain.Label, nil

@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"github.com/open-gtd/server/api"
+	"github.com/open-gtd/server/api/validation"
 	"github.com/open-gtd/server/tags/business"
 	"github.com/open-gtd/server/tags/domain"
 	"github.com/open-gtd/server/tags/presentation"
@@ -22,6 +23,10 @@ func NewCreate(rq api.Request, i business.Create) business.CreateController {
 func (c create) Run() error {
 	tag := &Tag{}
 	if err := c.request.Bind(tag); err != nil {
+		return err
+	}
+
+	if err := validation.AllowedValue("tag.Type", string(tag.Type), presentation.AllowedTypes); err != nil {
 		return err
 	}
 

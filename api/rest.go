@@ -1,5 +1,19 @@
 package api
 
+import (
+	"net/http"
+
+	"github.com/open-gtd/server/api/validation/errors"
+)
+
+type MessageResponse struct {
+	Message string `json:"message"`
+}
+
+func Message(err error) MessageResponse {
+	return MessageResponse{Message: err.Error()}
+}
+
 type Response interface {
 	String(code int, s string) error
 	JSON(code int, i interface{}) error
@@ -30,7 +44,12 @@ func HandleRequest(controllerFactory ControllerFactoryFunc, rq Request, rs Respo
 		return err
 	}
 
-	return controller.Run()
+	err = controller.Run()
+	if errors.IsNotAllowedValueError(err) {
+		return rs.JSON(http.StatusBadRequest, Message(err))
+	}
+
+	return err
 }
 
 type ControllerDestroyFunc func() error

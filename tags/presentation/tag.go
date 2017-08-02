@@ -1,18 +1,15 @@
 package presentation
 
-type (
-	TypeDescriptor string
-	Name           string
+const (
+	EmptyType string = ""
+	Label     string = "label"
+	Area      string = "area"
+	Contact   string = "contact"
 )
 
-const (
-	EmptyType TypeDescriptor = ""
-	Label     TypeDescriptor = "label"
-	Area      TypeDescriptor = "area"
-	Contact   TypeDescriptor = "contact"
-)
+var AllowedTypes = []string{Label, Area, Contact}
 
 type Tag struct {
-	Name Name           `json:"name"`
-	Type TypeDescriptor `json:"type"`
+	Name string `json:"name"`
+	Type string `json:"type"`
 }

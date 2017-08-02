@@ -4,7 +4,6 @@ import (
 	"github.com/open-gtd/server/api"
 	"github.com/open-gtd/server/tags/business"
 	"github.com/open-gtd/server/tags/domain"
-	"github.com/open-gtd/server/tags/presentation"
 	"github.com/open-gtd/server/tags/presentation/converters"
 )
 
@@ -14,8 +13,8 @@ type update struct {
 }
 
 type tag struct {
-	Name *presentation.Name           `json:"name"`
-	Type *presentation.TypeDescriptor `json:"type"`
+	Name *string `json:"name"`
+	Type *string `json:"type"`
 }
 
 func NewUpdate(rq api.Request, i business.Update) business.UpdateController {

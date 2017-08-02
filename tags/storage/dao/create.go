@@ -22,7 +22,7 @@ func (c create) Insert(tag domain.Tag) error {
 	}
 
 	err = c.dao.Insert(t)
-	if err.Error() == storage.NotUniqueError {
+	if err != nil && err.Error() == storage.NotUniqueError {
 		return errors.NewNotUnique()
 	}
 
