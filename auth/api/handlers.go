@@ -5,6 +5,6 @@ import (
 	"github.com/open-gtd/server/auth/factories"
 )
 
-func RegisterHandlers(r api.RestRegisterer) {
+func RegisterHandlers(r api.Registerer) {
 	r.POST("/auth", handler(factories.Login))
 }

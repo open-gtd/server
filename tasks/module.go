@@ -18,22 +18,15 @@ func Module() modules.Module {
 
 type module struct{}
 
-func (m module) RegisterHandlers(r api.RestRegisterer) {
-	apiTasks.RegisterHandlers(r)
-}
+func (m module) Register(
+	apiRegisterer api.Registerer,
+	sseRegisterer sse.Registerer,
+	busCollection eventBus.BusCollection,
+	logger logging.Logger) {
 
-func (m module) RegisterBus(busCollection eventBus.BusCollection) {
+	apiTasks.RegisterHandlers(apiRegisterer)
 	eventBusTasks.RegisterBus(busCollection)
-}
-
-func (m module) RegisterBusHandlers(busCollection eventBus.BusCollection) {
 	//eventBusTasks.RegisterBusHandlers(busCollection)
-}
-
-func (m module) RegisterSse(sr sse.SseRegisterer) {
-	//sseTasks.RegisterSse(sr)
-}
-
-func (m module) RegisterLogger(l logging.Logger) {
-	loggingTasks.RegisterLogger(l)
+	//sseTasks.RegisterSse(sseRegisterer)
+	loggingTasks.RegisterLogger(logger)
 }

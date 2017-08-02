@@ -9,13 +9,13 @@ import (
 	"github.com/open-gtd/server/logging"
 )
 
-func Initialize(r api.RestRegisterer, busCollection eventBus.BusCollection, l logging.Logger) {
+func Initialize(r api.Registerer, busCollection eventBus.BusCollection, l logging.Logger) {
 	registerHandlers(r)
 	registerBus(busCollection)
 	registerLogger(l)
 }
 
-func registerHandlers(r api.RestRegisterer) {
+func registerHandlers(r api.Registerer) {
 	apiAuth.RegisterHandlers(r)
 }
 

@@ -5,7 +5,7 @@ import (
 	"github.com/open-gtd/server/api"
 )
 
-func NewGroupRestRegisterer(g *echo.Group) api.RestRegisterer {
+func NewGroupRestRegisterer(g *echo.Group) api.Registerer {
 	return &groupRegisterer{group: g}
 }
 

@@ -1,14 +1,17 @@
 package eventBus
 
 type Topic string
+type Name string
+
+type BusHandler func(arg interface{})
 
 type Bus interface {
-	Subscribe(topic Topic, fn interface{}) error
-	Unsubscribe(topic Topic, handler interface{}) error
+	Subscribe(topic Topic, fn BusHandler) error
+	Unsubscribe(topic Topic, handler BusHandler) error
 	Publish(topic Topic, arg interface{})
 }
 
 type BusCollection interface {
-	New(name Topic) Bus
-	Get(name Topic) Bus
+	New(name Name) Bus
+	Get(name Name) Bus
 }

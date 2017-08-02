@@ -42,31 +42,28 @@ func main() {
 	e.Logger.SetLevel(log.DEBUG)
 
 	auth.Initialize(apiEcho.NewEchoRegisterer(e), c, e.Logger)
-	initializeModules(c, e)
+	apiRegisterer, sseRegisterer := initializeApi(e)
+
+	initializeModules(apiRegisterer, sseRegisterer, c, e.Logger)
 
 	e.Logger.Fatal(e.Start(":1323"))
 }
 
-func initializeModules(c eventBus.BusCollection, e *echo.Echo) {
-	registeredModules := getModules()
+func initializeModules(
+	apiRegisterer api.Registerer,
+	sseRegisterer sse.Registerer,
+	busCollection eventBus.BusCollection,
+	logger logging.Logger) {
 
-	initializeBus(registeredModules, c)
-	initializeApi(registeredModules, e)
-	initializeLogger(registeredModules, e.Logger)
+	mngr := modules.NewModuleManager(apiRegisterer, sseRegisterer, busCollection, logger)
+
+	mngr.Register(tags.Module())
+	mngr.Register(referenceLists.Module())
+	mngr.Register(tasks.Module())
+	mngr.Register(projects.Module())
 }
 
-func getModules() []modules.Module {
-	result := []modules.Module{}
-
-	result = append(result, tags.Module())
-	result = append(result, referenceLists.Module())
-	result = append(result, tasks.Module())
-	result = append(result, projects.Module())
-
-	return result
-}
-
-func initializeApi(modules []modules.Module, e *echo.Echo) {
+func initializeApi(e *echo.Echo) (api.Registerer, sse.Registerer) {
 	e.Pre(middleware.RemoveTrailingSlash())
 
 	e.Use(
@@ -84,30 +81,5 @@ func initializeApi(modules []modules.Module, e *echo.Echo) {
 	apiGroup := e.Group("/api", jwt)
 	sseGroup := e.Group("/events", jwt)
 
-	initializeRestModules(modules, apiEcho.NewGroupRestRegisterer(apiGroup))
-	initializeSseModules(modules, sseEcho.NewSseRegisterer(sseGroup))
-}
-
-func initializeRestModules(modules []modules.Module, registerer api.RestRegisterer) {
-	for _, module := range modules {
-		module.RegisterHandlers(registerer)
-	}
-}
-
-func initializeSseModules(modules []modules.Module, sr sse.SseRegisterer) {
-	for _, module := range modules {
-		module.RegisterSse(sr)
-	}
-}
-
-func initializeBus(modules []modules.Module, c eventBus.BusCollection) {
-	for _, module := range modules {
-		module.RegisterBus(c)
-	}
-}
-
-func initializeLogger(modules []modules.Module, l logging.Logger) {
-	for _, module := range modules {
-		module.RegisterLogger(l)
-	}
+	return apiEcho.NewGroupRestRegisterer(apiGroup), sseEcho.NewSseRegisterer(sseGroup)
 }

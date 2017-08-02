@@ -8,7 +8,7 @@ import (
 	"github.com/open-gtd/server/sse"
 )
 
-func NewSseRegisterer(g *echo.Group) sse.SseRegisterer {
+func NewSseRegisterer(g *echo.Group) sse.Registerer {
 	return &sseRegisterer{
 		group:   g,
 		channel: make(chan interface{}),

@@ -6,7 +6,7 @@ import (
 	"github.com/open-gtd/server/api"
 )
 
-func RegisterHandlers(r api.RestRegisterer) {
+func RegisterHandlers(r api.Registerer) {
 	r.GET("/tasks", GetAll)
 	r.GET("/tasks/:name", Get)
 	r.POST("/tasks", Create)

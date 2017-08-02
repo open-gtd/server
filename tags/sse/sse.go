@@ -1,13 +1,13 @@
 package sse
 
 import (
+	"github.com/open-gtd/server/tags/factories"
 	"github.com/open-gtd/server/eventBus"
 	"github.com/open-gtd/server/sse"
 	"github.com/open-gtd/server/tags/eventBus/topics"
-	"github.com/open-gtd/server/tags/factories"
 )
 
-var registerer sse.SseRegisterer
+var registerer sse.Registerer
 var pushDataFunc sse.PushDataToSseFunc
 
 type registration struct {
@@ -15,7 +15,7 @@ type registration struct {
 	handler func(v interface{})
 }
 
-func RegisterSse(sr sse.SseRegisterer) {
+func RegisterSse(sr sse.Registerer) {
 	registerer = sr
 
 	handlers := createRegistrations()

@@ -6,7 +6,7 @@ type ClientClosedNotificationFunc func()
 type Prefix string
 type Topic string
 
-type SseRegisterer interface {
+type Registerer interface {
 	CreatePushDataFunc(prefix Prefix, closeNotify ClientClosedNotificationFunc) PushDataToSseFunc
 }
 

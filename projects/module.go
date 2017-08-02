@@ -17,22 +17,14 @@ func Module() modules.Module {
 
 type module struct{}
 
-func (m module) RegisterHandlers(r api.RestRegisterer) {
-	apiProjects.RegisterHandlers(r)
-}
-
-func (m module) RegisterBus(busCollection eventBus.BusCollection) {
+func (m module) Register(
+	apiRegisterer api.Registerer,
+	sseRegisterer sse.Registerer,
+	busCollection eventBus.BusCollection,
+	logger logging.Logger) {
+	apiProjects.RegisterHandlers(apiRegisterer)
 	//eventBusProjects.RegisterBus(busCollection)
-}
-
-func (m module) RegisterBusHandlers(busCollection eventBus.BusCollection) {
 	eventBusProjects.RegisterBusHandlers(busCollection)
-}
-
-func (m module) RegisterSse(sr sse.SseRegisterer) {
-	//sseProjects.RegisterSse(sr)
-}
-
-func (m module) RegisterLogger(l logging.Logger) {
-	loggingProjects.RegisterLogger(l)
+	//sseProjects.RegisterSse(sseRegisterer)
+	loggingProjects.RegisterLogger(logger)
 }

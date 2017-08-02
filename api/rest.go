@@ -27,7 +27,7 @@ type Request interface {
 
 type HandlerFunc func(Request, Response) error
 
-type RestRegisterer interface {
+type Registerer interface {
 	GET(path string, handlerFunc HandlerFunc)
 	POST(path string, handlerFunc HandlerFunc)
 	PUT(path string, handlerFunc HandlerFunc)

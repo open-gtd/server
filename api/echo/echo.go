@@ -5,7 +5,7 @@ import (
 	"github.com/open-gtd/server/api"
 )
 
-func NewEchoRegisterer(g *echo.Echo) api.RestRegisterer {
+func NewEchoRegisterer(g *echo.Echo) api.Registerer {
 	return &registerer{echo: g}
 }
 
