@@ -11,6 +11,7 @@ import (
 	apiEcho "github.com/open-gtd/server/api/echo"
 	"github.com/open-gtd/server/auth"
 	_ "github.com/open-gtd/server/config"
+	"github.com/open-gtd/server/config/viper"
 	"github.com/open-gtd/server/eventBus"
 	"github.com/open-gtd/server/eventBus/eBus"
 	"github.com/open-gtd/server/logging"
@@ -38,16 +39,28 @@ func LogErrorDetails(l echo.Logger) echo.MiddlewareFunc {
 
 func main() {
 	e := echo.New()
-	c := eBus.NewCollection()
-
 	e.Logger.SetLevel(log.DEBUG)
+
+	conf, err := viper.New().
+		FileName("server.conf").
+		AddConfigPath("/etc/open-gtd").
+		AddConfigPath("$HOME/.open-gtd").
+		AddConfigPath(".").
+		Build()
+
+	if err != nil {
+		e.Logger.Fatal(err)
+		return
+	}
+
+	c := eBus.NewCollection()
 
 	auth.Initialize(apiEcho.NewEchoRegisterer(e), c, e.Logger)
 	apiRegisterer, sseRegisterer := initializeApi(e)
 
 	initializeModules(apiRegisterer, sseRegisterer, c, e.Logger)
 
-	e.Logger.Fatal(e.Start(":1323"))
+	e.Logger.Fatal(e.Start(":" + conf.GetString("port")))
 }
 
 func initializeModules(

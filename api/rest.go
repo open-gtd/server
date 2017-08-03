@@ -47,6 +47,7 @@ type Controller interface {
 
 //ControllerDestroyFunc - function to be called when controller is no longer needed during request
 type ControllerDestroyFunc func() error
+
 //ControllerFactoryFunc - function to be called when controller is no longer needed during request
 type ControllerFactoryFunc func(Request, Response) (Controller, ControllerDestroyFunc, error)
 
