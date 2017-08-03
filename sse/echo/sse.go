@@ -38,18 +38,16 @@ func (sr sseRegisterer) CreatePushDataFunc(prefix sse.Prefix, closeNotify sse.Cl
 		for {
 			select {
 			case <-sr.exit:
+				closeNotify()
 				return nil
 			case v := <-sr.channel:
 				if err := json.NewEncoder(c.Response()).Encode(v); err != nil {
+					closeNotify()
 					return err
 				}
 				c.Response().Flush()
 			}
 		}
-
-		closeNotify()
-
-		return nil
 	})
 
 	return func(topic sse.Topic, v interface{}) {
