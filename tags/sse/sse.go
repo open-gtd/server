@@ -1,10 +1,10 @@
 package sse
 
 import (
-	"github.com/open-gtd/server/tags/factories"
 	"github.com/open-gtd/server/eventBus"
 	"github.com/open-gtd/server/sse"
 	"github.com/open-gtd/server/tags/eventBus/topics"
+	"github.com/open-gtd/server/tags/factories"
 )
 
 var registerer sse.Registerer

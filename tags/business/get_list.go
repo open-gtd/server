@@ -12,7 +12,7 @@ type GetListDao interface {
 
 type GetListController Controller
 
-type GetListLogger interface {}
+type GetListLogger interface{}
 
 type GetList interface {
 	Run() error
@@ -20,7 +20,7 @@ type GetList interface {
 
 type getList struct {
 	presenter GetListPresenter
-	dao GetListDao
+	dao       GetListDao
 	logger    GetListLogger
 }
 

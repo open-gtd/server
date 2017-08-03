@@ -16,7 +16,7 @@ type GetDao interface {
 
 type GetController Controller
 
-type GetLogger interface {}
+type GetLogger interface{}
 
 type Get interface {
 	Run(name domain.Name) error

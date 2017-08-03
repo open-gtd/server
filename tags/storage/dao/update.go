@@ -1,10 +1,10 @@
 package dao
 
 import (
+	"github.com/open-gtd/server/tags/business"
 	"github.com/open-gtd/server/tags/business/errors"
 	"github.com/open-gtd/server/tags/domain"
 	"github.com/open-gtd/server/tags/storage"
-	"github.com/open-gtd/server/tags/business"
 )
 
 type update struct {

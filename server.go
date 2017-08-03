@@ -10,6 +10,7 @@ import (
 	"github.com/open-gtd/server/api"
 	apiEcho "github.com/open-gtd/server/api/echo"
 	"github.com/open-gtd/server/auth"
+	_ "github.com/open-gtd/server/config"
 	"github.com/open-gtd/server/eventBus"
 	"github.com/open-gtd/server/eventBus/eBus"
 	"github.com/open-gtd/server/logging"

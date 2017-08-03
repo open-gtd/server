@@ -5,6 +5,7 @@ import (
 	"github.com/open-gtd/server/api"
 )
 
+//NewEchoRegisterer - produces api registerer to register resources into Echo Framework Group main endpoint
 func NewGroupRestRegisterer(g *echo.Group) api.Registerer {
 	return &groupRegisterer{group: g}
 }

@@ -16,7 +16,7 @@ type DeleteDao interface {
 
 type DeleteController Controller
 
-type DeleteLogger interface {}
+type DeleteLogger interface{}
 
 type Delete interface {
 	Run(name domain.Name) error
