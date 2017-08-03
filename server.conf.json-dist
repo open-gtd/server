@@ -1,3 +1,11 @@
 {
-  "port": "1323"
+  "port": "1323",
+
+  "tags": {
+    "database": {
+      "host": "localhost",
+      "database": "open-gtd",
+      "collection": "tags"
+    }
+  }
 }
