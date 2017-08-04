@@ -8,6 +8,7 @@ import (
 	apiTasks "github.com/open-gtd/server/tasks/api"
 	eventBusTasks "github.com/open-gtd/server/tasks/eventBus"
 	//sseTasks "github.com/open-gtd/server/tasks/sse"
+	"github.com/open-gtd/server/config"
 	"github.com/open-gtd/server/logging"
 	loggingTasks "github.com/open-gtd/server/tasks/logging"
 )
@@ -22,7 +23,8 @@ func (m module) Register(
 	apiRegisterer api.Registerer,
 	sseRegisterer sse.Registerer,
 	busCollection eventBus.BusCollection,
-	logger logging.Logger) {
+	logger logging.Logger,
+	reader config.Reader) {
 
 	apiTasks.RegisterHandlers(apiRegisterer)
 	eventBusTasks.RegisterBus(busCollection)

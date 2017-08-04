@@ -10,6 +10,7 @@ import (
 	"github.com/open-gtd/server/api"
 	apiEcho "github.com/open-gtd/server/api/echo"
 	"github.com/open-gtd/server/auth"
+	"github.com/open-gtd/server/config"
 	_ "github.com/open-gtd/server/config"
 	"github.com/open-gtd/server/config/viper"
 	"github.com/open-gtd/server/eventBus"
@@ -58,7 +59,7 @@ func main() {
 	auth.Initialize(apiEcho.NewEchoRegisterer(e), c, e.Logger)
 	apiRegisterer, sseRegisterer := initializeApi(e)
 
-	initializeModules(apiRegisterer, sseRegisterer, c, e.Logger)
+	initializeModules(apiRegisterer, sseRegisterer, c, e.Logger, conf)
 
 	e.Logger.Fatal(e.Start(":" + conf.GetString("port")))
 }
@@ -67,9 +68,10 @@ func initializeModules(
 	apiRegisterer api.Registerer,
 	sseRegisterer sse.Registerer,
 	busCollection eventBus.BusCollection,
-	logger logging.Logger) {
+	logger logging.Logger,
+	reader config.Reader) {
 
-	mngr := modules.NewModuleManager(apiRegisterer, sseRegisterer, busCollection, logger)
+	mngr := modules.NewModuleManager(apiRegisterer, sseRegisterer, busCollection, logger, reader)
 
 	mngr.Register(tags.Module())
 	mngr.Register(referenceLists.Module())

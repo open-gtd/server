@@ -4,6 +4,7 @@ import (
 	"errors"
 
 	"github.com/jolestar/go-commons-pool"
+	"github.com/open-gtd/server/tags/config"
 	"github.com/open-gtd/server/tags/storage"
 	"github.com/open-gtd/server/tags/storage/mongo"
 )
@@ -11,7 +12,14 @@ import (
 var p = pool.NewObjectPool(
 	pool.NewPooledObjectFactorySimple(
 		func() (interface{}, error) {
-			dao, err := mongo.CreateDao("localhost")
+
+			c := config.Get()
+
+			dao, err := mongo.CreateDao(
+				c.GetString("tags.database.host"),
+				c.GetString("tags.database.database"),
+				c.GetString("tags.database.collection"),
+			)
 			if err != nil {
 				return nil, err
 			}

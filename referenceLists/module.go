@@ -8,6 +8,7 @@ import (
 	eventBusReferenceLists "github.com/open-gtd/server/referenceLists/eventBus"
 	"github.com/open-gtd/server/sse"
 	//sseReferenceLists "github.com/open-gtd/server/referenceLists/sse"
+	"github.com/open-gtd/server/config"
 	"github.com/open-gtd/server/logging"
 	loggingReferenceLists "github.com/open-gtd/server/referenceLists/logging"
 )
@@ -22,7 +23,8 @@ func (m module) Register(
 	apiRegisterer api.Registerer,
 	sseRegisterer sse.Registerer,
 	busCollection eventBus.BusCollection,
-	logger logging.Logger) {
+	logger logging.Logger,
+	reader config.Reader) {
 
 	apiReferenceLists.RegisterHandlers(apiRegisterer)
 	eventBusReferenceLists.RegisterBus(busCollection)

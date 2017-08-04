@@ -2,13 +2,14 @@ package modules
 
 import (
 	"github.com/open-gtd/server/api"
+	"github.com/open-gtd/server/config"
 	"github.com/open-gtd/server/eventBus"
 	"github.com/open-gtd/server/logging"
 	"github.com/open-gtd/server/sse"
 )
 
 type Module interface {
-	Register(api.Registerer, sse.Registerer, eventBus.BusCollection, logging.Logger)
+	Register(api.Registerer, sse.Registerer, eventBus.BusCollection, logging.Logger, config.Reader)
 }
 
 type ModuleManager interface {
@@ -19,12 +20,14 @@ func NewModuleManager(
 	apiRegisterer api.Registerer,
 	sseRegisterer sse.Registerer,
 	busCollection eventBus.BusCollection,
-	logger logging.Logger) ModuleManager {
+	logger logging.Logger,
+	reader config.Reader) ModuleManager {
 	return &moduleManager{
 		apiRegisterer: apiRegisterer,
 		sseRegisterer: sseRegisterer,
 		busCollection: busCollection,
 		logger:        logger,
+		reader:        reader,
 	}
 }
 
@@ -33,6 +36,7 @@ type moduleManager struct {
 	sseRegisterer sse.Registerer
 	busCollection eventBus.BusCollection
 	logger        logging.Logger
+	reader        config.Reader
 }
 
 func (m *moduleManager) Register(module Module) {
@@ -41,5 +45,6 @@ func (m *moduleManager) Register(module Module) {
 		m.sseRegisterer,
 		m.busCollection,
 		m.logger,
+		m.reader,
 	)
 }

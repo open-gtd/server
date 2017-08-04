@@ -88,7 +88,7 @@ func (s dao) Delete(name string) error {
 	return nil
 }
 
-func CreateDao(url string) (storage.Dao, error) {
+func CreateDao(url string, database string, collection string) (storage.Dao, error) {
 	s := dao{}
 	session, err := mgo.Dial(url)
 	if err != nil {
@@ -96,8 +96,8 @@ func CreateDao(url string) (storage.Dao, error) {
 	}
 
 	s.session = session
-	s.database = "open-gtd"
-	s.collection = "tags"
+	s.database = database
+	s.collection = collection
 
 	return &s, nil
 }
