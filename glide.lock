@@ -1,5 +1,5 @@
 hash: da5ff31b6fe1efe2d43d1aedd1fdf7998c6f22031495b17a3275d1736082f3e4
-updated: 2017-08-03T22:18:45.564114126+02:00
+updated: 2017-08-04T22:56:51.063294445+02:00
 imports:
 - name: github.com/asaskevich/EventBus
   version: 9223ecd796146991d8ffc3b822d5aa02f15aee97
@@ -24,7 +24,7 @@ imports:
   - collections
   - concurrent
 - name: github.com/labstack/echo
-  version: f8c3008787c31a3542b2f8143a1480bc978c28ea
+  version: 2b6ea65ccde7286f0cdcb92dfddb2e9dc90878f9
   subpackages:
   - middleware
 - name: github.com/labstack/gommon
@@ -55,18 +55,18 @@ imports:
 - name: github.com/spf13/pflag
   version: e57e3eeb33f795204c1ca35f56c44f83227c6e66
 - name: github.com/spf13/viper
-  version: c1de95864d73a5465492829d7cb2dd422b19ac96
+  version: 25b30aa063fc18e48662b86996252eabdcf2f0c7
 - name: github.com/valyala/bytebufferpool
   version: e746df99fe4a3986f4d4f79e13c1e0117ce9c2f7
 - name: github.com/valyala/fasttemplate
   version: dcecefd839c4193db0d35b88ec65b4c12d360ab0
 - name: golang.org/x/crypto
-  version: 558b6879de74bc843225cde5686419267ff707ca
+  version: 42ff06aea7c329876e5a0fe94acc96902accf0ad
   subpackages:
   - acme
   - acme/autocert
 - name: golang.org/x/sys
-  version: 94b76065f2d2081d0fef24a6e67c571f51a6408a
+  version: d8f5ea21b9295e315e612b4bcf4bedea93454d4d
   subpackages:
   - unix
 - name: golang.org/x/text

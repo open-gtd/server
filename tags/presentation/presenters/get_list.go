@@ -18,7 +18,7 @@ func NewGetList(rs api.Response) business.GetListPresenter {
 }
 
 func (gl getList) Show(t []domain.Tag) error {
-	tags, err := converters.ConvertAllToPresentation(t)
+	tags, err := converters.ConvertAllToTag(t)
 	if err != nil {
 		return err
 	}

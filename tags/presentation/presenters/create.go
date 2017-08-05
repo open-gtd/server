@@ -21,7 +21,7 @@ func NewCreate(rs api.Response, bus eventBus.Bus) business.CreatePresenter {
 }
 
 func (c create) Show(t domain.Tag) error {
-	tag, err := converters.ConvertToPresentation(t)
+	tag, err := converters.ConvertToCreatedTag(t)
 	if err != nil {
 		return err
 	}

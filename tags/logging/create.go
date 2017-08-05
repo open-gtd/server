@@ -1,4 +1,4 @@
-package loggers
+package logging
 
 import (
 	"github.com/open-gtd/server/logging"
@@ -7,14 +7,13 @@ import (
 )
 
 type create struct {
-	logger logging.Logger
 }
 
-func NewCreate(logger logging.Logger) business.CreateLogger {
-	return create{logger: logger}
+func NewCreate() business.CreateLogger {
+	return create{}
 }
 
 func (c create) TagCreated(tag domain.Tag) {
-	c.logger.Info("Tag has been created.")
-	c.logger.Debugf("Tag:", tag)
+	logging.Info("Tag has been created.")
+	logging.Debugf("Tag:", tag)
 }

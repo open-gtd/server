@@ -3,7 +3,6 @@ package factories
 import (
 	"github.com/open-gtd/server/api"
 	"github.com/open-gtd/server/tags/business"
-	"github.com/open-gtd/server/tags/logging/loggers"
 	"github.com/open-gtd/server/tags/presentation/controllers"
 	"github.com/open-gtd/server/tags/presentation/presenters"
 	"github.com/open-gtd/server/tags/storage/dao"
@@ -18,9 +17,8 @@ func Update(rq api.Request, rs api.Response) (business.Controller, api.Controlle
 	return controllers.NewUpdate(
 			rq,
 			business.NewUpdate(
-				presenters.NewUpdate(rs),
+				presenters.NewUpdate(rs, GetBus()),
 				dao.NewUpdate(conn),
-				loggers.NewUpdate(GetLogger()),
 			),
 		), func() error {
 			return returnDao(conn)

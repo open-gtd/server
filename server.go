@@ -25,7 +25,7 @@ import (
 	"github.com/open-gtd/server/tasks"
 )
 
-func LogErrorDetails(l echo.Logger) echo.MiddlewareFunc {
+func logErrorDetails(l echo.Logger) echo.MiddlewareFunc {
 	return func(next echo.HandlerFunc) echo.HandlerFunc {
 		return func(c echo.Context) error {
 			if err := next(c); err != nil {
@@ -41,6 +41,7 @@ func LogErrorDetails(l echo.Logger) echo.MiddlewareFunc {
 func main() {
 	e := echo.New()
 	e.Logger.SetLevel(log.DEBUG)
+	logging.SetLogger(e.Logger)
 
 	conf, err := viper.New().
 		FileName("server.conf").
@@ -57,9 +58,9 @@ func main() {
 	c := eBus.NewCollection()
 
 	auth.Initialize(apiEcho.NewEchoRegisterer(e), c, e.Logger)
-	apiRegisterer, sseRegisterer := initializeApi(e)
+	apiRegisterer, sseRegisterer := initializeAPI(e)
 
-	initializeModules(apiRegisterer, sseRegisterer, c, e.Logger, conf)
+	initializeModules(apiRegisterer, sseRegisterer, c, conf)
 
 	e.Logger.Fatal(e.Start(":" + conf.GetString("port")))
 }
@@ -68,10 +69,9 @@ func initializeModules(
 	apiRegisterer api.Registerer,
 	sseRegisterer sse.Registerer,
 	busCollection eventBus.BusCollection,
-	logger logging.Logger,
 	reader config.Reader) {
 
-	mngr := modules.NewModuleManager(apiRegisterer, sseRegisterer, busCollection, logger, reader)
+	mngr := modules.NewModuleManager(apiRegisterer, sseRegisterer, busCollection, reader)
 
 	mngr.Register(tags.Module())
 	mngr.Register(referenceLists.Module())
@@ -79,14 +79,14 @@ func initializeModules(
 	mngr.Register(projects.Module())
 }
 
-func initializeApi(e *echo.Echo) (api.Registerer, sse.Registerer) {
+func initializeAPI(e *echo.Echo) (api.Registerer, sse.Registerer) {
 	e.Pre(middleware.RemoveTrailingSlash())
 
 	e.Use(
 		middleware.Recover(),
 		middleware.Logger(),
 		middleware.Gzip(),
-		LogErrorDetails(e.Logger),
+		logErrorDetails(e.Logger),
 	)
 
 	e.GET("/", func(c echo.Context) error {
@@ -97,5 +97,5 @@ func initializeApi(e *echo.Echo) (api.Registerer, sse.Registerer) {
 	apiGroup := e.Group("/api", jwt)
 	sseGroup := e.Group("/events", jwt)
 
-	return apiEcho.NewGroupRestRegisterer(apiGroup), sseEcho.NewSseRegisterer(sseGroup)
+	return apiEcho.NewGroupRegisterer(apiGroup), sseEcho.NewSseRegisterer(sseGroup)
 }

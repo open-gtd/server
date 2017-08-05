@@ -36,8 +36,8 @@ type update struct {
 	logger    UpdateLogger
 }
 
-func NewUpdate(p UpdatePresenter, d UpdateDao, l UpdateLogger) Update {
-	return update{presenter: p, dao: d, logger: l}
+func NewUpdate(p UpdatePresenter, d UpdateDao) Update {
+	return update{presenter: p, dao: d}
 }
 
 func (u update) Run(ud UpdateData) error {

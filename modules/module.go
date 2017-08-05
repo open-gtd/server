@@ -9,7 +9,7 @@ import (
 )
 
 type Module interface {
-	Register(api.Registerer, sse.Registerer, eventBus.BusCollection, logging.Logger, config.Reader)
+	Register(api.Registerer, sse.Registerer, eventBus.BusCollection, config.Reader)
 }
 
 type ModuleManager interface {
@@ -20,13 +20,11 @@ func NewModuleManager(
 	apiRegisterer api.Registerer,
 	sseRegisterer sse.Registerer,
 	busCollection eventBus.BusCollection,
-	logger logging.Logger,
 	reader config.Reader) ModuleManager {
 	return &moduleManager{
 		apiRegisterer: apiRegisterer,
 		sseRegisterer: sseRegisterer,
 		busCollection: busCollection,
-		logger:        logger,
 		reader:        reader,
 	}
 }
@@ -44,7 +42,6 @@ func (m *moduleManager) Register(module Module) {
 		m.apiRegisterer,
 		m.sseRegisterer,
 		m.busCollection,
-		m.logger,
 		m.reader,
 	)
 }

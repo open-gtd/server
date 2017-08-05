@@ -16,8 +16,6 @@ type GetDao interface {
 
 type GetController Controller
 
-type GetLogger interface{}
-
 type Get interface {
 	Run(name domain.Name) error
 }
@@ -25,11 +23,10 @@ type Get interface {
 type get struct {
 	presenter GetPresenter
 	dao       GetDao
-	logger    GetLogger
 }
 
-func NewGet(p GetPresenter, d GetDao, l GetLogger) Get {
-	return get{presenter: p, dao: d, logger: l}
+func NewGet(p GetPresenter, d GetDao) Get {
+	return get{presenter: p, dao: d}
 }
 
 func (ga get) Run(name domain.Name) error {

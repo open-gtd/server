@@ -3,10 +3,10 @@ package factories
 import (
 	"github.com/open-gtd/server/api"
 	"github.com/open-gtd/server/tags/business"
-	"github.com/open-gtd/server/tags/logging/loggers"
 	"github.com/open-gtd/server/tags/presentation/controllers"
 	"github.com/open-gtd/server/tags/presentation/presenters"
 	"github.com/open-gtd/server/tags/storage/dao"
+	"github.com/open-gtd/server/tags/logging"
 )
 
 func Create(rq api.Request, rs api.Response) (business.Controller, api.ControllerDestroyFunc, error) {
@@ -20,7 +20,7 @@ func Create(rq api.Request, rs api.Response) (business.Controller, api.Controlle
 			business.NewCreate(
 				presenters.NewCreate(rs, GetBus()),
 				dao.NewCreate(conn),
-				loggers.NewCreate(GetLogger()),
+				logging.NewCreate(),
 			),
 		), func() error {
 			return returnDao(conn)

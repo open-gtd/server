@@ -5,8 +5,8 @@ import (
 	"github.com/open-gtd/server/api/validation"
 	"github.com/open-gtd/server/tags/business"
 	"github.com/open-gtd/server/tags/domain"
-	"github.com/open-gtd/server/tags/presentation"
 	"github.com/open-gtd/server/tags/presentation/converters"
+	"github.com/open-gtd/server/contract/tags"
 )
 
 type create struct {
@@ -14,7 +14,7 @@ type create struct {
 	interactor business.Create
 }
 
-type Tag presentation.Tag
+type Tag tags.CreatedTag
 
 func NewCreate(rq api.Request, i business.Create) business.CreateController {
 	return create{request: rq, interactor: i}
@@ -26,7 +26,7 @@ func (c create) Run() error {
 		return err
 	}
 
-	if err := validation.AllowedValue("tag.Type", string(tag.Type), presentation.AllowedTypes); err != nil {
+	if err := validation.AllowedValue("tag.Type", string(tag.Type), tags.AllowedTypes); err != nil {
 		return err
 	}
 

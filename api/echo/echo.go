@@ -5,7 +5,7 @@ import (
 	"github.com/open-gtd/server/api"
 )
 
-//NewEchoRegisterer - produces api registerer to register resources into Echo Framework main endpoint
+//NewEchoRegisterer returns API registerer for Echo Framework which allows to register endpoints at main level
 func NewEchoRegisterer(g *echo.Echo) api.Registerer {
 	return &registerer{echo: g}
 }

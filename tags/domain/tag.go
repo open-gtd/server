@@ -13,12 +13,13 @@ const (
 )
 
 type tag struct {
-	n Name
-	t TypeEnum
+	original_name Name
+	name          Name
+	t             TypeEnum
 }
 
 func (tag *tag) Rename(name Name) {
-	tag.n = name
+	tag.name = name
 }
 
 func (tag *tag) ConvertToLabel() {
@@ -37,8 +38,12 @@ func (t tag) GetType() TypeEnum {
 	return t.t
 }
 
+func (t tag) GetOriginalName() Name {
+	return t.original_name
+}
+
 func (t tag) GetName() Name {
-	return t.n
+	return t.name
 }
 
 type Tag interface {
@@ -47,26 +52,30 @@ type Tag interface {
 	ConvertToArea()
 	ConvertToContact()
 	GetType() TypeEnum
+	GetOriginalName() Name
 	GetName() Name
 }
 
 func CreateLabel(name Name) Tag {
 	return &tag{
-		n: name,
-		t: Label,
+		original_name: name,
+		name:          name,
+		t:             Label,
 	}
 }
 
 func CreateArea(name Name) Tag {
 	return &tag{
-		n: name,
-		t: Area,
+		original_name: name,
+		name:          name,
+		t:             Area,
 	}
 }
 
 func CreateContact(name Name) Tag {
 	return &tag{
-		n: name,
-		t: Contact,
+		original_name: name,
+		name:          name,
+		t:             Contact,
 	}
 }

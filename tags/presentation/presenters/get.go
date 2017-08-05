@@ -18,7 +18,7 @@ func NewGet(rs api.Response) business.GetPresenter {
 }
 
 func (g get) Show(t domain.Tag) error {
-	tag, err := converters.ConvertToPresentation(t)
+	tag, err := converters.ConvertToTag(t)
 	if err != nil {
 		return err
 	}

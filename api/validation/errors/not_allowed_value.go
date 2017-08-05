@@ -11,7 +11,7 @@ type notAllowedValueError struct {
 	message string
 }
 
-//IsNotAllowedValueError - test to check if error is Not Allowed Value
+//IsNotAllowedValueError returns true, if error is of Not Allowed Value, otherwise false
 func IsNotAllowedValueError(err error) bool {
 	_, ok := err.(notAllowedValueError)
 	return ok
@@ -21,7 +21,7 @@ func (e notAllowedValueError) Error() string {
 	return e.message
 }
 
-//NewNotAllowedValue - produces new NotAllowed Value validation error
+//NewNotAllowedValue return Not Allowed Value Validation Error
 func NewNotAllowedValue(name string, value string, allowedValues []string) ValidationError {
 	return notAllowedValueError{
 		message: fmt.Sprintf(
