@@ -6,6 +6,8 @@ import (
 	"github.com/open-gtd/server/logging"
 )
 
+var logger = logging.GetLogger()
+
 type login struct {
 }
 
@@ -14,6 +16,6 @@ func NewLogin() business.LoginLogger {
 }
 
 func (c login) Logged(auth domain.Auth) {
-	logging.Infof("User '%v' has been logged.", auth.UserName)
-	logging.Debugf("Auth:", auth)
+	logger.Infof("User '%v' has been logged.", auth.UserName)
+	logger.Debugf("Auth:", auth)
 }

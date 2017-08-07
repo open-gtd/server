@@ -40,45 +40,7 @@ func (l NullLogger) Panicf(format string, args ...interface{}) {}
 func SetLogger(logger Logger) {
 	l = logger
 }
-func Print(i ...interface{}) {
-	l.Print(i)
-}
-func Printf(format string, args ...interface{}) {
-	l.Printf(format, args)
-}
-func Debug(i ...interface{}) {
-	l.Debug(i)
-}
-func Debugf(format string, args ...interface{}) {
-	l.Debugf(format, args)
-}
-func Info(i ...interface{}) {
-	l.Info(i)
-}
-func Infof(format string, args ...interface{}) {
-	l.Infof(format, args)
-}
-func Warn(i ...interface{}) {
-	l.Warn(i)
-}
-func Warnf(format string, args ...interface{}) {
-	l.Warnf(format, args)
-}
-func Error(i ...interface{}) {
-	l.Error(i)
-}
-func Errorf(format string, args ...interface{}) {
-	l.Errorf(format, args)
-}
-func Fatal(i ...interface{}) {
-	l.Fatal(i)
-}
-func Fatalf(format string, args ...interface{}) {
-	l.Fatalf(format, args)
-}
-func Panic(i ...interface{}) {
-	l.Panic(i)
-}
-func Panicf(format string, args ...interface{}) {
-	l.Panicf(format, args)
+
+func GetLogger() Logger {
+	return l
 }

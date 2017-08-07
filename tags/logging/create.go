@@ -6,6 +6,8 @@ import (
 	"github.com/open-gtd/server/tags/domain"
 )
 
+var logger = logging.GetLogger()
+
 type create struct {
 }
 
@@ -14,6 +16,6 @@ func NewCreate() business.CreateLogger {
 }
 
 func (c create) TagCreated(tag domain.Tag) {
-	logging.Info("Tag has been created.")
-	logging.Debugf("Tag:", tag)
+	logger.Info("Tag has been created.")
+	logger.Debugf("Tag:", tag)
 }
