@@ -5,7 +5,7 @@ import (
 	"github.com/open-gtd/server/eventBus"
 )
 
-func newBus() eventBus.Bus {
+func NewBus() eventBus.Bus {
 	return &bus{
 		eBus: EventBus.New(),
 	}

@@ -1,10 +1,11 @@
 package factories
 
 import (
-	authBus "github.com/open-gtd/server/auth/eventBus"
 	"github.com/open-gtd/server/eventBus"
 )
 
+var bus = eventBus.GetBus()
+
 func GetBus() eventBus.Bus {
-	return authBus.Get()
+	return bus
 }

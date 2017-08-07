@@ -13,8 +13,6 @@ import (
 	"github.com/open-gtd/server/config"
 	_ "github.com/open-gtd/server/config"
 	"github.com/open-gtd/server/config/viper"
-	"github.com/open-gtd/server/eventBus"
-	"github.com/open-gtd/server/eventBus/eBus"
 	"github.com/open-gtd/server/logging"
 	"github.com/open-gtd/server/modules"
 	"github.com/open-gtd/server/projects"
@@ -23,6 +21,8 @@ import (
 	sseEcho "github.com/open-gtd/server/sse/echo"
 	"github.com/open-gtd/server/tags"
 	"github.com/open-gtd/server/tasks"
+	"github.com/open-gtd/server/eventBus"
+	"github.com/open-gtd/server/eventBus/eBus"
 )
 
 func logErrorDetails(l echo.Logger) echo.MiddlewareFunc {
@@ -43,6 +43,8 @@ func main() {
 	e.Logger.SetLevel(log.DEBUG)
 	logging.SetLogger(e.Logger)
 
+	eventBus.SetBus(eBus.NewBus())
+
 	conf, err := viper.New().
 		FileName("server.conf").
 		AddConfigPath("/etc/open-gtd").
@@ -55,12 +57,10 @@ func main() {
 		return
 	}
 
-	c := eBus.NewCollection()
-
-	auth.Initialize(apiEcho.NewEchoRegisterer(e), c, e.Logger)
+	auth.Initialize(apiEcho.NewEchoRegisterer(e))
 	apiRegisterer, sseRegisterer := initializeAPI(e)
 
-	initializeModules(apiRegisterer, sseRegisterer, c, conf)
+	initializeModules(apiRegisterer, sseRegisterer, conf)
 
 	e.Logger.Fatal(e.Start(":" + conf.GetString("port")))
 }
@@ -68,10 +68,9 @@ func main() {
 func initializeModules(
 	apiRegisterer api.Registerer,
 	sseRegisterer sse.Registerer,
-	busCollection eventBus.BusCollection,
 	reader config.Reader) {
 
-	mngr := modules.NewModuleManager(apiRegisterer, sseRegisterer, busCollection, reader)
+	mngr := modules.NewModuleManager(apiRegisterer, sseRegisterer, reader)
 
 	mngr.Register(tags.Module())
 	mngr.Register(referenceLists.Module())

@@ -2,10 +2,8 @@ package referenceLists
 
 import (
 	"github.com/open-gtd/server/api"
-	"github.com/open-gtd/server/eventBus"
 	"github.com/open-gtd/server/modules"
 	apiReferenceLists "github.com/open-gtd/server/referenceLists/api"
-	eventBusReferenceLists "github.com/open-gtd/server/referenceLists/eventBus"
 	"github.com/open-gtd/server/sse"
 	//sseReferenceLists "github.com/open-gtd/server/referenceLists/sse"
 	"github.com/open-gtd/server/config"
@@ -20,11 +18,9 @@ type module struct{}
 func (m module) Register(
 	apiRegisterer api.Registerer,
 	sseRegisterer sse.Registerer,
-	busCollection eventBus.BusCollection,
 	reader config.Reader) {
 
 	apiReferenceLists.RegisterHandlers(apiRegisterer)
-	eventBusReferenceLists.RegisterBus(busCollection)
 	//eventBusReferenceLists.RegisterBusHandlers(busCollection)
 	//sseReferenceLists.RegisterSse(sseRegisterer)
 }

@@ -2,9 +2,10 @@ package factories
 
 import (
 	"github.com/open-gtd/server/eventBus"
-	tagsBus "github.com/open-gtd/server/tags/eventBus"
 )
 
+var bus = eventBus.GetBus()
+
 func GetBus() eventBus.Bus {
-	return tagsBus.Get()
+	return bus
 }
