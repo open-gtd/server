@@ -12,17 +12,14 @@ import (
 	"github.com/open-gtd/server/auth"
 	"github.com/open-gtd/server/config"
 	_ "github.com/open-gtd/server/config"
-	"github.com/open-gtd/server/config/viper"
-	"github.com/open-gtd/server/logging"
-	"github.com/open-gtd/server/modules"
-	"github.com/open-gtd/server/projects"
-	"github.com/open-gtd/server/referenceLists"
-	"github.com/open-gtd/server/sse"
-	sseEcho "github.com/open-gtd/server/sse/echo"
-	"github.com/open-gtd/server/tags"
-	"github.com/open-gtd/server/tasks"
 	"github.com/open-gtd/server/eventBus"
 	"github.com/open-gtd/server/eventBus/eBus"
+	"github.com/open-gtd/server/logging"
+	"github.com/open-gtd/server/projects"
+	"github.com/open-gtd/server/referenceLists"
+	"github.com/open-gtd/server/tags"
+	"github.com/open-gtd/server/tasks"
+	"github.com/spf13/viper"
 )
 
 func logErrorDetails(l echo.Logger) echo.MiddlewareFunc {
@@ -38,47 +35,39 @@ func logErrorDetails(l echo.Logger) echo.MiddlewareFunc {
 	}
 }
 
-func main() {
-	e := echo.New()
+var (
+	e *echo.Echo
+)
+
+func init() {
+	e = echo.New()
+
 	e.Logger.SetLevel(log.DEBUG)
 	logging.SetLogger(e.Logger)
 
 	eventBus.SetBus(eBus.NewBus())
 
-	conf, err := viper.New().
-		FileName("server.conf").
-		AddConfigPath("/etc/open-gtd").
-		AddConfigPath("$HOME/.open-gtd").
-		AddConfigPath(".").
-		Build()
+	viper.SetConfigFile("server.conf")
+	viper.AddConfigPath("/etc/open-gtd")
+	viper.AddConfigPath("$HOME/.open-gtd")
+	viper.AddConfigPath(".")
 
-	if err != nil {
-		e.Logger.Fatal(err)
-		return
-	}
+	config.SetReader(viper.GetViper())
 
-	auth.Initialize(apiEcho.NewEchoRegisterer(e))
-	apiRegisterer, sseRegisterer := initializeAPI(e)
+	initializeAPI(e)
 
-	initializeModules(apiRegisterer, sseRegisterer, conf)
-
-	e.Logger.Fatal(e.Start(":" + conf.GetString("port")))
+	auth.Initialize()
+	projects.Initialize()
+	referenceLists.Initialize()
+	tags.Initialize()
+	tasks.Initialize()
 }
 
-func initializeModules(
-	apiRegisterer api.Registerer,
-	sseRegisterer sse.Registerer,
-	reader config.Reader) {
-
-	mngr := modules.NewModuleManager(apiRegisterer, sseRegisterer, reader)
-
-	mngr.Register(tags.Module())
-	mngr.Register(referenceLists.Module())
-	mngr.Register(tasks.Module())
-	mngr.Register(projects.Module())
+func main() {
+	e.Logger.Fatal(e.Start(":" + viper.GetString("port")))
 }
 
-func initializeAPI(e *echo.Echo) (api.Registerer, sse.Registerer) {
+func initializeAPI(e *echo.Echo) {
 	e.Pre(middleware.RemoveTrailingSlash())
 
 	e.Use(
@@ -93,8 +82,11 @@ func initializeAPI(e *echo.Echo) (api.Registerer, sse.Registerer) {
 	})
 
 	jwt := middleware.JWT([]byte("secret"))
-	apiGroup := e.Group("/api", jwt)
-	sseGroup := e.Group("/events", jwt)
 
-	return apiEcho.NewGroupRegisterer(apiGroup), sseEcho.NewSseRegisterer(sseGroup)
+	groups := map[string]*echo.Group{}
+
+	groups["/api"] = e.Group("/api", jwt)
+	groups["/events"] = e.Group("/events", jwt)
+
+	api.SetRegisterer(apiEcho.NewEchoRegisterer(e, groups))
 }

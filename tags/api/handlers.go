@@ -6,10 +6,12 @@ import (
 	"github.com/open-gtd/server/tags/presentation/controllers"
 )
 
-func RegisterHandlers(r api.Registerer) {
-	r.GET("/tags", handler(factories.GetList))
-	r.GET("/tags/:"+controllers.NameQueryParam, handler(factories.Get))
-	r.POST("/tags", handler(factories.Create))
-	r.PUT("/tags/:"+controllers.NameQueryParam, handler(factories.Update))
-	r.DELETE("/tags/:"+controllers.NameQueryParam, handler(factories.Delete))
+var r api.Registerer = api.GetRegisterer()
+
+func Initialize() {
+	r.GET("/api", "/tags", handler(factories.GetList))
+	r.GET("/api", "/tags/:"+controllers.NameQueryParam, handler(factories.Get))
+	r.POST("/api", "/tags", handler(factories.Create))
+	r.PUT("/api", "/tags/:"+controllers.NameQueryParam, handler(factories.Update))
+	r.DELETE("/api", "/tags/:"+controllers.NameQueryParam, handler(factories.Delete))
 }

@@ -10,48 +10,8 @@ import (
 type reader struct {
 }
 
-//New - creates new configuration reader builder
-func New() ReaderBuilder {
-	return &readerBuilder{}
-}
-
-//ReaderBuilder - configuration reader builder
-type ReaderBuilder interface {
-	FileName(fileName string) ReaderBuilder
-	AddConfigPath(path string) ReaderBuilder
-	Build() (config.Reader, error)
-}
-
-type readerBuilder struct {
-	fileName string
-	paths    []string
-}
-
-func (r *readerBuilder) FileName(fileName string) ReaderBuilder {
-	r.fileName = fileName
-
-	return r
-}
-
-func (r *readerBuilder) AddConfigPath(path string) ReaderBuilder {
-	r.paths = append(r.paths, path)
-
-	return r
-}
-
-func (r *readerBuilder) Build() (config.Reader, error) {
-	viper.SetConfigName(r.fileName)
-
-	for _, path := range r.paths {
-		viper.AddConfigPath(path)
-	}
-
-	err := viper.ReadInConfig()
-	if err != nil {
-		return nil, err
-	}
-
-	return reader{}, nil
+func New() config.Reader {
+	return reader{}
 }
 
 func (r reader) Get(key string) interface{} {

@@ -6,12 +6,14 @@ import (
 	"github.com/open-gtd/server/api"
 )
 
-func RegisterHandlers(r api.Registerer) {
-	r.GET("/referenceLists", GetAll)
-	r.GET("/referenceLists/:name", Get)
-	r.POST("/referenceLists", Create)
-	r.PUT("/referenceLists/:name", Update)
-	r.DELETE("/referenceLists/:name", Delete)
+var r api.Registerer = api.GetRegisterer()
+
+func Initialize() {
+	r.GET("/api", "/referenceLists", GetAll)
+	r.GET("/api", "/referenceLists/:name", Get)
+	r.POST("/api", "/referenceLists", Create)
+	r.PUT("/api", "/referenceLists/:name", Update)
+	r.DELETE("/api", "/referenceLists/:name", Delete)
 }
 
 func GetAll(rq api.Request, rs api.Response) error {

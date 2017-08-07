@@ -6,12 +6,14 @@ import (
 	"github.com/open-gtd/server/api"
 )
 
-func RegisterHandlers(r api.Registerer) {
-	r.GET("/projects", GetAll)
-	r.GET("/projects/:name", Get)
-	r.POST("/projects", Create)
-	r.PUT("/projects/:name", Update)
-	r.DELETE("/projects/:name", Delete)
+var r api.Registerer = api.GetRegisterer()
+
+func Initialize() {
+	r.GET("/api", "/projects", GetAll)
+	r.GET("/api", "/projects/:name", Get)
+	r.POST("/api", "/projects", Create)
+	r.PUT("/api", "/projects/:name", Update)
+	r.DELETE("/api", "/projects/:name", Delete)
 }
 
 func GetAll(rq api.Request, rs api.Response) error {

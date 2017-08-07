@@ -5,3 +5,4 @@ import:
   - package: github.com/spf13/viper
   - package: github.com/jolestar/go-commons-pool
   - package: github.com/asaskevich/EventBus
+  - package: github.com/stretchr/testify

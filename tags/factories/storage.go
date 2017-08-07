@@ -4,16 +4,16 @@ import (
 	"errors"
 
 	"github.com/jolestar/go-commons-pool"
-	"github.com/open-gtd/server/tags/config"
+	"github.com/open-gtd/server/config"
 	"github.com/open-gtd/server/tags/storage"
 	"github.com/open-gtd/server/tags/storage/mongo"
 )
 
+var c = config.GetReader()
+
 var p = pool.NewObjectPool(
 	pool.NewPooledObjectFactorySimple(
 		func() (interface{}, error) {
-
-			c := config.Get()
 
 			dao, err := mongo.CreateDao(
 				c.GetString("tags.database.host"),
