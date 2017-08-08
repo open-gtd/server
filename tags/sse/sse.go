@@ -7,7 +7,6 @@ import (
 	"github.com/open-gtd/server/tags/factories"
 )
 
-var registerer = sse.GetRegistarer()
 var pushDataFunc sse.PushDataToSseFunc
 
 type registration struct {
@@ -16,9 +15,11 @@ type registration struct {
 }
 
 func Initialize() {
+	r := sse.GetRegistarer()
+
 	handlers := createRegistrations()
 
-	pushDataFunc = registerer.CreatePushDataFunc("tags", func() {
+	pushDataFunc = r.CreatePushDataFunc("tags", func() {
 		unregisterTopics(handlers)
 	})
 

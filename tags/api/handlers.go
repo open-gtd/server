@@ -6,9 +6,9 @@ import (
 	"github.com/open-gtd/server/tags/presentation/controllers"
 )
 
-var r api.Registerer = api.GetRegisterer()
-
 func Initialize() {
+	r := api.GetRegisterer()
+
 	r.GET("/api", "/tags", handler(factories.GetList))
 	r.GET("/api", "/tags/:"+controllers.NameQueryParam, handler(factories.Get))
 	r.POST("/api", "/tags", handler(factories.Create))

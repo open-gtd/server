@@ -17,6 +17,8 @@ import (
 	"github.com/open-gtd/server/logging"
 	"github.com/open-gtd/server/projects"
 	"github.com/open-gtd/server/referenceLists"
+	"github.com/open-gtd/server/sse"
+	sseEcho "github.com/open-gtd/server/sse/echo"
 	"github.com/open-gtd/server/tags"
 	"github.com/open-gtd/server/tasks"
 	"github.com/spf13/viper"
@@ -39,7 +41,7 @@ var (
 	e *echo.Echo
 )
 
-func init() {
+func main() {
 	e = echo.New()
 
 	e.Logger.SetLevel(log.DEBUG)
@@ -47,10 +49,15 @@ func init() {
 
 	eventBus.SetBus(eBus.NewBus())
 
-	viper.SetConfigFile("server.conf")
+	viper.SetConfigName("server.conf")
 	viper.AddConfigPath("/etc/open-gtd")
 	viper.AddConfigPath("$HOME/.open-gtd")
 	viper.AddConfigPath(".")
+
+	if err := viper.ReadInConfig(); err != nil {
+		e.Logger.Fatal("Configuration file not found!")
+		return
+	}
 
 	config.SetReader(viper.GetViper())
 
@@ -61,9 +68,8 @@ func init() {
 	referenceLists.Initialize()
 	tags.Initialize()
 	tasks.Initialize()
-}
 
-func main() {
+	e.Logger.Info(viper.Get("port"))
 	e.Logger.Fatal(e.Start(":" + viper.GetString("port")))
 }
 
@@ -86,7 +92,9 @@ func initializeAPI(e *echo.Echo) {
 	groups := map[string]*echo.Group{}
 
 	groups["/api"] = e.Group("/api", jwt)
-	groups["/events"] = e.Group("/events", jwt)
+	sseGroup := e.Group("/events", jwt)
+	groups["/events"] = sseGroup
 
 	api.SetRegisterer(apiEcho.NewEchoRegisterer(e, groups))
+	sse.SetRegisterer(sseEcho.NewSseRegisterer(sseGroup))
 }

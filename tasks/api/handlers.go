@@ -6,9 +6,9 @@ import (
 	"github.com/open-gtd/server/api"
 )
 
-var r api.Registerer = api.GetRegisterer()
-
 func Initialize() {
+	r := api.GetRegisterer()
+
 	r.GET("/api", "/tasks", GetAll)
 	r.GET("/api", "/tasks/:name", Get)
 	r.POST("/api", "/tasks", Create)
