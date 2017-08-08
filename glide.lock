@@ -1,5 +1,5 @@
 hash: 785c35a1eca58a03cb9feb0407bf5718530c524dd718c9f95630295b3d21c620
-updated: 2017-08-07T19:34:07.58946887+02:00
+updated: 2017-08-08T22:59:13.703661857+02:00
 imports:
 - name: github.com/asaskevich/EventBus
   version: 9223ecd796146991d8ffc3b822d5aa02f15aee97
@@ -24,12 +24,12 @@ imports:
   - collections
   - concurrent
 - name: github.com/labstack/echo
-  version: f8c3008787c31a3542b2f8143a1480bc978c28ea
+  version: 1e9845a414f5177986779ee21963df7d1e362e15
   subpackages:
   - middleware
 - name: github.com/labstack/gommon
   version: 779b8a8b9850a97acba6a3fe20feb628c39e17c1
-  subpackages:
+  subpackages
   - bytes
   - color
   - log

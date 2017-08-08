@@ -3,6 +3,7 @@ package api
 //Registerer represents ability to register methods in http API
 type Registerer interface {
 	GET(prefix string, path string, handlerFunc HandlerFunc)
+	PATCH(prefix string, path string, handlerFunc HandlerFunc)
 	POST(prefix string, path string, handlerFunc HandlerFunc)
 	PUT(prefix string, path string, handlerFunc HandlerFunc)
 	DELETE(prefix string, path string, handlerFunc HandlerFunc)
