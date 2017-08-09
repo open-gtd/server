@@ -1,8 +1,6 @@
 package echo
 
 import (
-	"strings"
-
 	"github.com/labstack/echo"
 	"github.com/open-gtd/server/api"
 )
@@ -47,11 +45,7 @@ func (r *registerer) add(method string, prefix string, path string, handlerFunc 
 		})
 	}
 
-	r.echo.Add(method, merge(prefix, path), func(c echo.Context) error {
+	r.echo.Add(method, prefix+path, func(c echo.Context) error {
 		return handlerFunc(c, c)
 	})
-}
-
-func merge(prefix string, path string) string {
-	return strings.TrimSuffix(prefix, "/") + "/" + strings.TrimPrefix(path, "/")
 }
