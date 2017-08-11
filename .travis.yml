@@ -5,7 +5,7 @@ go:
   - tip
 
 before_install:
-  - ./tools/glide update
+  - ./tools/glide install
 
 script:
   - go test -race -coverprofile=coverage.txt -covermode=atomic
