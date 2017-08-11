@@ -43,6 +43,7 @@ func (r *registerer) add(method string, prefix string, path string, handlerFunc 
 		group.Add(method, path, func(c echo.Context) error {
 			return handlerFunc(c, c)
 		})
+		return
 	}
 
 	r.echo.Add(method, prefix+path, func(c echo.Context) error {

@@ -12,6 +12,10 @@ type register struct {
 	mock.Mock
 }
 
+type context struct {
+	mock.Mock
+}
+
 func (r register) Add(method string, path string, h echo.HandlerFunc) {
 	r.Called(method, path, h)
 }
@@ -135,6 +139,76 @@ func TestRegisterer_DELETE_ShouldCallRegisterAddWithDELETEMethodAndParametersAnd
 
 	groups := map[string]Router{}
 	r := prepareRouterMock("DELETE", prefix+path)
+
+	sut := NewEchoRegisterer(r, groups)
+	sut.DELETE(prefix, path, handler)
+
+	r.AssertExpectations(t)
+}
+
+func TestRegisterer_GET_ShouldCallRegisterAddOnGroupWithGETMethodAndParameters(t *testing.T) {
+	path := "/xxz"
+	prefix := "/prefix"
+
+	r := register{}
+	groups := map[string]Router{}
+	groups["/prefix"] = prepareRouterMock("GET", path)
+
+	sut := NewEchoRegisterer(r, groups)
+	sut.GET(prefix, path, handler)
+
+	r.AssertExpectations(t)
+}
+
+func TestRegisterer_POST_ShouldCallRegisterAddOnGroupWithPOSTMethodAndParameters(t *testing.T) {
+	path := "/xxz"
+	prefix := "/prefix"
+
+	r := register{}
+	groups := map[string]Router{}
+	groups["/prefix"] = prepareRouterMock("POST", path)
+
+	sut := NewEchoRegisterer(r, groups)
+	sut.POST(prefix, path, handler)
+
+	r.AssertExpectations(t)
+}
+
+func TestRegisterer_PATCH_ShouldCallRegisterAddOnGroupWithPATCHMethodAndParameters(t *testing.T) {
+	path := "/xxz"
+	prefix := "/prefix"
+
+	r := register{}
+	groups := map[string]Router{}
+	groups["/prefix"] = prepareRouterMock("PATCH", path)
+
+	sut := NewEchoRegisterer(r, groups)
+	sut.PATCH(prefix, path, handler)
+
+	r.AssertExpectations(t)
+}
+
+func TestRegisterer_PUT_ShouldCallRegisterAddOnGroupWithPUTMethodAndParameters(t *testing.T) {
+	path := "/xxz"
+	prefix := "/prefix"
+
+	r := register{}
+	groups := map[string]Router{}
+	groups["/prefix"] = prepareRouterMock("PUT", path)
+
+	sut := NewEchoRegisterer(r, groups)
+	sut.PUT(prefix, path, handler)
+
+	r.AssertExpectations(t)
+}
+
+func TestRegisterer_DELETE_ShouldCallRegisterAddOnGroupWithDELETEMethodAndParameters(t *testing.T) {
+	path := "/xxz"
+	prefix := "/prefix"
+
+	r := register{}
+	groups := map[string]Router{}
+	groups["/prefix"] = prepareRouterMock("DELETE", path)
 
 	sut := NewEchoRegisterer(r, groups)
 	sut.DELETE(prefix, path, handler)
