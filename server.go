@@ -89,7 +89,7 @@ func initializeAPI(e *echo.Echo) {
 
 	jwt := middleware.JWT([]byte("secret"))
 
-	groups := map[string]*echo.Group{}
+	groups := map[string]apiEcho.Router{}
 
 	groups["/api"] = e.Group("/api", jwt)
 	sseGroup := e.Group("/events", jwt)

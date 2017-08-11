@@ -16,7 +16,7 @@ type registerer struct {
 }
 
 type Router interface {
-	Add(method string, path string, h echo.HandlerFunc)
+	Add(method, path string, handler echo.HandlerFunc, middleware ...echo.MiddlewareFunc) *echo.Route
 }
 
 func (r *registerer) GET(prefix string, path string, handlerFunc api.HandlerFunc) {

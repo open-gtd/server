@@ -3,8 +3,8 @@ package validation
 import (
 	"testing"
 
-	"github.com/stretchr/testify/assert"
 	"github.com/open-gtd/server/api/validation/errors"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestAllowedValue_ShouldNotReturnError_IfValueIsOnAllowedValuesList(t *testing.T) {

@@ -3,10 +3,10 @@ package controllers
 import (
 	"github.com/open-gtd/server/api"
 	"github.com/open-gtd/server/api/validation"
+	"github.com/open-gtd/server/contract/tags"
 	"github.com/open-gtd/server/tags/business"
 	"github.com/open-gtd/server/tags/domain"
 	"github.com/open-gtd/server/tags/presentation/converters"
-	"github.com/open-gtd/server/contract/tags"
 )
 
 type create struct {

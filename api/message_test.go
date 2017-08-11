@@ -1,9 +1,9 @@
 package api
 
 import (
-	"testing"
 	"errors"
 	"github.com/stretchr/testify/assert"
+	"testing"
 )
 
 func TestMessage(t *testing.T) {

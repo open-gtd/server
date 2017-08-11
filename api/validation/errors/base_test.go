@@ -1,13 +1,12 @@
 package errors
 
 import (
-	"testing"
-	"github.com/stretchr/testify/assert"
 	"errors"
+	"github.com/stretchr/testify/assert"
+	"testing"
 )
 
 type someErr struct {
-
 }
 
 func (someErr) Error() string { return "" }
