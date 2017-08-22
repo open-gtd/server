@@ -12,10 +12,6 @@ func TestSetRegisterer(t *testing.T) {
 	assert.Equal(t, registerer, r)
 }
 
-func TestDefaultRegisterer(t *testing.T) {
-	assert.IsType(t, NullRegisterer{}, r)
-}
-
 func TestGetRegisterer(t *testing.T) {
 	registerer := TestRegisterer{}
 	r = registerer

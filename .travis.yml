@@ -1,14 +1,18 @@
 language: go
-
 go:
+  - 1.7.x
   - 1.8.x
   - tip
 
-before_install:
-  - ./tools/glide install
+install:
+  - make dependency
 
 script:
-  - go test -race -coverprofile=coverage.txt -covermode=atomic
+  - make test
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)
+
+matrix:
+  allow_failures:
+    - go: tip

@@ -16,8 +16,9 @@ type context struct {
 	mock.Mock
 }
 
-func (r register) Add(method string, path string, h echo.HandlerFunc) {
-	r.Called(method, path, h)
+func (r register) Add(method, path string, handler echo.HandlerFunc, middleware ...echo.MiddlewareFunc) *echo.Route {
+	r.Called(method, path, handler)
+	return nil
 }
 
 func TestRegisterer_GET_ShouldCallRegisterAddWithGETMethodAndParameters(t *testing.T) {
