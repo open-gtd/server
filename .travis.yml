@@ -5,10 +5,10 @@ go:
   - tip
 
 install:
-  - make dependency
+  - ./tools/glide install
 
 script:
-  - make test
+  - ./tools/test.sh
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)

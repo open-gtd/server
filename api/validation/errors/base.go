@@ -1,10 +1,23 @@
 package errors
 
-//ValidationError is as general type for Validation errors, when thrown causes BadRequest instead of InternalServerError
-type ValidationError error
+const (
+	Validation ErrorType = iota
+)
+
+type ErrorType int
+
+//TypedError is as general type for Validation errors, when thrown causes BadRequest instead of InternalServerError
+type TypedError interface {
+	error
+	Type() ErrorType
+}
 
 //IsValidationError returns true if err is of type ValidationError, otherwise false
 func IsValidationError(err error) bool {
-	_, ok := err.(ValidationError)
-	return ok
+	typedError, ok := err.(TypedError)
+	if !ok {
+		return false
+	}
+
+	return typedError.Type() == Validation
 }

@@ -2,17 +2,19 @@ package errors
 
 import (
 	"errors"
-	"github.com/stretchr/testify/assert"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 type someErr struct {
 }
 
-func (someErr) Error() string { return "" }
+func (someErr) Error() string   { return "" }
+func (someErr) Type() ErrorType { return Validation }
 
 //NewNotAllowedValue return Not Allowed Value Validation Error
-func newSomeErr() ValidationError {
+func newSomeErr() TypedError {
 	return someErr{}
 }
 

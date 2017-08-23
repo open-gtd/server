@@ -1,10 +1,12 @@
 package domain
 
-import "github.com/open-gtd/server/tags/presentation"
+import (
+	"github.com/open-gtd/server/tags/domain"
+)
 
 type (
 	Name  string
-	Tags  []presentation.Tag
+	Tags  []domain.Tag
 	Notes string
 	Focus bool
 )
