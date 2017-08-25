@@ -4,6 +4,9 @@ go:
   - 1.8.x
   - tip
 
+env:
+  CODECLIMATE_REPO_TOKEN: 45dadc0bf946392609a519855018c4926e339508f92fa7c00955d055cc2477e7
+
 install:
   - ./tools/glide install
 
