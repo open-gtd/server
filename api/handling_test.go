@@ -5,95 +5,166 @@ import (
 	"fmt"
 	"testing"
 
+	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
+	"net/http"
+	typedErrors "github.com/open-gtd/server/api/validation/errors"
 )
 
+const controlerValidationError = "Controller validation error"
+const someError = "Some error"
+const controllerError = "Controller error"
+
 func TestHandleRequest_ShouldRunControllerFromFactory(t *testing.T) {
-	controller := TestController{}
+	controller := testController{}
 	fac := TestFactory{}
 
-	controller.On("Run").Once().Return(nil, nil)
-	fac.On("Create").Return(controller, nil)
+	request := testRequest{}
+	response := testResponse{}
+
+	controller.On("Run").Return(nil)
+	fac.On("Create", request, response).Return(controller, nil)
+	fac.On("Destroy").Return(nil)
 
 	HandleRequest(
-		func(Request, Response) (Controller, ControllerDestroyFunc, error) {
-			return controller, nil, nil
-		},
-		TestRequest{},
-		TestResponse{},
+		fac.Create,
+		request,
+		response,
 	)
 
 	controller.AssertExpectations(t)
 }
 
 func TestHandleRequest_ShouldCallDestroyFunction(t *testing.T) {
-	controller := TestController{}
+	controller := testController{}
 	fac := TestFactory{}
 
-	controller.On("Run").Once().Return(nil, nil)
-	fac.On("Create").Return(controller, nil)
-	fac.On("Destroy").Once().Return(nil)
+	controller.On("Run").Return(nil)
+	fac.On("Create", mock.Anything, mock.Anything).Return(controller, nil)
+	fac.On("Destroy").Return(nil)
 
+	request := testRequest{}
+	response := testResponse{}
 	HandleRequest(
 		fac.Create,
-		TestRequest{},
-		TestResponse{},
+		request,
+		response,
 	)
 
 	controller.AssertExpectations(t)
 }
 
 func TestHandleRequest_ShouldCallDestroyFunctionEvenIfFactoryReturnsError(t *testing.T) {
-	controller := TestController{}
+	controller := testController{}
 	fac := TestFactory{}
 
-	fac.On("Create").Return(nil, errors.New("Some error"))
-	fac.On("Destroy").Once().Return(nil)
+	fac.On("Create", mock.Anything, mock.Anything).Return(nil, errors.New(someError))
+	fac.On("Destroy").Return(nil)
 
+	request := testRequest{}
+	response := testResponse{}
 	HandleRequest(
 		fac.Create,
-		TestRequest{},
-		TestResponse{},
+		request,
+		response,
 	)
 
 	controller.AssertExpectations(t)
 }
 
-type TestController struct {
+func TestHandleRequest_ShouldReturnErrorIfFactoryReturnsError(t *testing.T) {
+	fac := TestFactory{}
+
+	fac.On("Create", mock.Anything, mock.Anything).Return(nil, errors.New("Some error"))
+	fac.On("Destroy").Return(nil)
+
+	request := testRequest{}
+	response := testResponse{}
+	err := HandleRequest(
+		fac.Create,
+		request,
+		response,
+	)
+
+	assert.EqualError(t, err, someError)
+}
+
+func TestHandleRequest_ShouldReturnErrorIfControllerRunReturnsError(t *testing.T) {
+	controller := testController{}
+	fac := TestFactory{}
+
+	controller.On("Run").Return(errors.New(controllerError))
+	fac.On("Create", mock.Anything, mock.Anything).Return(controller, nil)
+	fac.On("Destroy").Return(nil)
+
+	request := testRequest{}
+	response := testResponse{}
+	err := HandleRequest(
+		fac.Create,
+		request,
+		response,
+	)
+
+	assert.EqualError(t, err, controllerError)
+}
+
+func TestHandleRequest_ShouldProduceBadRequestResponseErrorIfControllerRunReturnsError(t *testing.T) {
+	controller := testController{}
+	fac := TestFactory{}
+
+	controller.On("Run").Return(testValidationError{})
+	fac.On("Create", mock.Anything, mock.Anything).Return(controller, nil)
+	fac.On("Destroy").Return(nil)
+
+	request := testRequest{}
+	response := testResponse{}
+	response.On("JSON", http.StatusBadRequest, mock.Anything).
+		Run(func(args mock.Arguments) {
+		assert.Equal(t, args.Get(1).(MessageResponse).Message, controlerValidationError)
+	}).Return(nil)
+
+	HandleRequest(
+		fac.Create,
+		request,
+		response,
+	)
+}
+
+type testController struct {
 	mock.Mock
 }
 
-func (t TestController) Run() error {
+func (t testController) Run() error {
 	args := t.Called()
 	return args.Error(0)
 }
 
-type TestResponse struct {
+type testResponse struct {
 	mock.Mock
 }
 
-func (t TestResponse) String(code int, s string) error {
+func (t testResponse) String(code int, s string) error {
 	args := t.Called(code, s)
 	return args.Error(0)
 }
-func (t TestResponse) JSON(code int, i interface{}) error {
+func (t testResponse) JSON(code int, i interface{}) error {
 	args := t.Called(code, i)
 	return args.Error(0)
 }
-func (t TestResponse) NoContent(code int) error {
+func (t testResponse) NoContent(code int) error {
 	args := t.Called(code)
 	return args.Error(0)
 }
 
-type TestRequest struct {
+type testRequest struct {
 	mock.Mock
 }
 
-func (t TestRequest) Param(name string) string {
+func (t testRequest) Param(name string) string {
 	args := t.Called(name)
 	return args.String(0)
 }
-func (t TestRequest) Bind(i interface{}) error {
+func (t testRequest) Bind(i interface{}) error {
 	args := t.Called(i)
 	return args.Error(0)
 }
@@ -102,8 +173,8 @@ type TestFactory struct {
 	mock.Mock
 }
 
-func (t TestFactory) Create(Request, Response) (Controller, ControllerDestroyFunc, error) {
-	args := t.Called()
+func (t TestFactory) Create(rq Request, rs Response) (Controller, ControllerDestroyFunc, error) {
+	args := t.Called(rq, rs)
 	return controller(args.Get(0)), t.Destroy, args.Error(1)
 }
 
@@ -122,4 +193,15 @@ func controller(obj interface{}) Controller {
 func (t TestFactory) Destroy() error {
 	args := t.Called()
 	return args.Error(0)
+}
+
+
+type testValidationError struct {}
+
+func (t testValidationError) Type() typedErrors.ErrorType {
+	return typedErrors.Validation
+}
+
+func (t testValidationError) Error() string {
+	return controlerValidationError
 }
