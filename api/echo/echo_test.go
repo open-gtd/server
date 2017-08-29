@@ -6,6 +6,7 @@ import (
 	"github.com/labstack/echo"
 	"github.com/open-gtd/server/api"
 	"github.com/stretchr/testify/mock"
+	"fmt"
 )
 
 type register struct {
@@ -17,8 +18,8 @@ type context struct {
 }
 
 func (r register) Add(method, path string, handler echo.HandlerFunc, middleware ...echo.MiddlewareFunc) *echo.Route {
-	r.Called(method, path, handler)
-	return nil
+	args:=r.Called(method, path, handler)
+	return route(args.Get(0))
 }
 
 func TestRegisterer_GET_ShouldCallRegisterAddWithGETMethodAndParameters(t *testing.T) {
@@ -220,10 +221,22 @@ func TestRegisterer_DELETE_ShouldCallRegisterAddOnGroupWithDELETEMethodAndParame
 func prepareRouterMock(method string, path string) register {
 	r := register{}
 
-	r.On("Add", method, path, mock.AnythingOfType("echo.HandlerFunc"))
+	r.On("Add", method, path, mock.AnythingOfType("echo.HandlerFunc")).Return(nil)
 	return r
 }
 
 var handler = func(api.Request, api.Response) error {
 	return nil
+}
+
+func route(obj interface{}) *echo.Route {
+	var r *echo.Route
+	var ok bool
+	if obj == nil {
+		return nil
+	}
+	if r, ok = obj.(*echo.Route); !ok {
+		panic(fmt.Sprintf("assert: arguments: Controller failed because object wasn't correct type: %v", obj))
+	}
+	return r
 }
