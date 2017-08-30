@@ -20,3 +20,6 @@ after_success:
 matrix:
   allow_failures:
     - go: tip
+
+ notifications:
+    slack: open-gtd:T5ekEQD8hv7PeJsCvQPvH0iw
