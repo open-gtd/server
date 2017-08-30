@@ -5,10 +5,10 @@ import (
 	"fmt"
 	"testing"
 
+	typedErrors "github.com/open-gtd/server/api/validation/errors"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
 	"net/http"
-	typedErrors "github.com/open-gtd/server/api/validation/errors"
 )
 
 const controlerValidationError = "Controller validation error"
@@ -120,8 +120,8 @@ func TestHandleRequest_ShouldProduceBadRequestResponseErrorIfControllerRunReturn
 	response := testResponse{}
 	response.On("JSON", http.StatusBadRequest, mock.Anything).
 		Run(func(args mock.Arguments) {
-		assert.Equal(t, args.Get(1).(MessageResponse).Message, controlerValidationError)
-	}).Return(nil)
+			assert.Equal(t, args.Get(1).(MessageResponse).Message, controlerValidationError)
+		}).Return(nil)
 
 	HandleRequest(
 		fac.Create,
@@ -195,8 +195,7 @@ func (t TestFactory) Destroy() error {
 	return args.Error(0)
 }
 
-
-type testValidationError struct {}
+type testValidationError struct{}
 
 func (t testValidationError) Type() typedErrors.ErrorType {
 	return typedErrors.Validation

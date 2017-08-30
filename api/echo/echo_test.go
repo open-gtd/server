@@ -3,10 +3,10 @@ package echo
 import (
 	"testing"
 
+	"fmt"
 	"github.com/labstack/echo"
 	"github.com/open-gtd/server/api"
 	"github.com/stretchr/testify/mock"
-	"fmt"
 )
 
 type register struct {
@@ -18,7 +18,7 @@ type context struct {
 }
 
 func (r register) Add(method, path string, handler echo.HandlerFunc, middleware ...echo.MiddlewareFunc) *echo.Route {
-	args:=r.Called(method, path, handler)
+	args := r.Called(method, path, handler)
 	return route(args.Get(0))
 }
 
