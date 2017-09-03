@@ -15,12 +15,9 @@ import (
 	"github.com/open-gtd/server/eventBus"
 	"github.com/open-gtd/server/eventBus/eBus"
 	"github.com/open-gtd/server/logging"
-	"github.com/open-gtd/server/projects"
-	"github.com/open-gtd/server/referenceLists"
 	"github.com/open-gtd/server/sse"
 	sseEcho "github.com/open-gtd/server/sse/echo"
 	"github.com/open-gtd/server/tags"
-	"github.com/open-gtd/server/tasks"
 	"github.com/spf13/viper"
 )
 
@@ -64,10 +61,7 @@ func main() {
 	initializeAPI(e)
 
 	auth.Initialize()
-	projects.Initialize()
-	referenceLists.Initialize()
 	tags.Initialize()
-	tasks.Initialize()
 
 	e.Logger.Info(viper.Get("port"))
 	e.Logger.Fatal(e.Start(":" + viper.GetString("port")))

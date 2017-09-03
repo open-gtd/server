@@ -22,8 +22,8 @@ func TestGetRegisterer(t *testing.T) {
 type TestRegisterer struct {
 }
 
-func (TestRegisterer) GET(prefix string, path string, handlerFunc HandlerFunc)    {}
-func (TestRegisterer) PATCH(prefix string, path string, handlerFunc HandlerFunc)  {}
-func (TestRegisterer) POST(prefix string, path string, handlerFunc HandlerFunc)   {}
-func (TestRegisterer) PUT(prefix string, path string, handlerFunc HandlerFunc)    {}
-func (TestRegisterer) DELETE(prefix string, path string, handlerFunc HandlerFunc) {}
+func (TestRegisterer) GET(prefix string, path string, handler Handler)    {}
+func (TestRegisterer) PATCH(prefix string, path string, handler Handler)  {}
+func (TestRegisterer) POST(prefix string, path string, handler Handler)   {}
+func (TestRegisterer) PUT(prefix string, path string, handler Handler)    {}
+func (TestRegisterer) DELETE(prefix string, path string, handler Handler) {}

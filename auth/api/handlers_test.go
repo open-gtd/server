@@ -15,7 +15,7 @@ func TestInitialize(t *testing.T) {
 		"POST",
 		"/api",
 		"/auth",
-		mock.Anything,
+		mock.AnythingOfType("controllerHandler"),
 	).Once()
 
 	Initialize()
@@ -27,18 +27,18 @@ type registerer struct {
 	mock.Mock
 }
 
-func (r *registerer) GET(prefix string, path string, handlerFunc api.HandlerFunc) {
-	r.Called(prefix, path, handlerFunc)
+func (r *registerer) GET(prefix string, path string, handler api.Handler) {
+	r.Called(prefix, path, handler)
 }
-func (r *registerer) PATCH(prefix string, path string, handlerFunc api.HandlerFunc) {
-	r.Called(prefix, path, handlerFunc)
+func (r *registerer) PATCH(prefix string, path string, handler api.Handler) {
+	r.Called(prefix, path, handler)
 }
-func (r *registerer) POST(prefix string, path string, handlerFunc api.HandlerFunc) {
-	r.Called(prefix, path, handlerFunc)
+func (r *registerer) POST(prefix string, path string, handler api.Handler) {
+	r.Called(prefix, path, handler)
 }
-func (r *registerer) PUT(prefix string, path string, handlerFunc api.HandlerFunc) {
-	r.Called(prefix, path, handlerFunc)
+func (r *registerer) PUT(prefix string, path string, handler api.Handler) {
+	r.Called(prefix, path, handler)
 }
-func (r *registerer) DELETE(prefix string, path string, handlerFunc api.HandlerFunc) {
-	r.Called(prefix, path, handlerFunc)
+func (r *registerer) DELETE(prefix string, path string, handler api.Handler) {
+	r.Called(prefix, path, handler)
 }

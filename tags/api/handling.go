@@ -17,22 +17,25 @@ func (ac *controller) Run() error {
 	return ac.controller.Run()
 }
 
-func createController(controllerFactory ControllerFactoryFunc) api.ControllerFactoryFunc {
-	return func(rq api.Request, rs api.Response) (api.Controller, api.ControllerDestroyFunc, error) {
-		innerController, destroy, nil := controllerFactory(rq, rs)
-
-		c := &controller{
-			rq:         rq,
-			rs:         rs,
-			controller: innerController,
-		}
-		return c, destroy, nil
-	}
+func NewControllerHandler(controllerFactory ControllerFactoryFunc) api.Handler {
+	return controllerHandler{controllerFactory}
 }
 
-func handler(controllerFactory ControllerFactoryFunc) api.HandlerFunc {
-	return func(rq api.Request, rs api.Response) error {
-		controller := createController(controllerFactory)
-		return api.HandleRequest(controller, rq, rs)
+type controllerHandler struct {
+	controllerFactory ControllerFactoryFunc
+}
+
+func (ch controllerHandler) Handle(rq api.Request, rs api.Response) error {
+	return api.HandleRequest(ch.createController, rq, rs)
+}
+
+func (ch controllerHandler) createController(rq api.Request, rs api.Response) (api.Controller, api.ControllerDestroyFunc, error) {
+	innerController, destroy, nil := ch.controllerFactory(rq, rs)
+
+	c := &controller{
+		rq:         rq,
+		rs:         rs,
+		controller: innerController,
 	}
+	return c, destroy, nil
 }

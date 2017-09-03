@@ -4,9 +4,10 @@ import (
 	"testing"
 
 	"fmt"
+
 	"github.com/labstack/echo"
-	"github.com/open-gtd/server/api"
 	"github.com/stretchr/testify/mock"
+	"github.com/open-gtd/server/api"
 )
 
 type register struct {
@@ -225,9 +226,13 @@ func prepareRouterMock(method string, path string) register {
 	return r
 }
 
-var handler = func(api.Request, api.Response) error {
+type testHandler struct{}
+
+func (testHandler) Handle(request api.Request, response api.Response) error {
 	return nil
 }
+
+var handler = testHandler{}
 
 func route(obj interface{}) *echo.Route {
 	var r *echo.Route
