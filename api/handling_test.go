@@ -23,11 +23,10 @@ func TestHandleRequest_ShouldRunControllerFromFactory(t *testing.T) {
 	response := testResponse{}
 
 	controller.On("Run").Return(nil)
-	fac.On("Create", request, response).Return(controller, nil)
 	fac.On("Destroy").Return(nil)
 
 	HandleRequest(
-		fac.Create,
+		DestroyableController{ controller, fac.Destroy},
 		request,
 		response,
 	)
@@ -40,53 +39,17 @@ func TestHandleRequest_ShouldCallDestroyFunction(t *testing.T) {
 	fac := TestFactory{}
 
 	controller.On("Run").Return(nil)
-	fac.On("Create", mock.Anything, mock.Anything).Return(controller, nil)
 	fac.On("Destroy").Return(nil)
 
 	request := testRequest{}
 	response := testResponse{}
 	HandleRequest(
-		fac.Create,
+		DestroyableController{ controller, fac.Destroy},
 		request,
 		response,
 	)
 
 	controller.AssertExpectations(t)
-}
-
-func TestHandleRequest_ShouldCallDestroyFunctionEvenIfFactoryReturnsError(t *testing.T) {
-	controller := testController{}
-	fac := TestFactory{}
-
-	fac.On("Create", mock.Anything, mock.Anything).Return(nil, errors.New(someError))
-	fac.On("Destroy").Return(nil)
-
-	request := testRequest{}
-	response := testResponse{}
-	HandleRequest(
-		fac.Create,
-		request,
-		response,
-	)
-
-	controller.AssertExpectations(t)
-}
-
-func TestHandleRequest_ShouldReturnErrorIfFactoryReturnsError(t *testing.T) {
-	fac := TestFactory{}
-
-	fac.On("Create", mock.Anything, mock.Anything).Return(nil, errors.New("Some error"))
-	fac.On("Destroy").Return(nil)
-
-	request := testRequest{}
-	response := testResponse{}
-	err := HandleRequest(
-		fac.Create,
-		request,
-		response,
-	)
-
-	assert.EqualError(t, err, someError)
 }
 
 func TestHandleRequest_ShouldReturnErrorIfControllerRunReturnsError(t *testing.T) {
@@ -100,7 +63,7 @@ func TestHandleRequest_ShouldReturnErrorIfControllerRunReturnsError(t *testing.T
 	request := testRequest{}
 	response := testResponse{}
 	err := HandleRequest(
-		fac.Create,
+		DestroyableController{ controller, fac.Destroy},
 		request,
 		response,
 	)
@@ -124,7 +87,7 @@ func TestHandleRequest_ShouldProduceBadRequestResponseErrorIfControllerRunReturn
 		}).Return(nil)
 
 	HandleRequest(
-		fac.Create,
+		DestroyableController{ controller, fac.Destroy},
 		request,
 		response,
 	)
@@ -171,11 +134,6 @@ func (t testRequest) Bind(i interface{}) error {
 
 type TestFactory struct {
 	mock.Mock
-}
-
-func (t TestFactory) Create(rq Request, rs Response) (Controller, ControllerDestroyFunc, error) {
-	args := t.Called(rq, rs)
-	return controller(args.Get(0)), t.Destroy, args.Error(1)
 }
 
 func controller(obj interface{}) Controller {
