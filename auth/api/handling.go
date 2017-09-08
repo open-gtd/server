@@ -25,8 +25,20 @@ type controllerHandler struct {
 	controllerFactory ControllerFactoryFunc
 }
 
+var handleRequest = api.HandleRequest
+
 func (ch controllerHandler) Handle(rq api.Request, rs api.Response) error {
-	return api.HandleRequest(ch.createController, rq, rs)
+	c, cdf, err := ch.createController(rq, rs)
+	if err != nil {
+		return err
+	}
+
+	dc := api.DestroyableController{
+		C:   c,
+		Cdf: cdf,
+	}
+
+	return handleRequest(dc, rq, rs)
 }
 
 func (ch controllerHandler) createController(rq api.Request, rs api.Response) (api.Controller, api.ControllerDestroyFunc, error) {

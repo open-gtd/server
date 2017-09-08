@@ -1,11 +1,11 @@
 package api
 
 import (
+	"errors"
 	"testing"
 
-	"github.com/stretchr/testify/mock"
-	"errors"
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/mock"
 )
 
 func TestController_Run_ShouldRunInnerController(t *testing.T) {
@@ -13,7 +13,7 @@ func TestController_Run_ShouldRunInnerController(t *testing.T) {
 	rq := testRequest{}
 	rs := testResponse{}
 
-	c := controller{rq, rs,&tc }
+	c := controller{rq, rs, &tc}
 
 	tc.On("Run").Return(nil)
 
@@ -27,7 +27,7 @@ func TestController_Run_ShouldReturnError_IfInnerControllerRunReturnsError(t *te
 	rq := testRequest{}
 	rs := testResponse{}
 
-	c := controller{rq, rs,&tc }
+	c := controller{rq, rs, &tc}
 
 	const errorMsg = "SampleError"
 	tc.On("Run").Return(errors.New(errorMsg))
@@ -35,6 +35,10 @@ func TestController_Run_ShouldReturnError_IfInnerControllerRunReturnsError(t *te
 	err := c.Run()
 
 	assert.EqualError(t, err, errorMsg)
+}
+
+func TestControllerHandler_Handle_ShouldCallHandleRequest(t *testing.T) {
+
 }
 
 type testController struct {
@@ -74,4 +78,12 @@ func (t testResponse) JSON(code int, i interface{}) error {
 func (t testResponse) NoContent(code int) error {
 	args := t.Called(code)
 	return args.Error(0)
+}
+
+type handleRequestMock struct {
+	mock.Mock
+}
+
+func (am *handleRequestMock) HandleRequest() {
+
 }
