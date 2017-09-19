@@ -9,11 +9,11 @@ import (
 
 type LoginPresenter interface {
 	ShowAuthFailed() error
-	Show(t domain.Cert) error
+	Show(cert domain.Cert) error
 }
 
 type LoginDao interface {
-	Authorize(t domain.Auth) error
+	Authorize(auth domain.Auth) error
 }
 
 type LoginController Controller
@@ -54,6 +54,7 @@ func (c login) Run(ld LoginData) error {
 		if err != nil {
 			return err
 		}
+		return nil
 	}
 
 	t, err := generateToken(string(auth.UserName))
