@@ -2,18 +2,17 @@ package api
 
 import (
 	"errors"
-	"fmt"
 	"testing"
+
+	"net/http"
 
 	typedErrors "github.com/open-gtd/server/api/validation/errors"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
-	"net/http"
 )
 
 const controlerValidationError = "Controller validation error"
-const someError = "Some error"
-const controllerError = "Controller error"
+const controllerError = "controller error"
 
 func TestHandleRequest_ShouldRunControllerFromFactory(t *testing.T) {
 	controller := testController{}
@@ -26,7 +25,7 @@ func TestHandleRequest_ShouldRunControllerFromFactory(t *testing.T) {
 	fac.On("Destroy").Return(nil)
 
 	HandleRequest(
-		DestroyableController{ controller, fac.Destroy},
+		DestroyableController{controller, fac.Destroy},
 		request,
 		response,
 	)
@@ -44,7 +43,23 @@ func TestHandleRequest_ShouldCallDestroyFunction(t *testing.T) {
 	request := testRequest{}
 	response := testResponse{}
 	HandleRequest(
-		DestroyableController{ controller, fac.Destroy},
+		DestroyableController{controller, fac.Destroy},
+		request,
+		response,
+	)
+
+	controller.AssertExpectations(t)
+}
+
+func TestHandleRequest_ShouldNotFail_IfDestroyFunctionIsNil(t *testing.T) {
+	controller := testController{}
+
+	controller.On("Run").Return(nil)
+
+	request := testRequest{}
+	response := testResponse{}
+	HandleRequest(
+		DestroyableController{controller, nil},
 		request,
 		response,
 	)
@@ -63,7 +78,7 @@ func TestHandleRequest_ShouldReturnErrorIfControllerRunReturnsError(t *testing.T
 	request := testRequest{}
 	response := testResponse{}
 	err := HandleRequest(
-		DestroyableController{ controller, fac.Destroy},
+		DestroyableController{controller, fac.Destroy},
 		request,
 		response,
 	)
@@ -87,7 +102,7 @@ func TestHandleRequest_ShouldProduceBadRequestResponseErrorIfControllerRunReturn
 		}).Return(nil)
 
 	HandleRequest(
-		DestroyableController{ controller, fac.Destroy},
+		DestroyableController{controller, fac.Destroy},
 		request,
 		response,
 	)
@@ -134,18 +149,6 @@ func (t testRequest) Bind(i interface{}) error {
 
 type TestFactory struct {
 	mock.Mock
-}
-
-func controller(obj interface{}) Controller {
-	var c Controller
-	var ok bool
-	if obj == nil {
-		return nil
-	}
-	if c, ok = obj.(Controller); !ok {
-		panic(fmt.Sprintf("assert: arguments: Controller failed because object wasn't correct type: %v", obj))
-	}
-	return c
 }
 
 func (t TestFactory) Destroy() error {
