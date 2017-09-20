@@ -6,7 +6,7 @@ import (
 	"github.com/open-gtd/server/logging"
 )
 
-var logger = logging.GetLogger()
+var logger logging.Logger = logging.GetLogger()
 
 type login struct {
 }

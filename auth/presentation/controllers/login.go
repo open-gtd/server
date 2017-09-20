@@ -16,13 +16,15 @@ func NewLogin(rq api.Request, i business.Login) business.LoginController {
 	return login{request: rq, interactor: i}
 }
 
+var convertFunc = converters.ConvertLoginDataToBusiness
+
 func (c login) Run() error {
 	auth := &presentation.LoginData{}
 	if err := c.request.Bind(auth); err != nil {
 		return err
 	}
 
-	dLoginData, err := converters.ConvertLoginDataToBusiness(*auth)
+	dLoginData, err := convertFunc(*auth)
 	if err != nil {
 		return err
 	}
