@@ -66,7 +66,7 @@ func TestLogin_Run_ShouldPassLoginDataFromRequestToConvert(t *testing.T) {
 			UserName:     userName,
 			SecurityCode: securityCode,
 		},
-	).Return(business.LoginData{}, nil)
+	).Return(business.LoginData{})
 
 	l.On("Run", mock.Anything).Return(nil)
 
@@ -92,7 +92,7 @@ func TestLogin_Run_ShouldPassLoginDataFromConvertToPresenterRun(t *testing.T) {
 		Name:         userName,
 		SecurityCode: securityCode,
 	}
-	c.On("Convert", mock.Anything).Return(data, nil)
+	c.On("Convert", mock.Anything).Return(data)
 
 	l.On("Run", data).Return(nil)
 
@@ -113,7 +113,7 @@ func TestLogin_Run_ShouldReturnError_IfPresenterRunReturnsError(t *testing.T) {
 
 	rq.On("Bind", mock.Anything).Return(nil)
 
-	c.On("Convert", mock.Anything).Return(business.LoginData{}, nil)
+	c.On("Convert", mock.Anything).Return(business.LoginData{})
 
 	l.On("Run", mock.Anything).Return(errors.New(presenterError))
 
@@ -152,7 +152,7 @@ type testConvert struct {
 
 func (l *testConvert) Convert(ld presentation.LoginData) business.LoginData {
 	args := l.Called(ld)
-	return l.loginData(args.Get(0)), args.Error(1)
+	return l.loginData(args.Get(0))
 }
 func (l *testConvert) loginData(i interface{}) business.LoginData {
 	var c business.LoginData
