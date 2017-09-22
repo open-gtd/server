@@ -20,11 +20,10 @@ func NewLogin(rs api.Response, bus eventBus.Bus) business.LoginPresenter {
 	return login{response: rs, bus: bus}
 }
 
+var convertFunc = converters.ConvertToPresentation
+
 func (c login) Show(cert domain.Cert) error {
-	auth, err := converters.ConvertToPresentation(cert)
-	if err != nil {
-		return err
-	}
+	auth := convertFunc(cert)
 
 	c.bus.Publish(topics.LoggedIn, cert)
 	return c.response.JSON(http.StatusOK, auth)

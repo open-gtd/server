@@ -23,24 +23,6 @@ func TestLogin_Run_ShouldCallRequestBindWithAuthInstance(t *testing.T) {
 	sut.Run()
 }
 
-func TestLogin_Run_ShouldReturnError_IfConvertReturnsError(t *testing.T) {
-	rq := &testRequest{}
-	l := &testLogin{}
-	c := &testConvert{}
-	convertFunc = c.Convert
-
-	const convertError = "convertError"
-	rq.On("Bind", mock.Anything).Return(nil)
-	l.On("Run", mock.Anything).Return(nil)
-	c.On("Convert", mock.Anything).Return(business.LoginData{}, errors.New(convertError))
-
-	sut := NewLogin(rq, l)
-
-	err := sut.Run()
-
-	assert.EqualError(t, err, convertError)
-}
-
 func TestLogin_Run_ShouldReturnError_IfRequestBindReturnsError(t *testing.T) {
 	rq := &testRequest{}
 	l := &testLogin{}
@@ -168,7 +150,7 @@ type testConvert struct {
 	mock.Mock
 }
 
-func (l *testConvert) Convert(ld presentation.LoginData) (business.LoginData, error) {
+func (l *testConvert) Convert(ld presentation.LoginData) business.LoginData {
 	args := l.Called(ld)
 	return l.loginData(args.Get(0)), args.Error(1)
 }

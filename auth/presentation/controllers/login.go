@@ -24,10 +24,6 @@ func (c login) Run() error {
 		return err
 	}
 
-	dLoginData, err := convertFunc(*auth)
-	if err != nil {
-		return err
-	}
-
+	dLoginData := convertFunc(*auth)
 	return c.interactor.Run(dLoginData)
 }
