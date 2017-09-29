@@ -8,22 +8,26 @@ import (
 	"github.com/open-gtd/server/sse"
 )
 
-func NewSseRegisterer(g *echo.Group) sse.Registerer {
+type Router interface {
+	Add(method, path string, handler echo.HandlerFunc, middleware ...echo.MiddlewareFunc) *echo.Route
+}
+
+func NewSseRegisterer(r Router) sse.Registerer {
 	return &sseRegisterer{
-		group:   g,
+		router:  r,
 		channel: make(chan interface{}),
 		exit:    make(chan bool),
 	}
 }
 
 type sseRegisterer struct {
-	group   *echo.Group
+	router  Router
 	channel chan interface{}
 	exit    chan bool
 }
 
 func (sr sseRegisterer) CreatePushDataFunc(prefix sse.Prefix, closeNotify sse.ClientClosedNotificationFunc) sse.PushDataToSseFunc {
-	sr.group.GET("/"+string(prefix), func(c echo.Context) error {
+	sr.router.Add(echo.GET, "/"+string(prefix), func(c echo.Context) error {
 		c.Response().Header().Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
 		c.Response().WriteHeader(http.StatusOK)
 
