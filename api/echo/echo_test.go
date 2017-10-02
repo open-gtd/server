@@ -3,9 +3,6 @@ package echo
 import (
 	"testing"
 
-	"fmt"
-
-	"github.com/labstack/echo"
 	"github.com/open-gtd/server/api"
 	"github.com/stretchr/testify/mock"
 )
@@ -213,22 +210,13 @@ func prepareRouterMock(method string, path string) registerMock {
 	return r
 }
 
-type testHandler struct{}
-
-func (testHandler) Handle(request api.Request, response api.Response) error {
-	return nil
+type handlerFuncMock struct {
+	mock.Mock
 }
 
-var handler = testHandler{}
-
-func route(obj interface{}) *echo.Route {
-	var r *echo.Route
-	var ok bool
-	if obj == nil {
-		return nil
-	}
-	if r, ok = obj.(*echo.Route); !ok {
-		panic(fmt.Sprintf("assert: arguments: Controller failed because object wasn't correct type: %v", obj))
-	}
-	return r
+func (h *handlerFuncMock) Handle(request api.Request, response api.Response) error {
+	args := h.Called(request, response)
+	return args.Error(0)
 }
+
+var handler = &handlerFuncMock{}
