@@ -11,9 +11,9 @@ import (
 )
 
 func TestLogin_Run_ShouldAuthorizeUserUsingDao(t *testing.T) {
-	lp := &testLoginPresenter{}
-	ld := &testLoginDao{}
-	ll := &testLoginLogger{}
+	lp := &loginPresenterMock{}
+	ld := &loginDaoMock{}
+	ll := &loginLoggerMock{}
 	login := NewLogin(lp, ld, ll)
 
 	const name = "name"
@@ -32,9 +32,9 @@ func TestLogin_Run_ShouldAuthorizeUserUsingDao(t *testing.T) {
 }
 
 func TestLogin_Run_ShouldPresentLoginFailed_IfDaoAuthorizeReturnsError(t *testing.T) {
-	lp := &testLoginPresenter{}
-	ld := &testLoginDao{}
-	ll := &testLoginLogger{}
+	lp := &loginPresenterMock{}
+	ld := &loginDaoMock{}
+	ll := &loginLoggerMock{}
 	login := NewLogin(lp, ld, ll)
 
 	const someError = "someError"
@@ -54,9 +54,9 @@ func TestLogin_Run_ShouldPresentLoginFailed_IfDaoAuthorizeReturnsError(t *testin
 }
 
 func TestLogin_Run_ShouldReturnError_IfPresenterShowAuthFailedReturnsError(t *testing.T) {
-	lp := &testLoginPresenter{}
-	ld := &testLoginDao{}
-	ll := &testLoginLogger{}
+	lp := &loginPresenterMock{}
+	ld := &loginDaoMock{}
+	ll := &loginLoggerMock{}
 	login := NewLogin(lp, ld, ll)
 
 	const someError = "someError"
@@ -77,9 +77,9 @@ func TestLogin_Run_ShouldReturnError_IfPresenterShowAuthFailedReturnsError(t *te
 }
 
 func TestLogin_Run_ShouldLogLogged(t *testing.T) {
-	lp := &testLoginPresenter{}
-	ld := &testLoginDao{}
-	ll := &testLoginLogger{}
+	lp := &loginPresenterMock{}
+	ld := &loginDaoMock{}
+	ll := &loginLoggerMock{}
 	login := NewLogin(lp, ld, ll)
 
 	const name = "name"
@@ -98,9 +98,9 @@ func TestLogin_Run_ShouldLogLogged(t *testing.T) {
 }
 
 func TestLogin_Run_ShouldPresentToken(t *testing.T) {
-	lp := &testLoginPresenter{}
-	ld := &testLoginDao{}
-	ll := &testLoginLogger{}
+	lp := &loginPresenterMock{}
+	ld := &loginDaoMock{}
+	ll := &loginLoggerMock{}
 	login := NewLogin(lp, ld, ll)
 
 	const name = "name"
@@ -116,35 +116,4 @@ func TestLogin_Run_ShouldPresentToken(t *testing.T) {
 	login.Run(LoginData{Name: name, SecurityCode: code})
 
 	lp.AssertExpectations(t)
-}
-
-type testLoginPresenter struct {
-	mock.Mock
-}
-
-func (lp *testLoginPresenter) ShowAuthFailed() error {
-	args := lp.Called()
-	return args.Error(0)
-}
-
-func (lp *testLoginPresenter) Show(cert domain.Cert) error {
-	args := lp.Called(cert.Token)
-	return args.Error(0)
-}
-
-type testLoginDao struct {
-	mock.Mock
-}
-
-func (ld *testLoginDao) Authorize(auth domain.Auth) error {
-	args := ld.Called(auth.UserName, auth.SecurityCode)
-	return args.Error(0)
-}
-
-type testLoginLogger struct {
-	mock.Mock
-}
-
-func (ll *testLoginLogger) Logged(auth domain.Auth) {
-	ll.Called(auth.UserName, auth.SecurityCode)
 }

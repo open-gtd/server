@@ -8,7 +8,7 @@ import (
 )
 
 func TestInitialize(t *testing.T) {
-	r := &registerer{}
+	r := &registererMock{}
 	api.SetRegisterer(r)
 
 	r.On(
@@ -21,24 +21,4 @@ func TestInitialize(t *testing.T) {
 	Initialize()
 
 	r.AssertExpectations(t)
-}
-
-type registerer struct {
-	mock.Mock
-}
-
-func (r *registerer) GET(prefix string, path string, handler api.Handler) {
-	r.Called(prefix, path, handler)
-}
-func (r *registerer) PATCH(prefix string, path string, handler api.Handler) {
-	r.Called(prefix, path, handler)
-}
-func (r *registerer) POST(prefix string, path string, handler api.Handler) {
-	r.Called(prefix, path, handler)
-}
-func (r *registerer) PUT(prefix string, path string, handler api.Handler) {
-	r.Called(prefix, path, handler)
-}
-func (r *registerer) DELETE(prefix string, path string, handler api.Handler) {
-	r.Called(prefix, path, handler)
 }

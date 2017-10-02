@@ -15,11 +15,11 @@ const controlerValidationError = "Controller validation error"
 const controllerError = "controller error"
 
 func TestHandleRequest_ShouldRunControllerFromFactory(t *testing.T) {
-	controller := testController{}
-	fac := TestFactory{}
+	controller := controllerMock{}
+	fac := factoryMock{}
 
-	request := testRequest{}
-	response := testResponse{}
+	request := requestMock{}
+	response := responseMock{}
 
 	controller.On("Run").Return(nil)
 	fac.On("Destroy").Return(nil)
@@ -34,14 +34,14 @@ func TestHandleRequest_ShouldRunControllerFromFactory(t *testing.T) {
 }
 
 func TestHandleRequest_ShouldCallDestroyFunction(t *testing.T) {
-	controller := testController{}
-	fac := TestFactory{}
+	controller := controllerMock{}
+	fac := factoryMock{}
 
 	controller.On("Run").Return(nil)
 	fac.On("Destroy").Return(nil)
 
-	request := testRequest{}
-	response := testResponse{}
+	request := requestMock{}
+	response := responseMock{}
 	HandleRequest(
 		DestroyableController{controller, fac.Destroy},
 		request,
@@ -52,12 +52,12 @@ func TestHandleRequest_ShouldCallDestroyFunction(t *testing.T) {
 }
 
 func TestHandleRequest_ShouldNotFail_IfDestroyFunctionIsNil(t *testing.T) {
-	controller := testController{}
+	controller := controllerMock{}
 
 	controller.On("Run").Return(nil)
 
-	request := testRequest{}
-	response := testResponse{}
+	request := requestMock{}
+	response := responseMock{}
 	HandleRequest(
 		DestroyableController{controller, nil},
 		request,
@@ -68,15 +68,15 @@ func TestHandleRequest_ShouldNotFail_IfDestroyFunctionIsNil(t *testing.T) {
 }
 
 func TestHandleRequest_ShouldReturnErrorIfControllerRunReturnsError(t *testing.T) {
-	controller := testController{}
-	fac := TestFactory{}
+	controller := controllerMock{}
+	fac := factoryMock{}
 
 	controller.On("Run").Return(errors.New(controllerError))
 	fac.On("Create", mock.Anything, mock.Anything).Return(controller, nil)
 	fac.On("Destroy").Return(nil)
 
-	request := testRequest{}
-	response := testResponse{}
+	request := requestMock{}
+	response := responseMock{}
 	err := HandleRequest(
 		DestroyableController{controller, fac.Destroy},
 		request,
@@ -87,15 +87,15 @@ func TestHandleRequest_ShouldReturnErrorIfControllerRunReturnsError(t *testing.T
 }
 
 func TestHandleRequest_ShouldProduceBadRequestResponseErrorIfControllerRunReturnsError(t *testing.T) {
-	controller := testController{}
-	fac := TestFactory{}
+	controller := controllerMock{}
+	fac := factoryMock{}
 
 	controller.On("Run").Return(testValidationError{})
 	fac.On("Create", mock.Anything, mock.Anything).Return(controller, nil)
 	fac.On("Destroy").Return(nil)
 
-	request := testRequest{}
-	response := testResponse{}
+	request := requestMock{}
+	response := responseMock{}
 	response.On("JSON", http.StatusBadRequest, mock.Anything).
 		Run(func(args mock.Arguments) {
 			assert.Equal(t, args.Get(1).(MessageResponse).Message, controlerValidationError)
@@ -106,54 +106,6 @@ func TestHandleRequest_ShouldProduceBadRequestResponseErrorIfControllerRunReturn
 		request,
 		response,
 	)
-}
-
-type testController struct {
-	mock.Mock
-}
-
-func (t testController) Run() error {
-	args := t.Called()
-	return args.Error(0)
-}
-
-type testResponse struct {
-	mock.Mock
-}
-
-func (t testResponse) String(code int, s string) error {
-	args := t.Called(code, s)
-	return args.Error(0)
-}
-func (t testResponse) JSON(code int, i interface{}) error {
-	args := t.Called(code, i)
-	return args.Error(0)
-}
-func (t testResponse) NoContent(code int) error {
-	args := t.Called(code)
-	return args.Error(0)
-}
-
-type testRequest struct {
-	mock.Mock
-}
-
-func (t testRequest) Param(name string) string {
-	args := t.Called(name)
-	return args.String(0)
-}
-func (t testRequest) Bind(i interface{}) error {
-	args := t.Called(i)
-	return args.Error(0)
-}
-
-type TestFactory struct {
-	mock.Mock
-}
-
-func (t TestFactory) Destroy() error {
-	args := t.Called()
-	return args.Error(0)
 }
 
 type testValidationError struct{}

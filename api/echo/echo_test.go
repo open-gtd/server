@@ -6,22 +6,9 @@ import (
 	"fmt"
 
 	"github.com/labstack/echo"
-	"github.com/stretchr/testify/mock"
 	"github.com/open-gtd/server/api"
+	"github.com/stretchr/testify/mock"
 )
-
-type register struct {
-	mock.Mock
-}
-
-type context struct {
-	mock.Mock
-}
-
-func (r register) Add(method, path string, handler echo.HandlerFunc, middleware ...echo.MiddlewareFunc) *echo.Route {
-	args := r.Called(method, path, handler)
-	return route(args.Get(0))
-}
 
 func TestRegisterer_GET_ShouldCallRegisterAddWithGETMethodAndParameters(t *testing.T) {
 	path := "/xcx"
@@ -153,7 +140,7 @@ func TestRegisterer_GET_ShouldCallRegisterAddOnGroupWithGETMethodAndParameters(t
 	path := "/xxz"
 	prefix := "/prefix"
 
-	r := register{}
+	r := registerMock{}
 	groups := map[string]Router{}
 	groups["/prefix"] = prepareRouterMock("GET", path)
 
@@ -167,7 +154,7 @@ func TestRegisterer_POST_ShouldCallRegisterAddOnGroupWithPOSTMethodAndParameters
 	path := "/xxz"
 	prefix := "/prefix"
 
-	r := register{}
+	r := registerMock{}
 	groups := map[string]Router{}
 	groups["/prefix"] = prepareRouterMock("POST", path)
 
@@ -181,7 +168,7 @@ func TestRegisterer_PATCH_ShouldCallRegisterAddOnGroupWithPATCHMethodAndParamete
 	path := "/xxz"
 	prefix := "/prefix"
 
-	r := register{}
+	r := registerMock{}
 	groups := map[string]Router{}
 	groups["/prefix"] = prepareRouterMock("PATCH", path)
 
@@ -195,7 +182,7 @@ func TestRegisterer_PUT_ShouldCallRegisterAddOnGroupWithPUTMethodAndParameters(t
 	path := "/xxz"
 	prefix := "/prefix"
 
-	r := register{}
+	r := registerMock{}
 	groups := map[string]Router{}
 	groups["/prefix"] = prepareRouterMock("PUT", path)
 
@@ -209,7 +196,7 @@ func TestRegisterer_DELETE_ShouldCallRegisterAddOnGroupWithDELETEMethodAndParame
 	path := "/xxz"
 	prefix := "/prefix"
 
-	r := register{}
+	r := registerMock{}
 	groups := map[string]Router{}
 	groups["/prefix"] = prepareRouterMock("DELETE", path)
 
@@ -219,8 +206,8 @@ func TestRegisterer_DELETE_ShouldCallRegisterAddOnGroupWithDELETEMethodAndParame
 	r.AssertExpectations(t)
 }
 
-func prepareRouterMock(method string, path string) register {
-	r := register{}
+func prepareRouterMock(method string, path string) registerMock {
+	r := registerMock{}
 
 	r.On("Add", method, path, mock.AnythingOfType("echo.HandlerFunc")).Return(nil)
 	return r

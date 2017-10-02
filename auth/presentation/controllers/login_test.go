@@ -2,7 +2,6 @@ package controllers
 
 import (
 	"errors"
-	"fmt"
 	"testing"
 
 	"github.com/open-gtd/server/auth/business"
@@ -12,8 +11,8 @@ import (
 )
 
 func TestLogin_Run_ShouldCallRequestBindWithAuthInstance(t *testing.T) {
-	rq := &testRequest{}
-	l := &testLogin{}
+	rq := &requestMock{}
+	l := &loginMock{}
 
 	rq.On("Bind", mock.AnythingOfType("*presentation.LoginData")).Return(nil)
 	l.On("Run", mock.Anything).Return(nil)
@@ -24,8 +23,8 @@ func TestLogin_Run_ShouldCallRequestBindWithAuthInstance(t *testing.T) {
 }
 
 func TestLogin_Run_ShouldReturnError_IfRequestBindReturnsError(t *testing.T) {
-	rq := &testRequest{}
-	l := &testLogin{}
+	rq := &requestMock{}
+	l := &loginMock{}
 
 	const bindError = "bindError"
 	rq.On("Bind", mock.Anything).Return(errors.New(bindError))
@@ -39,9 +38,9 @@ func TestLogin_Run_ShouldReturnError_IfRequestBindReturnsError(t *testing.T) {
 }
 
 func TestLogin_Run_ShouldPassLoginDataFromRequestToConvert(t *testing.T) {
-	rq := &testRequest{}
-	l := &testLogin{}
-	c := &testConvert{}
+	rq := &requestMock{}
+	l := &loginMock{}
+	c := &convertFuncMock{}
 	convertFunc = c.Convert
 
 	const userName = "userName"
@@ -78,9 +77,9 @@ func TestLogin_Run_ShouldPassLoginDataFromRequestToConvert(t *testing.T) {
 }
 
 func TestLogin_Run_ShouldPassLoginDataFromConvertToPresenterRun(t *testing.T) {
-	rq := &testRequest{}
-	l := &testLogin{}
-	c := &testConvert{}
+	rq := &requestMock{}
+	l := &loginMock{}
+	c := &convertFuncMock{}
 	convertFunc = c.Convert
 
 	const userName = "userName"
@@ -104,9 +103,9 @@ func TestLogin_Run_ShouldPassLoginDataFromConvertToPresenterRun(t *testing.T) {
 }
 
 func TestLogin_Run_ShouldReturnError_IfPresenterRunReturnsError(t *testing.T) {
-	rq := &testRequest{}
-	l := &testLogin{}
-	c := &testConvert{}
+	rq := &requestMock{}
+	l := &loginMock{}
+	c := &convertFuncMock{}
 	convertFunc = c.Convert
 
 	const presenterError = "presenterError"
@@ -122,43 +121,4 @@ func TestLogin_Run_ShouldReturnError_IfPresenterRunReturnsError(t *testing.T) {
 	err := sut.Run()
 
 	assert.EqualError(t, err, presenterError)
-}
-
-type testLogin struct {
-	mock.Mock
-}
-
-func (l *testLogin) Run(ld business.LoginData) error {
-	args := l.Called(ld)
-	return args.Error(0)
-}
-
-type testRequest struct {
-	mock.Mock
-}
-
-func (t testRequest) Param(name string) string {
-	args := t.Called(name)
-	return args.String(0)
-}
-func (t testRequest) Bind(i interface{}) error {
-	args := t.Called(i)
-	return args.Error(0)
-}
-
-type testConvert struct {
-	mock.Mock
-}
-
-func (l *testConvert) Convert(ld presentation.LoginData) business.LoginData {
-	args := l.Called(ld)
-	return l.loginData(args.Get(0))
-}
-func (l *testConvert) loginData(i interface{}) business.LoginData {
-	var c business.LoginData
-	var ok bool
-	if c, ok = i.(business.LoginData); !ok {
-		panic(fmt.Sprintf("assert: arguments: business.LoginData failed because object wasn't correct type: %v", i))
-	}
-	return c
 }
