@@ -13,7 +13,8 @@ import (
 func TestBus_Subscribe_ShouldCallBusSubscribeWithTopicAndHandler(t *testing.T) {
 	busMock := &eventBusMock{}
 
-	sut := &bus{eBus: busMock}
+	innerBus = busMock
+	sut := NewBus()
 
 	busMock.On("Subscribe", "topic", mock.AnythingOfType("eventBus.BusHandler")).Return(nil)
 
@@ -25,7 +26,8 @@ func TestBus_Subscribe_ShouldCallBusSubscribeWithTopicAndHandler(t *testing.T) {
 func TestBus_Subscribe_ShouldReturnError_IfBusSubscribeReturnsError(t *testing.T) {
 	busMock := &eventBusMock{}
 
-	sut := &bus{eBus: busMock}
+	innerBus = busMock
+	sut := NewBus()
 
 	const subscribeError = "subscribeError"
 	busMock.On("Subscribe", mock.Anything, mock.Anything).Return(errors.New(subscribeError))
@@ -38,7 +40,8 @@ func TestBus_Subscribe_ShouldReturnError_IfBusSubscribeReturnsError(t *testing.T
 func TestBus_Publish_ShouldCallBusPublish(t *testing.T) {
 	busMock := &eventBusMock{}
 
-	sut := &bus{eBus: busMock}
+	innerBus = busMock
+	sut := NewBus()
 
 	busMock.On("Publish", "topic", []interface{}{"arg"}).Return(nil)
 
@@ -50,7 +53,8 @@ func TestBus_Publish_ShouldCallBusPublish(t *testing.T) {
 func TestBus_Unsubscribe_ShouldCallBusUnsubscribeWithTopicAndHandler(t *testing.T) {
 	busMock := &eventBusMock{}
 
-	sut := &bus{eBus: busMock}
+	innerBus = busMock
+	sut := NewBus()
 
 	busMock.On("Unsubscribe", "topic", mock.AnythingOfType("eventBus.BusHandler")).Return(nil)
 
@@ -62,7 +66,8 @@ func TestBus_Unsubscribe_ShouldCallBusUnsubscribeWithTopicAndHandler(t *testing.
 func TestBus_Unsubscribe_ShouldReturnError_IfBusUnsubscribeReturnsError(t *testing.T) {
 	busMock := &eventBusMock{}
 
-	sut := &bus{eBus: busMock}
+	innerBus = busMock
+	sut := NewBus()
 
 	const unsubscribeError = "unsubscribeError"
 	busMock.On("Subscribe", mock.Anything, mock.Anything).Return(errors.New(unsubscribeError))
