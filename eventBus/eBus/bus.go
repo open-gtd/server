@@ -5,9 +5,11 @@ import (
 	"github.com/open-gtd/server/eventBus"
 )
 
+var innerBus EventBus.Bus = EventBus.New()
+
 func NewBus() eventBus.Bus {
 	return &bus{
-		eBus: EventBus.New(),
+		eBus: innerBus,
 	}
 }
 

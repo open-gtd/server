@@ -7,6 +7,22 @@ import (
 	"github.com/spf13/viper"
 )
 
+type Configuration interface {
+	Get(key string) interface{}
+	GetBool(key string) bool
+	GetFloat64(key string) float64
+	GetInt(key string) int
+	GetString(key string) string
+	GetStringMap(key string) map[string]interface{}
+	GetStringMapString(key string) map[string]string
+	GetStringSlice(key string) []string
+	GetTime(key string) time.Time
+	GetDuration(key string) time.Duration
+	IsSet(key string) bool
+}
+
+var v Configuration = &viper.Viper{}
+
 type reader struct {
 }
 
@@ -15,36 +31,36 @@ func New() config.Reader {
 }
 
 func (r reader) Get(key string) interface{} {
-	return viper.Get(key)
+	return v.Get(key)
 }
 
 func (r reader) GetBool(key string) bool {
-	return viper.GetBool(key)
+	return v.GetBool(key)
 }
 func (r reader) GetFloat64(key string) float64 {
-	return viper.GetFloat64(key)
+	return v.GetFloat64(key)
 }
 func (r reader) GetInt(key string) int {
-	return viper.GetInt(key)
+	return v.GetInt(key)
 }
 func (r reader) GetString(key string) string {
-	return viper.GetString(key)
+	return v.GetString(key)
 }
 func (r reader) GetStringMap(key string) map[string]interface{} {
-	return viper.GetStringMap(key)
+	return v.GetStringMap(key)
 }
 func (r reader) GetStringMapString(key string) map[string]string {
-	return viper.GetStringMapString(key)
+	return v.GetStringMapString(key)
 }
 func (r reader) GetStringSlice(key string) []string {
-	return viper.GetStringSlice(key)
+	return v.GetStringSlice(key)
 }
 func (r reader) GetTime(key string) time.Time {
-	return viper.GetTime(key)
+	return v.GetTime(key)
 }
 func (r reader) GetDuration(key string) time.Duration {
-	return viper.GetDuration(key)
+	return v.GetDuration(key)
 }
 func (r reader) IsSet(key string) bool {
-	return viper.IsSet(key)
+	return v.IsSet(key)
 }
