@@ -5,6 +5,7 @@ import (
 
 	"github.com/open-gtd/server/api"
 	"github.com/stretchr/testify/mock"
+	"github.com/labstack/echo"
 )
 
 func TestRegisterer_GET_ShouldCallRegisterAddWithGETMethodAndParameters(t *testing.T) {
@@ -206,7 +207,8 @@ func TestRegisterer_DELETE_ShouldCallRegisterAddOnGroupWithDELETEMethodAndParame
 func prepareRouterMock(method string, path string) registerMock {
 	r := registerMock{}
 
-	r.On("Add", method, path, mock.AnythingOfType("echo.HandlerFunc")).Return(nil)
+	var route *echo.Route
+	r.On("Add", method, path, mock.AnythingOfType("echo.HandlerFunc")).Return(route)
 	return r
 }
 

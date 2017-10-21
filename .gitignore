@@ -16,5 +16,7 @@
 .glide/
 
 vendor/
+.idea/
 
 server.conf.json
+coverage.txt

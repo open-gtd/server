@@ -8,5 +8,4 @@ import (
 func Initialize() {
 	api.Initialize()
 	sse.Initialize()
-
 }

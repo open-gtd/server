@@ -4,6 +4,7 @@ import (
 	"errors"
 	"testing"
 
+	"github.com/open-gtd/server/api"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -45,7 +46,8 @@ func TestControllerHandler_Handle_ShouldCallControllerRun(t *testing.T) {
 
 	tc.On("Run").Return(nil)
 
-	cfm.On("CreateController", rq, rs).Return(tc, nil, nil)
+	var controllerDestroyFunc api.ControllerDestroyFunc
+	cfm.On("CreateController", rq, rs).Return(tc, controllerDestroyFunc, nil)
 
 	ch := NewControllerHandler(cfm.CreateController)
 
@@ -65,7 +67,8 @@ func TestControllerHandler_Handle_ShouldReturnError_IfControllerRunReturnsError(
 
 	tc.On("Run").Return(errors.New(someError))
 
-	cfm.On("CreateController", rq, rs).Return(tc, nil, nil)
+	var controllerDestroyFunc api.ControllerDestroyFunc
+	cfm.On("CreateController", rq, rs).Return(tc, controllerDestroyFunc, nil)
 
 	ch := NewControllerHandler(cfm.CreateController)
 
@@ -79,10 +82,13 @@ func TestControllerHandler_Handle_ShouldReturnError_IfControllerFactiryReturnsEr
 
 	cfm := controllerFactoryMock{}
 
+	tc := &controllerMock{}
 	rq := requestMock{}
 	rs := responseMock{}
 
-	cfm.On("CreateController", rq, rs).Return(nil, nil, errors.New(someError))
+	//var controller business.Controller
+	var controllerDestroyFunc api.ControllerDestroyFunc
+	cfm.On("CreateController", rq, rs).Return(tc, controllerDestroyFunc, errors.New(someError))
 
 	ch := NewControllerHandler(cfm.CreateController)
 
