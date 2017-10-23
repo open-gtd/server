@@ -3,222 +3,438 @@ package echo
 import (
 	"testing"
 
-	"github.com/open-gtd/server/api"
 	"github.com/stretchr/testify/mock"
 	"github.com/labstack/echo"
 )
 
+
+const POST = "POST"
+const GET = "GET"
+const PATCH = "PATCH"
+const PUT = "PUT"
+const DELETE = "DELETE"
+
+const emptyPrefix = ""
+
 func TestRegisterer_GET_ShouldCallRegisterAddWithGETMethodAndParameters(t *testing.T) {
-	path := "/xcx"
+	const path = "/xcx"
 
 	groups := map[string]Router{}
-	r := prepareRouterMock("GET", path)
 
-	sut := NewEchoRegisterer(r, groups)
-	sut.GET("", path, handler)
+	handlerFuncMock := &handlerFuncMock{}
+	routerMock := prepareRouterMock(GET, path)
 
-	r.AssertExpectations(t)
+	sut := NewEchoRegisterer(routerMock, groups)
+	sut.GET(emptyPrefix, path, handlerFuncMock)
+
+	routerMock.AssertExpectations(t)
+}
+
+func TestRegisterer_GET_RegisteredHandlerFuncShouldBeCalledWHenRouterCallRegisteredHandler(t *testing.T) {
+	const path = "/xzx"
+
+	routerMock := prepareRouterMockWithHandlerCall(GET, path)
+	handlerFuncMock := &handlerFuncMock{}
+
+	handlerFuncMock.On("Handle", mock.Anything, mock.Anything).
+		Return(nil)
+
+	groups := map[string]Router{}
+	sut := NewEchoRegisterer(routerMock, groups)
+	sut.GET(emptyPrefix, path, handlerFuncMock)
+
+	handlerFuncMock.AssertExpectations(t)
 }
 
 func TestRegisterer_POST_ShouldCallRegisterAddWithPOSTMethodAndParameters(t *testing.T) {
 	path := "/xzx"
 
 	groups := map[string]Router{}
-	r := prepareRouterMock("POST", path)
 
-	sut := NewEchoRegisterer(r, groups)
-	sut.POST("", path, handler)
+	handlerFuncMock := &handlerFuncMock{}
+	routerMock := prepareRouterMock(POST, path)
 
-	r.AssertExpectations(t)
+	sut := NewEchoRegisterer(routerMock, groups)
+	sut.POST(emptyPrefix, path, handlerFuncMock)
+
+	routerMock.AssertExpectations(t)
+}
+
+func TestRegisterer_POST_RegisteredHandlerFuncShouldBeCalledWHenRouterCallRegisteredHandler(t *testing.T) {
+	const path = "/xzx"
+
+	routerMock := prepareRouterMockWithHandlerCall(POST, path)
+	handlerFuncMock := &handlerFuncMock{}
+
+	handlerFuncMock.On("Handle", mock.Anything, mock.Anything).
+		Return(nil)
+
+	groups := map[string]Router{}
+	sut := NewEchoRegisterer(routerMock, groups)
+
+	sut.POST(emptyPrefix, path, handlerFuncMock)
+
+	handlerFuncMock.AssertExpectations(t)
 }
 
 func TestRegisterer_PATCH_ShouldCallRegisterAddWithPATCHMethodAndParameters(t *testing.T) {
-	path := "/xxz"
+	const path = "/xxz"
 
 	groups := map[string]Router{}
-	r := prepareRouterMock("PATCH", path)
 
-	sut := NewEchoRegisterer(r, groups)
-	sut.PATCH("", path, handler)
+	handlerFuncMock := &handlerFuncMock{}
+	routerMock := prepareRouterMock(PATCH, path)
 
-	r.AssertExpectations(t)
+	sut := NewEchoRegisterer(routerMock, groups)
+	sut.PATCH(emptyPrefix, path, handlerFuncMock)
+
+	routerMock.AssertExpectations(t)
+}
+
+func TestRegisterer_PATCH_RegisteredHandlerFuncShouldBeCalledWHenRouterCallRegisteredHandler(t *testing.T) {
+	const path = "/xzx"
+
+	routerMock := prepareRouterMockWithHandlerCall(PATCH, path)
+	handlerFuncMock := &handlerFuncMock{}
+
+	handlerFuncMock.On("Handle", mock.Anything, mock.Anything).
+		Return(nil)
+
+	groups := map[string]Router{}
+	sut := NewEchoRegisterer(routerMock, groups)
+	sut.PATCH(emptyPrefix, path, handlerFuncMock)
+
+	handlerFuncMock.AssertExpectations(t)
 }
 
 func TestRegisterer_PUT_ShouldCallRegisterAddWithPUTMethodAndParameters(t *testing.T) {
-	path := "/zxx"
+	const path = "/zxx"
 
 	groups := map[string]Router{}
-	r := prepareRouterMock("PUT", path)
 
-	sut := NewEchoRegisterer(r, groups)
-	sut.PUT("", path, handler)
+	handlerFuncMock := &handlerFuncMock{}
+	routerMock := prepareRouterMock(PUT, path)
 
-	r.AssertExpectations(t)
+	sut := NewEchoRegisterer(routerMock, groups)
+	sut.PUT(emptyPrefix, path, handlerFuncMock)
+
+	routerMock.AssertExpectations(t)
+}
+
+func TestRegisterer_PUT_RegisteredHandlerFuncShouldBeCalledWHenRouterCallRegisteredHandler(t *testing.T) {
+	const path = "/xzx"
+
+	routerMock := prepareRouterMockWithHandlerCall(PUT, path)
+	handlerFuncMock := &handlerFuncMock{}
+
+	handlerFuncMock.On("Handle", mock.Anything, mock.Anything).
+		Return(nil)
+
+	groups := map[string]Router{}
+	sut := NewEchoRegisterer(routerMock, groups)
+	sut.PUT(emptyPrefix, path, handlerFuncMock)
+
+	handlerFuncMock.AssertExpectations(t)
 }
 
 func TestRegisterer_DELETE_ShouldCallRegisterAddWithDELETEMethodAndParameters(t *testing.T) {
-	prefix := ""
-	path := "/xyy"
+	const prefix = emptyPrefix
+	const path = "/xyy"
 
 	groups := map[string]Router{}
-	r := prepareRouterMock("DELETE", path)
 
-	sut := NewEchoRegisterer(r, groups)
-	sut.DELETE(prefix, path, handler)
+	handlerFuncMock := &handlerFuncMock{}
+	routerMock := prepareRouterMock(DELETE, path)
 
-	r.AssertExpectations(t)
+	sut := NewEchoRegisterer(routerMock, groups)
+	sut.DELETE(prefix, path, handlerFuncMock)
+
+	routerMock.AssertExpectations(t)
+}
+
+func TestRegisterer_DELETE_RegisteredHandlerFuncShouldBeCalledWHenRouterCallRegisteredHandler(t *testing.T) {
+	const path = "/xzx"
+
+	routerMock := prepareRouterMockWithHandlerCall(DELETE, path)
+	handlerFuncMock := &handlerFuncMock{}
+
+	handlerFuncMock.On("Handle", mock.Anything, mock.Anything).
+		Return(nil)
+
+	groups := map[string]Router{}
+	sut := NewEchoRegisterer(routerMock, groups)
+	sut.DELETE(emptyPrefix, path, handlerFuncMock)
+
+	handlerFuncMock.AssertExpectations(t)
 }
 
 func TestRegisterer_GET_ShouldCallRegisterAddWithGETMethodAndParametersAndPrefix(t *testing.T) {
-	path := "/xcx"
-	prefix := "/prefix"
+	const path = "/xcx"
+	const prefix = "/prefix"
 
 	groups := map[string]Router{}
-	r := prepareRouterMock("GET", prefix+path)
 
-	sut := NewEchoRegisterer(r, groups)
-	sut.GET(prefix, path, handler)
+	handlerFuncMock := &handlerFuncMock{}
+	routerMock := prepareRouterMock(GET, prefix + path)
 
-	r.AssertExpectations(t)
+	sut := NewEchoRegisterer(routerMock, groups)
+	sut.GET(prefix, path, handlerFuncMock)
+
+	routerMock.AssertExpectations(t)
 }
 
 func TestRegisterer_POST_ShouldCallRegisterAddWithPOSTMethodAndParametersAndPrefix(t *testing.T) {
-	path := "/xzx"
-	prefix := "/prefix"
+	const path = "/xzx"
+	const prefix = "/prefix"
 
 	groups := map[string]Router{}
-	r := prepareRouterMock("POST", prefix+path)
 
-	sut := NewEchoRegisterer(r, groups)
-	sut.POST(prefix, path, handler)
+	handlerFuncMock := &handlerFuncMock{}
+	routerMock := prepareRouterMock(POST, prefix + path)
 
-	r.AssertExpectations(t)
+	sut := NewEchoRegisterer(routerMock, groups)
+	sut.POST(prefix, path, handlerFuncMock)
+
+	routerMock.AssertExpectations(t)
 }
 
 func TestRegisterer_PATCH_ShouldCallRegisterAddWithPATCHMethodAndParametersAndPrefix(t *testing.T) {
-	path := "/xxz"
-	prefix := "/prefix"
+	const path = "/xxz"
+	const prefix = "/prefix"
 
 	groups := map[string]Router{}
-	r := prepareRouterMock("PATCH", prefix+path)
 
-	sut := NewEchoRegisterer(r, groups)
-	sut.PATCH(prefix, path, handler)
+	handlerFuncMock := &handlerFuncMock{}
+	routerMock := prepareRouterMock(PATCH, prefix + path)
 
-	r.AssertExpectations(t)
+	sut := NewEchoRegisterer(routerMock, groups)
+	sut.PATCH(prefix, path, handlerFuncMock)
+
+	routerMock.AssertExpectations(t)
 }
 
 func TestRegisterer_PUT_ShouldCallRegisterAddWithPUTMethodAndParametersAndPrefix(t *testing.T) {
-	path := "/zxx"
-	prefix := "/prefix"
+	const path = "/zxx"
+	const prefix = "/prefix"
 
 	groups := map[string]Router{}
-	r := prepareRouterMock("PUT", prefix+path)
 
-	sut := NewEchoRegisterer(r, groups)
-	sut.PUT(prefix, path, handler)
+	handlerFuncMock := &handlerFuncMock{}
+	routerMock := prepareRouterMock(PUT, prefix + path)
 
-	r.AssertExpectations(t)
+	sut := NewEchoRegisterer(routerMock, groups)
+	sut.PUT(prefix, path, handlerFuncMock)
+
+	routerMock.AssertExpectations(t)
 }
 
 func TestRegisterer_DELETE_ShouldCallRegisterAddWithDELETEMethodAndParametersAndPrefix(t *testing.T) {
-	prefix := "/prefix"
-	path := "/xyy"
+	const prefix = "/prefix"
+	const path = "/xyy"
 
 	groups := map[string]Router{}
-	r := prepareRouterMock("DELETE", prefix+path)
 
-	sut := NewEchoRegisterer(r, groups)
-	sut.DELETE(prefix, path, handler)
+	handlerFuncMock := &handlerFuncMock{}
+	routerMock := prepareRouterMock(DELETE, prefix + path)
 
-	r.AssertExpectations(t)
+	sut := NewEchoRegisterer(routerMock, groups)
+	sut.DELETE(prefix, path, handlerFuncMock)
+
+	routerMock.AssertExpectations(t)
 }
 
 func TestRegisterer_GET_ShouldCallRegisterAddOnGroupWithGETMethodAndParameters(t *testing.T) {
-	path := "/xxz"
-	prefix := "/prefix"
+	const path = "/xxz"
+	const prefix = "/prefix"
 
-	r := registerMock{}
+	handlerFuncMock := &handlerFuncMock{}
+	routerMock := registerMock{}
+
 	groups := map[string]Router{}
-	groups["/prefix"] = prepareRouterMock("GET", path)
+	groups[prefix] = prepareRouterMock(GET, path)
 
-	sut := NewEchoRegisterer(r, groups)
-	sut.GET(prefix, path, handler)
+	sut := NewEchoRegisterer(routerMock, groups)
+	sut.GET(prefix, path, handlerFuncMock)
 
-	r.AssertExpectations(t)
+	routerMock.AssertExpectations(t)
+}
+
+func TestRegisterer_GET_OnGroupRegisteredHandlerFuncShouldBeCalledWHenRouterCallRegisteredHandler(t *testing.T) {
+	const path = "/xzx"
+	const prefix = "/prefix"
+
+	groups := map[string]Router{}
+	groups[prefix] = prepareRouterMockWithHandlerCall(GET, path)
+
+	handlerFuncMock := &handlerFuncMock{}
+	registerMock := registerMock{}
+
+	handlerFuncMock.On("Handle", mock.Anything, mock.Anything).
+		Return(nil)
+
+	sut := NewEchoRegisterer(registerMock, groups)
+	sut.GET(prefix, path, handlerFuncMock)
+
+	handlerFuncMock.AssertExpectations(t)
 }
 
 func TestRegisterer_POST_ShouldCallRegisterAddOnGroupWithPOSTMethodAndParameters(t *testing.T) {
-	path := "/xxz"
-	prefix := "/prefix"
+	const path = "/xxz"
+	const prefix = "/prefix"
 
-	r := registerMock{}
+	routerMock := registerMock{}
+	handlerFuncMock := &handlerFuncMock{}
+
 	groups := map[string]Router{}
-	groups["/prefix"] = prepareRouterMock("POST", path)
+	groups[prefix] = prepareRouterMock(POST, path)
 
-	sut := NewEchoRegisterer(r, groups)
-	sut.POST(prefix, path, handler)
+	sut := NewEchoRegisterer(routerMock, groups)
+	sut.POST(prefix, path, handlerFuncMock)
 
-	r.AssertExpectations(t)
+	routerMock.AssertExpectations(t)
+}
+
+func TestRegisterer_POST_OnGroupRegisteredHandlerFuncShouldBeCalledWHenRouterCallRegisteredHandler(t *testing.T) {
+	const path = "/xzx"
+	const prefix = "/prefix"
+
+	groups := map[string]Router{}
+	groups[prefix] = prepareRouterMockWithHandlerCall(POST, path)
+
+	handlerFuncMock := &handlerFuncMock{}
+	registerMock := registerMock{}
+
+	handlerFuncMock.On("Handle", mock.Anything, mock.Anything).
+		Return(nil)
+
+	sut := NewEchoRegisterer(registerMock, groups)
+	sut.POST(prefix, path, handlerFuncMock)
+
+	handlerFuncMock.AssertExpectations(t)
 }
 
 func TestRegisterer_PATCH_ShouldCallRegisterAddOnGroupWithPATCHMethodAndParameters(t *testing.T) {
-	path := "/xxz"
-	prefix := "/prefix"
+	const path = "/xxz"
+	const prefix = "/prefix"
 
-	r := registerMock{}
+	routerMock := registerMock{}
+	handlerFuncMock := &handlerFuncMock{}
+
 	groups := map[string]Router{}
-	groups["/prefix"] = prepareRouterMock("PATCH", path)
+	groups[prefix] = prepareRouterMock(PATCH, path)
 
-	sut := NewEchoRegisterer(r, groups)
-	sut.PATCH(prefix, path, handler)
+	sut := NewEchoRegisterer(routerMock, groups)
+	sut.PATCH(prefix, path, handlerFuncMock)
 
-	r.AssertExpectations(t)
+	routerMock.AssertExpectations(t)
+}
+
+func TestRegisterer_PATCH_OnGroupRegisteredHandlerFuncShouldBeCalledWHenRouterCallRegisteredHandler(t *testing.T) {
+	const path = "/xzx"
+	const prefix = "/prefix"
+
+	groups := map[string]Router{}
+	groups[prefix] = prepareRouterMockWithHandlerCall(PATCH, path)
+
+	handlerFuncMock := &handlerFuncMock{}
+	registerMock := registerMock{}
+
+	handlerFuncMock.On("Handle", mock.Anything, mock.Anything).
+		Return(nil)
+
+	sut := NewEchoRegisterer(registerMock, groups)
+	sut.PATCH(prefix, path, handlerFuncMock)
+
+	handlerFuncMock.AssertExpectations(t)
 }
 
 func TestRegisterer_PUT_ShouldCallRegisterAddOnGroupWithPUTMethodAndParameters(t *testing.T) {
-	path := "/xxz"
-	prefix := "/prefix"
+	const path = "/xxz"
+	const prefix = "/prefix"
 
-	r := registerMock{}
+	routerMock := registerMock{}
+	handlerFuncMock := &handlerFuncMock{}
+
 	groups := map[string]Router{}
-	groups["/prefix"] = prepareRouterMock("PUT", path)
+	groups[prefix] = prepareRouterMock(PUT, path)
 
-	sut := NewEchoRegisterer(r, groups)
-	sut.PUT(prefix, path, handler)
+	sut := NewEchoRegisterer(routerMock, groups)
+	sut.PUT(prefix, path, handlerFuncMock)
 
-	r.AssertExpectations(t)
+	routerMock.AssertExpectations(t)
+}
+
+func TestRegisterer_PUT_OnGroupRegisteredHandlerFuncShouldBeCalledWHenRouterCallRegisteredHandler(t *testing.T) {
+	const path = "/xzx"
+	const prefix = "/prefix"
+
+	groups := map[string]Router{}
+	groups[prefix] = prepareRouterMockWithHandlerCall(PUT, path)
+
+	handlerFuncMock := &handlerFuncMock{}
+	registerMock := registerMock{}
+
+	handlerFuncMock.On("Handle", mock.Anything, mock.Anything).
+		Return(nil)
+
+	sut := NewEchoRegisterer(registerMock, groups)
+	sut.PUT(prefix, path, handlerFuncMock)
+
+	handlerFuncMock.AssertExpectations(t)
 }
 
 func TestRegisterer_DELETE_ShouldCallRegisterAddOnGroupWithDELETEMethodAndParameters(t *testing.T) {
-	path := "/xxz"
-	prefix := "/prefix"
+	const path = "/xxz"
+	const prefix = "/prefix"
 
-	r := registerMock{}
+	routerMock := registerMock{}
+	handlerFuncMock := &handlerFuncMock{}
+
 	groups := map[string]Router{}
-	groups["/prefix"] = prepareRouterMock("DELETE", path)
+	groups[prefix] = prepareRouterMock(DELETE, path)
 
-	sut := NewEchoRegisterer(r, groups)
-	sut.DELETE(prefix, path, handler)
+	sut := NewEchoRegisterer(routerMock, groups)
+	sut.DELETE(prefix, path, handlerFuncMock)
 
-	r.AssertExpectations(t)
+	routerMock.AssertExpectations(t)
+}
+
+func TestRegisterer_DELETE_OnGroupRegisteredHandlerFuncShouldBeCalledWHenRouterCallRegisteredHandler(t *testing.T) {
+	const path = "/xzx"
+	const prefix = "/prefix"
+
+	groups := map[string]Router{}
+	groups[prefix] = prepareRouterMockWithHandlerCall(DELETE, path)
+
+	handlerFuncMock := &handlerFuncMock{}
+	registerMock := registerMock{}
+
+	handlerFuncMock.On("Handle", mock.Anything, mock.Anything).
+		Return(nil)
+
+	sut := NewEchoRegisterer(registerMock, groups)
+	sut.DELETE(prefix, path, handlerFuncMock)
+
+	handlerFuncMock.AssertExpectations(t)
 }
 
 func prepareRouterMock(method string, path string) registerMock {
-	r := registerMock{}
+	registermock := registerMock{}
 
 	var route *echo.Route
-	r.On("Add", method, path, mock.AnythingOfType("echo.HandlerFunc")).Return(route)
-	return r
+	registermock.On("Add", method, path, mock.AnythingOfType("echo.HandlerFunc")).Return(route)
+	return registermock
 }
 
-type handlerFuncMock struct {
-	mock.Mock
-}
+func prepareRouterMockWithHandlerCall(method string, path string) registerMock {
+	registerMock := registerMock{}
 
-func (h *handlerFuncMock) Handle(request api.Request, response api.Response) error {
-	args := h.Called(request, response)
-	return args.Error(0)
-}
+	var route *echo.Route
+	registerMock.On("Add", method, path, mock.AnythingOfType("echo.HandlerFunc")).
+		Run(func(args mock.Arguments){
+			args.Get(2).(echo.HandlerFunc)(&contextMock{})
+		}).
+		Return(route)
 
-var handler = &handlerFuncMock{}
+	return registerMock
+}

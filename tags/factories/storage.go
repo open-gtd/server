@@ -15,10 +15,13 @@ var p = pool.NewObjectPool(
 	pool.NewPooledObjectFactorySimple(
 		func() (interface{}, error) {
 
+			host := c.GetString("tags.database.host")
+			database := c.GetString("tags.database.database")
+			collection := c.GetString("tags.database.collection")
 			dao, err := mongo.CreateDao(
-				c.GetString("tags.database.host"),
-				c.GetString("tags.database.database"),
-				c.GetString("tags.database.collection"),
+				host,
+				database,
+				collection,
 			)
 			if err != nil {
 				return nil, err

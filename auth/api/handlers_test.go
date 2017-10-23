@@ -13,8 +13,8 @@ func TestInitialize(t *testing.T) {
 
 	r.On(
 		"POST",
-		"/api",
-		"/auth",
+		"",
+		"/api/auth",
 		mock.AnythingOfType("controllerHandler"),
 	).Once()
 

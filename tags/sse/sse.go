@@ -15,7 +15,7 @@ type registration struct {
 }
 
 func Initialize() {
-	r := sse.GetRegistarer()
+	r := sse.GetRegisterer()
 
 	handlers := createRegistrations()
 

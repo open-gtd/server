@@ -5,10 +5,10 @@ import (
 	"github.com/open-gtd/server/auth/factories"
 )
 
-var loginHandler api.Handler = NewControllerHandler(factories.Login)
+var loginHandler = NewControllerHandler(factories.Login)
 
 func Initialize() {
 	r := api.GetRegisterer()
 
-	r.POST("/api", "/auth", loginHandler)
+	r.POST("","/api/auth", loginHandler)
 }

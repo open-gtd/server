@@ -6,6 +6,6 @@ func SetRegisterer(registerer Registerer) {
 	r = registerer
 }
 
-func GetRegistarer() Registerer {
+func GetRegisterer() Registerer {
 	return r
 }

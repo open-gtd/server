@@ -22,3 +22,7 @@ func TestIsNotAllowedValueError_ShouldReturnTrue_IfErrorIsOfTypeNotAllowedValueE
 func TestIsNotAllowedValueError_ShouldReturnFalse_IfErrorIsNotOfTypeNotAllowedValueError(t *testing.T) {
 	assert.False(t, IsNotAllowedValueError(errors.New("")))
 }
+
+func TestIsNotAllowedValueError_TypeShouldReturnValidationType(t *testing.T) {
+	assert.Equal(t, Validation, NewNotAllowedValue("", "", []string{}).Type())
+}
