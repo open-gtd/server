@@ -5,7 +5,10 @@ import (
 	"github.com/open-gtd/server/tags/sse"
 )
 
+var apiInitializer = api.Initialize
+var sseInitializer = sse.Initialize
+
 func Initialize() {
-	api.Initialize()
-	sse.Initialize()
+	apiInitializer()
+	sseInitializer()
 }
