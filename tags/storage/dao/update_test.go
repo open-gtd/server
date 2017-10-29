@@ -52,3 +52,7 @@ func TestUpdate_Get_ShouldReturnStorageNotFoundError_IfDaoGetWillReturnNotFoundE
 
 	assert.EqualError(t, err, storageNotFoundError)
 }
+
+func TestUpdateSave(t *testing.T) {
+
+}
