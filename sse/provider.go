@@ -1,11 +1,11 @@
 package sse
 
-var r Registerer = NullRegisterer{}
+var registerer Registerer = NullRegisterer{}
 
-func SetRegisterer(registerer Registerer) {
-	r = registerer
+func SetRegisterer(r Registerer) {
+	registerer = r
 }
 
 func GetRegisterer() Registerer {
-	return r
+	return registerer
 }
