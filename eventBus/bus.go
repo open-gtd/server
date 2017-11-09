@@ -10,13 +10,3 @@ type Bus interface {
 	Unsubscribe(topic Topic, handler BusHandler) error
 	Publish(topic Topic, arg interface{})
 }
-
-type NullBus struct{}
-
-func (NullBus) Subscribe(topic Topic, fn BusHandler) error {
-	return nil
-}
-func (NullBus) Unsubscribe(topic Topic, handler BusHandler) error {
-	return nil
-}
-func (NullBus) Publish(topic Topic, arg interface{}) {}
