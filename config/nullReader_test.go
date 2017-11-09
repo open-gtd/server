@@ -15,7 +15,7 @@ func TestGetBool(t *testing.T) {
 }
 
 func TestGetFloat64(t *testing.T) {
-	assert.Equal(t, 0, NullReader{}.GetFloat64(""))
+	assert.Equal(t, float64(0), NullReader{}.GetFloat64(""))
 }
 
 func TestGetInt(t *testing.T) {
@@ -43,7 +43,7 @@ func TestGetTime(t *testing.T) {
 }
 
 func TestGetDuration(t *testing.T) {
-	assert.Equal(t, 0, NullReader{}.GetDuration(""))
+	assert.Equal(t, time.Duration(0), NullReader{}.GetDuration(""))
 }
 
 func TestIsSet(t *testing.T) {
