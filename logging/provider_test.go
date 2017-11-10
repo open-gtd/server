@@ -19,7 +19,8 @@ func TestGetLogger(t *testing.T) {
 	testGet(t, &loggerMock{})
 }
 
-func testGet(t *testing.T, l Logger) {
+func testGet(t *testing.T, log Logger) {
+	l = log
 	result := GetLogger()
-	assert.Equal(t, l, result)
+	assert.Equal(t, log, result)
 }
