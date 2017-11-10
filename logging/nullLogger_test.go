@@ -7,7 +7,7 @@ func TestPrint(t *testing.T) {
 }
 
 func TestPrintf(t *testing.T) {
-	NullLogger{}.Printf("{}", "xxx")
+	NullLogger{}.Printf("%v", "xxx")
 }
 
 func TestDebug(t *testing.T) {
@@ -15,7 +15,7 @@ func TestDebug(t *testing.T) {
 }
 
 func TestDebugf(t *testing.T) {
-	NullLogger{}.Debugf("{}", "xxx")
+	NullLogger{}.Debugf("%v", "xxx")
 }
 
 func TestInfo(t *testing.T) {
@@ -23,7 +23,7 @@ func TestInfo(t *testing.T) {
 }
 
 func TestInfof(t *testing.T) {
-	NullLogger{}.Infof("{}", "xxx")
+	NullLogger{}.Infof("%v", "xxx")
 }
 
 func TestWarn(t *testing.T) {
@@ -31,7 +31,7 @@ func TestWarn(t *testing.T) {
 }
 
 func TestWarnf(t *testing.T) {
-	NullLogger{}.Warnf("{}", "xxx")
+	NullLogger{}.Warnf("%v", "xxx")
 }
 
 func TestError(t *testing.T) {
@@ -39,7 +39,7 @@ func TestError(t *testing.T) {
 }
 
 func TestErrorf(t *testing.T) {
-	NullLogger{}.Errorf("{}", "xxx")
+	NullLogger{}.Errorf("%v", "xxx")
 }
 
 func TestFatal(t *testing.T) {
@@ -47,7 +47,7 @@ func TestFatal(t *testing.T) {
 }
 
 func TestFatalf(t *testing.T) {
-	NullLogger{}.Fatalf("{}", "xxx")
+	NullLogger{}.Fatalf("%v", "xxx")
 }
 
 func TestPanic(t *testing.T) {
@@ -55,5 +55,5 @@ func TestPanic(t *testing.T) {
 }
 
 func TestPanicf(t *testing.T) {
-	NullLogger{}.Panicf("{}", "xxx")
+	NullLogger{}.Panicf("%v", "xxx")
 }
