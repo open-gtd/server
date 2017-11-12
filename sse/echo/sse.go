@@ -44,8 +44,8 @@ func (sr sseRegisterer) CreatePushDataFunc(prefix sse.Prefix, closeNotify sse.Cl
 			case <-sr.exit:
 				closeNotify()
 				return nil
-			case v := <-sr.channel:
-				if err := json.NewEncoder(c.Response()).Encode(v); err != nil {
+			case data := <-sr.channel:
+				if err := json.NewEncoder(c.Response()).Encode(data); err != nil {
 					closeNotify()
 					return err
 				}

@@ -5,8 +5,10 @@ import (
 	"github.com/open-gtd/server/logging"
 )
 
+var getBus = eventBus.GetBus
+
 func Initialize() {
-	bus := eventBus.GetBus()
+	bus := getBus()
 
 	bus.Subscribe("tagCreated", func(i interface{}) {
 		logging.GetLogger().Info("")

@@ -7,15 +7,21 @@ import (
 )
 
 func TestGetRegisterer_ShouldReturnRegisterer(t *testing.T) {
-	r := GetRegisterer()
+	testGetRegisterer(t, &registererMock{})
+	testGetRegisterer(t, &NullRegisterer{})
+}
 
-	assert.Equal(t, registerer, r)
+func testGetRegisterer(t *testing.T, r Registerer) {
+	registerer = r
+	result := GetRegisterer()
+	assert.Equal(t, r, result)
 }
 
 func TestSetRegisterer_ShouldSetRegisterer(t *testing.T) {
-	r := &registererMock{}
-
+	testSetRegisterer(t, &registererMock{})
+	testSetRegisterer(t, &NullRegisterer{})
+}
+func testSetRegisterer(t *testing.T, r Registerer) {
 	SetRegisterer(r)
-
 	assert.Equal(t, r, registerer)
 }
