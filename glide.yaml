@@ -1,9 +1,0 @@
-package: github.com/open-gtd/server
-import:
-  - package: github.com/labstack/echo
-    version: 1e9845a414f5177986779ee21963df7d1e362e15
-  - package: gopkg.in/mgo.v2
-  - package: github.com/spf13/viper
-  - package: github.com/jolestar/go-commons-pool
-  - package: github.com/asaskevich/EventBus
-  - package: github.com/stretchr/testify
