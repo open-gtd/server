@@ -7,8 +7,10 @@ import (
 
 var loginHandler = NewControllerHandler(factories.Login)
 
-func Initialize() {
-	r := api.GetRegisterer()
+var apiGetRegisterer = api.GetRegisterer
 
-	r.POST("","/api/auth", loginHandler)
+func Initialize() {
+	r := apiGetRegisterer()
+
+	r.POST("", "/api/auth", loginHandler)
 }

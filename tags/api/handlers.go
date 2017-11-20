@@ -12,8 +12,10 @@ var createTagsHandler api.Handler = NewControllerHandler(factories.Create)
 var updateTagsHandler api.Handler = NewControllerHandler(factories.Update)
 var deleteTagsHandler api.Handler = NewControllerHandler(factories.Delete)
 
+var apiGetRegisterer = api.GetRegisterer
+
 func Initialize() {
-	r := api.GetRegisterer()
+	r := apiGetRegisterer()
 
 	r.GET("/api", "/tags", getTagsHandler)
 	r.GET("/api", "/tags/:"+controllers.NameQueryParam, getTagHandler)
