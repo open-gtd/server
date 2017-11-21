@@ -9,7 +9,7 @@ func TestNotUniqueError(t *testing.T) {
 
 	assert.EqualError(
 		t,
-		NewNotFound(),
+		NewNotUnique(),
 		"not unique",
 	)
 }
