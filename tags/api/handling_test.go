@@ -96,3 +96,4 @@ func TestControllerHandler_Handle_ShouldReturnError_IfControllerFactoryReturnsEr
 
 	assert.EqualError(t, err, someError)
 }
+
