@@ -12,8 +12,10 @@ func init() {
 type labelStrategy struct {
 }
 
+var domainCreateLabel = domain.CreateLabel
+
 func (ls labelStrategy) Create(name domain.Name) (domain.Tag, error) {
-	return domain.CreateLabel(name), nil
+	return domainCreateLabel(name), nil
 }
 
 func (ls labelStrategy) Convert(tag domain.Tag) (domain.Tag, error) {

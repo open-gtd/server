@@ -12,8 +12,10 @@ func init() {
 type areaStrategy struct {
 }
 
+var domainCreateArea = domain.CreateArea
+
 func (as areaStrategy) Create(name domain.Name) (domain.Tag, error) {
-	return domain.CreateArea(name), nil
+	return domainCreateArea(name), nil
 }
 
 func (as areaStrategy) Convert(tag domain.Tag) (domain.Tag, error) {

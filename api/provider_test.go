@@ -7,23 +7,21 @@ import (
 )
 
 func TestSetRegisterer(t *testing.T) {
-	registerer := TestRegisterer{}
+	checkSetRegisterer(t, &registererMock{})
+	checkSetRegisterer(t, NullRegisterer{})
+}
+
+func TestGetRegisterer(t *testing.T) {
+	checkGetRegisterer(t, &registererMock{})
+	checkGetRegisterer(t, NullRegisterer{})
+}
+
+func checkSetRegisterer(t *testing.T, registerer Registerer) {
 	SetRegisterer(registerer)
 	assert.Equal(t, registerer, r)
 }
 
-func TestGetRegisterer(t *testing.T) {
-	registerer := TestRegisterer{}
+func checkGetRegisterer(t *testing.T, registerer Registerer) {
 	r = registerer
-
 	assert.Equal(t, registerer, GetRegisterer())
 }
-
-type TestRegisterer struct {
-}
-
-func (TestRegisterer) GET(prefix string, path string, handler Handler)    {}
-func (TestRegisterer) PATCH(prefix string, path string, handler Handler)  {}
-func (TestRegisterer) POST(prefix string, path string, handler Handler)   {}
-func (TestRegisterer) PUT(prefix string, path string, handler Handler)    {}
-func (TestRegisterer) DELETE(prefix string, path string, handler Handler) {}

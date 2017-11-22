@@ -15,10 +15,6 @@ func RegisterCreateStrategy(typeEnum domain.TypeEnum, strategy CreateStrategy) {
 }
 
 func RegisterConvertStrategy(typeEnum domain.TypeEnum, strategy ConvertStrategy) {
-	if convertStrategy == nil {
-		convertStrategy = make(map[domain.TypeEnum]ConvertStrategy)
-	}
-
 	convertStrategy[typeEnum] = strategy
 }
 
