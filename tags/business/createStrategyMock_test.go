@@ -11,5 +11,6 @@ type createStrategyMock struct {
 
 func (cs *createStrategyMock) Create(name domain.Name) (domain.Tag, error) {
 	args := cs.Called(name)
-	return args.Get(0).(domain.Tag), args.Error(1)
+	arg := args.Get(0)
+	return arg.(domain.Tag), args.Error(1)
 }

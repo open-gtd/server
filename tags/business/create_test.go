@@ -5,6 +5,7 @@ import (
 	"testing"
 	"github.com/stretchr/testify/assert"
 	"github.com/open-gtd/server/tags/business/strategies"
+
 	"github.com/stretchr/testify/mock"
 	"errors"
 )
@@ -20,14 +21,18 @@ func TestRun_ShouldReturnError_IfGetCreateStrategyReturnsError(t *testing.T) {
 }
 
 func TestRun_ShouldReturnError_IfStrategyCreateReturnsError(t *testing.T) {
-	var tag domain.Tag
 
 	strategyMock := &createStrategyMock{}
 	strategies.RegisterCreateStrategy(domain.Label, strategyMock)
 
 	const strategyError = "strategy create error"
 
-	strategyMock.On("Create", mock.Anything).Return(tag, errors.New(strategyError))
+	strategyMock.
+		On("Create", mock.Anything).
+		Return(
+			tagMock{},
+			errors.New(strategyError),
+		)
 
 	createData := CreateData{Type: domain.Label}
 
