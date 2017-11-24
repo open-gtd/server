@@ -8,6 +8,7 @@ import (
 
 	"github.com/stretchr/testify/mock"
 	"errors"
+	tagsErrors "github.com/open-gtd/server/tags/business/errors"
 )
 
 func TestRun_ShouldReturnError_IfGetCreateStrategyReturnsError(t *testing.T) {
@@ -39,4 +40,177 @@ func TestRun_ShouldReturnError_IfStrategyCreateReturnsError(t *testing.T) {
 	err := NewCreate(nil,nil,nil).Run(createData)
 
 	assert.EqualError(t, err, strategyError)
+}
+
+func TestRun_ShouldPassTagCreatedByStrategyToDaoInsert(t *testing.T) {
+
+	strategyMock := &createStrategyMock{}
+	strategies.RegisterCreateStrategy(domain.Label, strategyMock)
+
+	tagMock := tagMock{}
+	strategyMock.
+		On("Create", mock.Anything).
+		Return(tagMock, nil)
+
+	const daoError = "dao error"
+	createDaoMock := &createDaoMock{}
+	createDaoMock.
+		On("Insert", tagMock).
+		Return(errors.New(daoError))
+
+	createData := CreateData{Type: domain.Label}
+	NewCreate(nil, createDaoMock,nil).Run(createData)
+
+	createDaoMock.AssertExpectations(t)
+}
+
+func TestRun_ShouldReturnError_IfDaoInsertReturnsError(t *testing.T) {
+
+	strategyMock := &createStrategyMock{}
+	strategies.RegisterCreateStrategy(domain.Label, strategyMock)
+
+	strategyMock.
+		On("Create", mock.Anything).
+		Return(tagMock{}, nil)
+
+	const daoError = "dao error"
+	createDaoMock := &createDaoMock{}
+	createDaoMock.
+		On("Insert", mock.Anything).
+		Return(errors.New(daoError))
+
+	createData := CreateData{Type: domain.Label}
+	err := NewCreate(nil, createDaoMock,nil).Run(createData)
+
+	assert.EqualError(t, err, daoError)
+}
+
+func TestRun_ShouldCallPresenterNotUnique_IfDaoInsertReturnsNotUniqueError(t *testing.T) {
+
+	strategyMock := &createStrategyMock{}
+	strategies.RegisterCreateStrategy(domain.Label, strategyMock)
+
+	strategyMock.
+		On("Create", mock.Anything).
+		Return(tagMock{}, nil)
+
+	createDaoMock := &createDaoMock{}
+	createDaoMock.
+		On("Insert", mock.Anything).
+		Return(tagsErrors.NewNotUnique())
+
+	createPresenterMock := &createPresenterMock{}
+	createPresenterMock.On("ShowNotUnique").Return(nil)
+
+	createData := CreateData{Type: domain.Label}
+	NewCreate(createPresenterMock, createDaoMock,nil).Run(createData)
+
+	createPresenterMock.AssertExpectations(t)
+}
+
+func TestRun_ShouldReturnError_IfPresenterShowNotUniqueReturnsError(t *testing.T) {
+
+	strategyMock := &createStrategyMock{}
+	strategies.RegisterCreateStrategy(domain.Label, strategyMock)
+
+	strategyMock.
+		On("Create", mock.Anything).
+		Return(tagMock{}, nil)
+
+	createDaoMock := &createDaoMock{}
+	createDaoMock.
+		On("Insert", mock.Anything).
+		Return(tagsErrors.NewNotUnique())
+
+	const presenterError = "presenterError"
+	createPresenterMock := &createPresenterMock{}
+	createPresenterMock.On("ShowNotUnique").Return(errors.New(presenterError))
+
+	createData := CreateData{Type: domain.Label}
+	err := NewCreate(createPresenterMock, createDaoMock,nil).Run(createData)
+
+	assert.EqualError(t, err, presenterError)
+}
+
+func TestRun_ShouldReturnError_IfPresenterShowReturnsError(t *testing.T) {
+
+	strategyMock := &createStrategyMock{}
+	strategies.RegisterCreateStrategy(domain.Label, strategyMock)
+
+	strategyMock.
+		On("Create", mock.Anything).
+		Return(tagMock{}, nil)
+
+	createDaoMock := &createDaoMock{}
+	createDaoMock.
+		On("Insert", mock.Anything).
+		Return(nil)
+
+	const presenterError = "presenterError"
+	createPresenterMock := &createPresenterMock{}
+	createPresenterMock.On("Show", mock.Anything).Return(errors.New(presenterError))
+
+	createLoggerMock := &createLoggerMock{}
+	createLoggerMock.On("TagCreated", mock.Anything)
+
+	createData := CreateData{Type: domain.Label}
+	err := NewCreate(createPresenterMock, createDaoMock, createLoggerMock).Run(createData)
+
+	assert.EqualError(t, err, presenterError)
+}
+
+func TestRun_ShouldPassCreatedTagToPresenter(t *testing.T) {
+
+	strategyMock := &createStrategyMock{}
+	strategies.RegisterCreateStrategy(domain.Label, strategyMock)
+
+	tagMock := tagMock{}
+	strategyMock.
+		On("Create", mock.Anything).
+		Return(tagMock, nil)
+
+	createDaoMock := &createDaoMock{}
+	createDaoMock.
+		On("Insert", mock.Anything).
+		Return(nil)
+
+	const presenterError = "presenterError"
+	createPresenterMock := &createPresenterMock{}
+	createPresenterMock.On("Show", tagMock).Return(nil)
+
+	createLoggerMock := &createLoggerMock{}
+	createLoggerMock.On("TagCreated", mock.Anything)
+
+	createData := CreateData{Type: domain.Label}
+	NewCreate(createPresenterMock, createDaoMock, createLoggerMock).Run(createData)
+
+	createPresenterMock.AssertExpectations(t)
+}
+
+func TestRun_ShouldLogCreatedTag(t *testing.T) {
+
+	strategyMock := &createStrategyMock{}
+	strategies.RegisterCreateStrategy(domain.Label, strategyMock)
+
+	tagMock := tagMock{}
+	strategyMock.
+		On("Create", mock.Anything).
+		Return(tagMock, nil)
+
+	createDaoMock := &createDaoMock{}
+	createDaoMock.
+		On("Insert", mock.Anything).
+		Return(nil)
+
+	const presenterError = "presenterError"
+	createPresenterMock := &createPresenterMock{}
+	createPresenterMock.On("Show", mock.Anything).Return(nil)
+
+	createLoggerMock := &createLoggerMock{}
+	createLoggerMock.On("TagCreated", tagMock)
+
+	createData := CreateData{Type: domain.Label}
+	NewCreate(createPresenterMock, createDaoMock, createLoggerMock).Run(createData)
+
+	createLoggerMock.AssertExpectations(t)
 }
