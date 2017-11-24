@@ -26,7 +26,7 @@ func TestLogin_ShowAuthFailed_WillCallResponseNoContentWithForbiddenCode(t *test
 	response.AssertExpectations(t)
 }
 
-func TestLogin_ShowAuthFailed_ShouldReturnErorr_IfResponseNoContentReturnsError(t *testing.T) {
+func TestLogin_ShowAuthFailed_ShouldReturnError_IfResponseNoContentReturnsError(t *testing.T) {
 	const responseError = "ResponseError"
 
 	response := &responseMock{}
