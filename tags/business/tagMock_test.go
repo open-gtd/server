@@ -1,34 +1,39 @@
 package business
 
-import "github.com/open-gtd/server/tags/domain"
+import (
+	"github.com/open-gtd/server/tags/domain"
+	"github.com/stretchr/testify/mock"
+)
 
 type tagMock struct {
+	mock.Mock
 }
 
-func (tagMock) Rename(name domain.Name) {
+func (t *tagMock) Rename(name domain.Name) {
+	t.Called(name)
+}
+
+func (t *tagMock) ConvertToLabel() {
+	t.Called()
+}
+
+func (t *tagMock) ConvertToArea() {
+	t.Called()
+}
+
+func (t *tagMock) ConvertToContact() {
+	t.Called()
+}
+
+func (t *tagMock) GetType() domain.TypeEnum {
+	args := t.Called()
+	return args.Get(0).(domain.TypeEnum)
+}
+
+func (t *tagMock) GetOriginalName() domain.Name {
 	panic("implement me")
 }
 
-func (tagMock) ConvertToLabel() {
-	panic("implement me")
-}
-
-func (tagMock) ConvertToArea() {
-	panic("implement me")
-}
-
-func (tagMock) ConvertToContact() {
-	panic("implement me")
-}
-
-func (tagMock) GetType() domain.TypeEnum {
-	panic("implement me")
-}
-
-func (tagMock) GetOriginalName() domain.Name {
-	panic("implement me")
-}
-
-func (tagMock) GetName() domain.Name {
+func (t *tagMock) GetName() domain.Name {
 	panic("implement me")
 }

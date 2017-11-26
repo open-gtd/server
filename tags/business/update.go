@@ -40,6 +40,7 @@ func NewUpdate(p UpdatePresenter, d UpdateDao) Update {
 	return update{presenter: p, dao: d}
 }
 
+var getConvertStrategy = strategies.GetConvertStrategy
 func (u update) Run(ud UpdateData) error {
 	tag, err := u.dao.Get(ud.OriginalName)
 	if err != nil {
@@ -55,12 +56,12 @@ func (u update) Run(ud UpdateData) error {
 	}
 
 	if ud.Type != nil {
-		conv, err := strategies.GetConvertStrategy(*ud.Type)
+		convertStrategy, err := getConvertStrategy(*ud.Type)
 		if err != nil {
 			return err
 		}
 
-		tag, err = conv.Convert(tag)
+		tag, err = convertStrategy.Convert(tag)
 		if err != nil {
 			return err
 		}
