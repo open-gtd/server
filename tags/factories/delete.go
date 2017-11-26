@@ -9,7 +9,8 @@ import (
 )
 
 func Delete(rq api.Request, rs api.Response) (business.Controller, api.ControllerDestroyFunc, error) {
-	conn, err := Dao()
+
+	conn, err := getDao()
 	if err != nil {
 		return nil, nil, err
 	}
