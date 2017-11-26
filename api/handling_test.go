@@ -98,8 +98,8 @@ func TestHandleRequest_ShouldProduceBadRequestResponseErrorIfControllerRunReturn
 	response := responseMock{}
 	response.On("JSON", http.StatusBadRequest, mock.Anything).
 		Run(func(args mock.Arguments) {
-			assert.Equal(t, args.Get(1).(MessageResponse).Message, controlerValidationError)
-		}).Return(nil)
+		assert.Equal(t, args.Get(1).(MessageResponse).Message, controlerValidationError)
+	}).Return(nil)
 
 	HandleRequest(
 		DestroyableController{controller, fac.Destroy},

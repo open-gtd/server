@@ -18,4 +18,3 @@ func (u *updateDaoMock) Save(name domain.Name, tag domain.Tag) error {
 	args := u.Called(name, tag)
 	return args.Error(0)
 }
-

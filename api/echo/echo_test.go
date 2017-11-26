@@ -7,7 +7,6 @@ import (
 	"github.com/labstack/echo"
 )
 
-
 const POST = "POST"
 const GET = "GET"
 const PATCH = "PATCH"
@@ -175,7 +174,7 @@ func TestRegisterer_GET_ShouldCallRegisterAddWithGETMethodAndParametersAndPrefix
 	groups := map[string]Router{}
 
 	handlerFuncMock := &handlerFuncMock{}
-	routerMock := prepareRouterMock(GET, prefix + path)
+	routerMock := prepareRouterMock(GET, prefix+path)
 
 	sut := NewEchoRegisterer(routerMock, groups)
 	sut.GET(prefix, path, handlerFuncMock)
@@ -190,7 +189,7 @@ func TestRegisterer_POST_ShouldCallRegisterAddWithPOSTMethodAndParametersAndPref
 	groups := map[string]Router{}
 
 	handlerFuncMock := &handlerFuncMock{}
-	routerMock := prepareRouterMock(POST, prefix + path)
+	routerMock := prepareRouterMock(POST, prefix+path)
 
 	sut := NewEchoRegisterer(routerMock, groups)
 	sut.POST(prefix, path, handlerFuncMock)
@@ -205,7 +204,7 @@ func TestRegisterer_PATCH_ShouldCallRegisterAddWithPATCHMethodAndParametersAndPr
 	groups := map[string]Router{}
 
 	handlerFuncMock := &handlerFuncMock{}
-	routerMock := prepareRouterMock(PATCH, prefix + path)
+	routerMock := prepareRouterMock(PATCH, prefix+path)
 
 	sut := NewEchoRegisterer(routerMock, groups)
 	sut.PATCH(prefix, path, handlerFuncMock)
@@ -220,7 +219,7 @@ func TestRegisterer_PUT_ShouldCallRegisterAddWithPUTMethodAndParametersAndPrefix
 	groups := map[string]Router{}
 
 	handlerFuncMock := &handlerFuncMock{}
-	routerMock := prepareRouterMock(PUT, prefix + path)
+	routerMock := prepareRouterMock(PUT, prefix+path)
 
 	sut := NewEchoRegisterer(routerMock, groups)
 	sut.PUT(prefix, path, handlerFuncMock)
@@ -235,7 +234,7 @@ func TestRegisterer_DELETE_ShouldCallRegisterAddWithDELETEMethodAndParametersAnd
 	groups := map[string]Router{}
 
 	handlerFuncMock := &handlerFuncMock{}
-	routerMock := prepareRouterMock(DELETE, prefix + path)
+	routerMock := prepareRouterMock(DELETE, prefix+path)
 
 	sut := NewEchoRegisterer(routerMock, groups)
 	sut.DELETE(prefix, path, handlerFuncMock)
@@ -431,9 +430,9 @@ func prepareRouterMockWithHandlerCall(method string, path string) registerMock {
 
 	var route *echo.Route
 	registerMock.On("Add", method, path, mock.AnythingOfType("echo.HandlerFunc")).
-		Run(func(args mock.Arguments){
-			args.Get(2).(echo.HandlerFunc)(&contextMock{})
-		}).
+		Run(func(args mock.Arguments) {
+		args.Get(2).(echo.HandlerFunc)(&contextMock{})
+	}).
 		Return(route)
 
 	return registerMock

@@ -16,13 +16,13 @@ func Create(rq api.Request, rs api.Response) (business.Controller, api.Controlle
 	}
 
 	return controllers.NewCreate(
-			rq,
-			business.NewCreate(
-				presenters.NewCreate(rs, GetBus()),
-				dao.NewCreate(conn),
-				logging.NewCreate(),
-			),
-		), func() error {
-			return returnDao(conn)
-		}, nil
+		rq,
+		business.NewCreate(
+			presenters.NewCreate(rs, GetBus()),
+			dao.NewCreate(conn),
+			logging.NewCreate(),
+		),
+	), func() error {
+		return returnDao(conn)
+	}, nil
 }

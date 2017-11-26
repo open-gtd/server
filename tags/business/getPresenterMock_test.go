@@ -18,6 +18,3 @@ func (g *getPresenterMock) ShowNotFound() error {
 	args := g.Called()
 	return args.Error(0)
 }
-
-
-

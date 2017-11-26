@@ -15,12 +15,12 @@ func Delete(rq api.Request, rs api.Response) (business.Controller, api.Controlle
 	}
 
 	return controllers.NewDelete(
-			rq,
-			business.NewDelete(
-				presenters.NewDelete(rs, GetBus()),
-				dao.NewDelete(conn),
-			),
-		), func() error {
-			return returnDao(conn)
-		}, nil
+		rq,
+		business.NewDelete(
+			presenters.NewDelete(rs, GetBus()),
+			dao.NewDelete(conn),
+		),
+	), func() error {
+		return returnDao(conn)
+	}, nil
 }

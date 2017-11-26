@@ -15,12 +15,12 @@ func Update(rq api.Request, rs api.Response) (business.Controller, api.Controlle
 	}
 
 	return controllers.NewUpdate(
-			rq,
-			business.NewUpdate(
-				presenters.NewUpdate(rs, GetBus()),
-				dao.NewUpdate(conn),
-			),
-		), func() error {
-			return returnDao(conn)
-		}, nil
+		rq,
+		business.NewUpdate(
+			presenters.NewUpdate(rs, GetBus()),
+			dao.NewUpdate(conn),
+		),
+	), func() error {
+		return returnDao(conn)
+	}, nil
 }

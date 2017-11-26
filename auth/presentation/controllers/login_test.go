@@ -48,15 +48,15 @@ func TestLogin_Run_ShouldPassLoginDataFromRequestToConvert(t *testing.T) {
 
 	rq.On("Bind", mock.AnythingOfType("*presentation.LoginData")).
 		Run(func(args mock.Arguments) {
-			a := args.Get(0)
-			ld, ok := a.(*presentation.LoginData)
-			if !ok {
-				t.Errorf("Bind Argument should be of type *presentation.LoginData. %v given.", a)
-			}
+		a := args.Get(0)
+		ld, ok := a.(*presentation.LoginData)
+		if !ok {
+			t.Errorf("Bind Argument should be of type *presentation.LoginData. %v given.", a)
+		}
 
-			ld.UserName = userName
-			ld.SecurityCode = securityCode
-		}).
+		ld.UserName = userName
+		ld.SecurityCode = securityCode
+	}).
 		Return(nil)
 
 	c.On(

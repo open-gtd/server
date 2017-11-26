@@ -13,4 +13,3 @@ func (c *convertStrategyMock) Convert(tag domain.Tag) (domain.Tag, error) {
 	args := c.Called(tag)
 	return args.Get(0).(domain.Tag), args.Error(1)
 }
-

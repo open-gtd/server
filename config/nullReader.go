@@ -4,7 +4,6 @@ import "time"
 
 type NullReader struct{}
 
-
 func (r NullReader) Get(key string) interface{} {
 	return nil
 }

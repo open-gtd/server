@@ -1,7 +1,7 @@
 package storage
 
 const (
-	Empty uint8 = iota
+	Empty   uint8 = iota
 	Label
 	Area
 	Contact

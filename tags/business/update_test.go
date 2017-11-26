@@ -18,7 +18,6 @@ func TestUpdateRunShouldCallDaoGetWithUpdateDataOriginalName(t *testing.T) {
 	updateDaoMock := &updateDaoMock{}
 	updateDaoMock.On("Get", originalName).Return(&tagMock{}, errors.New(""))
 
-
 	data := UpdateData{
 		OriginalName: originalName,
 	}
@@ -178,7 +177,7 @@ func TestUpdateRunShouldReturnErrorIfGetConvertStrategyReturnsError(t *testing.T
 
 	err := NewUpdate(updatePresenterMock, updateDaoMock).Run(data)
 
-	assert.EqualError(t , err, getConvertStrategyError)
+	assert.EqualError(t, err, getConvertStrategyError)
 }
 
 func TestUpdateRunShouldReturnErrorIfStrategyConvertReturnsError(t *testing.T) {
@@ -210,7 +209,7 @@ func TestUpdateRunShouldReturnErrorIfStrategyConvertReturnsError(t *testing.T) {
 
 	err := NewUpdate(updatePresenterMock, updateDaoMock).Run(data)
 
-	assert.EqualError(t , err, convertError)
+	assert.EqualError(t, err, convertError)
 }
 
 func TestUpdateRunShouldSaveUpdatedTagUsingOriginalName(t *testing.T) {
@@ -238,7 +237,7 @@ func TestUpdateRunShouldSaveUpdatedTagUsingOriginalName(t *testing.T) {
 
 	data := UpdateData{
 		OriginalName: originalName,
-		Type: &newType,
+		Type:         &newType,
 	}
 
 	NewUpdate(updatePresenterMock, updateDaoMock).Run(data)
@@ -273,7 +272,7 @@ func TestUpdateRunShouldReturnErrorIfSaveUpdatedTagReturnsError(t *testing.T) {
 
 	data := UpdateData{
 		OriginalName: originalName,
-		Type: &newType,
+		Type:         &newType,
 	}
 
 	err := NewUpdate(updatePresenterMock, updateDaoMock).Run(data)
@@ -306,7 +305,7 @@ func TestUpdateRunShouldCallPresenterShowTag(t *testing.T) {
 
 	data := UpdateData{
 		OriginalName: originalName,
-		Type: &newType,
+		Type:         &newType,
 	}
 
 	NewUpdate(updatePresenterMock, updateDaoMock).Run(data)
@@ -341,7 +340,7 @@ func TestUpdateRunShouldReturnErrorIfPresenterShowTagReturnsError(t *testing.T) 
 
 	data := UpdateData{
 		OriginalName: originalName,
-		Type: &newType,
+		Type:         &newType,
 	}
 
 	err := NewUpdate(updatePresenterMock, updateDaoMock).Run(data)

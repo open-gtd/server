@@ -16,13 +16,13 @@ func Login(rq api.Request, rs api.Response) (business.Controller, api.Controller
 	//}
 
 	return controllers.NewLogin(
-			rq,
-			business.NewLogin(
-				presenters.NewLogin(rs, GetBus()),
-				dao.NewLogin(), //conn),
-				logging.NewLogin(),
-			),
-		), func() error {
-			return nil //returnDao(conn)
-		}, nil
+		rq,
+		business.NewLogin(
+			presenters.NewLogin(rs, GetBus()),
+			dao.NewLogin(), //conn),
+			logging.NewLogin(),
+		),
+	), func() error {
+		return nil //returnDao(conn)
+	}, nil
 }

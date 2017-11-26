@@ -13,4 +13,3 @@ func (d *deleteDaoMock) Delete(name domain.Name) error {
 	args := d.Called(name)
 	return args.Error(0)
 }
-

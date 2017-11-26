@@ -5,8 +5,8 @@ import (
 )
 
 type (
-	Name  string
-	Tags  []domain.Tag
+	Name string
+	Tags []domain.Tag
 	Notes string
 	Focus bool
 )

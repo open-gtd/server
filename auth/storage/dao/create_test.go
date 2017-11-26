@@ -10,10 +10,10 @@ func TestAuthorize(t *testing.T) {
 	assert.Nil(t,
 		NewLogin().
 			Authorize(
-				domain.Auth{
-					SecurityCode:"xx",
-					UserName:"yy",
-				},
-			),
+			domain.Auth{
+				SecurityCode: "xx",
+				UserName:     "yy",
+			},
+		),
 	)
 }

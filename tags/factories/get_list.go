@@ -15,12 +15,12 @@ func GetList(rq api.Request, rs api.Response) (business.Controller, api.Controll
 	}
 
 	return controllers.NewGetList(
-			rq,
-			business.NewGetList(
-				presenters.NewGetList(rs),
-				dao.NewGetList(conn),
-			),
-		), func() error {
-			return returnDao(conn)
-		}, nil
+		rq,
+		business.NewGetList(
+			presenters.NewGetList(rs),
+			dao.NewGetList(conn),
+		),
+	), func() error {
+		return returnDao(conn)
+	}, nil
 }

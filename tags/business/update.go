@@ -41,6 +41,7 @@ func NewUpdate(p UpdatePresenter, d UpdateDao) Update {
 }
 
 var getConvertStrategy = strategies.GetConvertStrategy
+
 func (u update) Run(ud UpdateData) error {
 	tag, err := u.dao.Get(ud.OriginalName)
 	if err != nil {

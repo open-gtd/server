@@ -12,5 +12,5 @@ func TestConvertToPresentation(t *testing.T) {
 
 	p := ConvertToPresentation(domain.Cert{Token: cert})
 
-	assert.Equal(t, presentation.Cert{Token:cert}, p)
+	assert.Equal(t, presentation.Cert{Token: cert}, p)
 }

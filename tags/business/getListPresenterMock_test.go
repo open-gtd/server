@@ -13,6 +13,3 @@ func (g *getListPresenterMock) Show(t []domain.Tag) error {
 	args := g.Called(t)
 	return args.Error(0)
 }
-
-
-

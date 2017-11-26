@@ -15,12 +15,12 @@ func Get(rq api.Request, rs api.Response) (business.Controller, api.ControllerDe
 	}
 
 	return controllers.NewGet(
-			rq,
-			business.NewGet(
-				presenters.NewGet(rs),
-				dao.NewGet(conn),
-			),
-		), func() error {
-			return returnDao(conn)
-		}, nil
+		rq,
+		business.NewGet(
+			presenters.NewGet(rs),
+			dao.NewGet(conn),
+		),
+	), func() error {
+		return returnDao(conn)
+	}, nil
 }

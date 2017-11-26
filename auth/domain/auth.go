@@ -1,9 +1,9 @@
 package domain
 
 type (
-	Name         string
+	Name string
 	SecurityCode string
-	Token        string
+	Token string
 )
 
 type Auth struct {

@@ -6,11 +6,11 @@ import (
 )
 
 type (
-	Name            string
+	Name string
 	StateDescriptor common.StateDescriptor
-	Tags            []domain.Tag
-	Notes           string
-	Focus           bool
+	Tags []domain.Tag
+	Notes string
+	Focus bool
 )
 
 const (

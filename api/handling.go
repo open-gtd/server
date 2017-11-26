@@ -36,7 +36,7 @@ func (d DestroyableController) Run() error {
 
 //HandleRequest handle API request using Controller produced by ControllerFactory
 //and sets response status to BadRequest with error message, if controller returns ValidationError
-func HandleRequest(controller DestroyableController, 	rq Request, rs Response) error {
+func HandleRequest(controller DestroyableController, rq Request, rs Response) error {
 	defer controller.Destroy()
 
 	err := controller.Run()

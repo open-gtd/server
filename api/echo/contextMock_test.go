@@ -224,4 +224,3 @@ func (c *contextMock) Echo() *echo.Echo {
 func (c *contextMock) Reset(r *http.Request, w http.ResponseWriter) {
 	panic("not implemented")
 }
-

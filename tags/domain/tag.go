@@ -2,7 +2,7 @@ package domain
 
 type (
 	TypeEnum uint8
-	Name     string
+	Name string
 )
 
 const (

@@ -13,4 +13,3 @@ func (g *getListDaoMock) Get() ([]domain.Tag, error) {
 	args := g.Called()
 	return args.Get(0).([]domain.Tag), args.Error(1)
 }
-
