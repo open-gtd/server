@@ -186,13 +186,10 @@ func TestUpdateRunShouldReturnErrorIfStrategyConvertReturnsError(t *testing.T) {
 	newType := domain.Contact
 	tag := domain.Tag{}
 
-	var requestedStrategyType domain.TypeEnum
-
 	convertStrategyMock := &convertStrategyMock{}
 	convertStrategyMock.On("Convert", mock.Anything).Return(tag, errors.New(convertError))
 
 	getConvertStrategy = func(typeEnum domain.TypeEnum) (strategies.ConvertStrategy, error) {
-		requestedStrategyType = typeEnum
 		return convertStrategyMock, nil
 	}
 
