@@ -1,13 +1,14 @@
 package business
 
 import (
-	"testing"
-	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/mock"
 	"errors"
-	"github.com/open-gtd/server/tags/domain"
+	"testing"
+
 	tagErrors "github.com/open-gtd/server/tags/business/errors"
 	"github.com/open-gtd/server/tags/business/strategies"
+	"github.com/open-gtd/server/tags/domain"
+	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/mock"
 )
 
 func TestUpdateRunShouldCallDaoGetWithUpdateDataOriginalName(t *testing.T) {
@@ -16,7 +17,7 @@ func TestUpdateRunShouldCallDaoGetWithUpdateDataOriginalName(t *testing.T) {
 	updatePresenterMock := &updatePresenterMock{}
 
 	updateDaoMock := &updateDaoMock{}
-	updateDaoMock.On("Get", originalName).Return(&tagMock{}, errors.New(""))
+	updateDaoMock.On("Get", originalName).Return(domain.Tag{}, errors.New(""))
 
 	data := UpdateData{
 		OriginalName: originalName,
@@ -32,7 +33,7 @@ func TestUpdateRunShouldReturnErrorIfDaoGetReturnsError(t *testing.T) {
 	updatePresenterMock := &updatePresenterMock{}
 
 	updateDaoMock := &updateDaoMock{}
-	updateDaoMock.On("Get", mock.Anything).Return(&tagMock{}, errors.New(daoError))
+	updateDaoMock.On("Get", mock.Anything).Return(domain.Tag{}, errors.New(daoError))
 
 	data := UpdateData{}
 
@@ -46,7 +47,7 @@ func TestUpdateRunShouldCallPresenterShowNotFoundIfDaoGetReturnsNotFoundError(t 
 	updatePresenterMock.On("ShowNotFound").Return(nil)
 
 	updateDaoMock := &updateDaoMock{}
-	updateDaoMock.On("Get", mock.Anything).Return(&tagMock{}, tagErrors.NewNotFound())
+	updateDaoMock.On("Get", mock.Anything).Return(domain.Tag{}, tagErrors.NewNotFound())
 
 	data := UpdateData{}
 
@@ -62,7 +63,7 @@ func TestUpdateRunShouldReturnErrorIfPresenterShowNotFoundReturnsError(t *testin
 	updatePresenterMock.On("ShowNotFound").Return(errors.New(presenterError))
 
 	updateDaoMock := &updateDaoMock{}
-	updateDaoMock.On("Get", mock.Anything).Return(&tagMock{}, tagErrors.NewNotFound())
+	updateDaoMock.On("Get", mock.Anything).Return(domain.Tag{}, tagErrors.NewNotFound())
 
 	data := UpdateData{}
 
@@ -71,18 +72,23 @@ func TestUpdateRunShouldReturnErrorIfPresenterShowNotFoundReturnsError(t *testin
 	assert.EqualError(t, err, presenterError)
 }
 
-func TestUpdateRunShouldCallRenameWithNewNameOnTagIfUpdateDataContainsName(t *testing.T) {
+func TestUpdateRunShouldSaveTagWithNewName(t *testing.T) {
 	newName := domain.Name("new tag name")
 
-	tagMock := &tagMock{}
-	tagMock.On("Rename", newName)
+	tag := domain.Tag{}
+	var updatedTag domain.Tag
 
 	updatePresenterMock := &updatePresenterMock{}
 	updatePresenterMock.On("Show", mock.Anything).Return(nil)
 
 	updateDaoMock := &updateDaoMock{}
-	updateDaoMock.On("Get", mock.Anything).Return(tagMock, nil)
-	updateDaoMock.On("Save", mock.Anything, mock.Anything).Return(nil)
+	updateDaoMock.On("Get", mock.Anything).Return(tag, nil)
+	updateDaoMock.
+		On("Save", mock.Anything, mock.Anything).
+		Run(func(arguments mock.Arguments) {
+			updatedTag = arguments.Get(1).(domain.Tag)
+		}).
+		Return(nil)
 
 	data := UpdateData{
 		Name: &newName,
@@ -90,17 +96,17 @@ func TestUpdateRunShouldCallRenameWithNewNameOnTagIfUpdateDataContainsName(t *te
 
 	NewUpdate(updatePresenterMock, updateDaoMock).Run(data)
 
-	tagMock.AssertExpectations(t)
+	assert.Equal(t, newName, updatedTag.GetName())
 }
 
 func TestUpdateRunShouldGetStrategyToConvertTagIntoNewTagType(t *testing.T) {
 	newType := domain.Label
-	tagMock := &tagMock{}
+	tag := domain.Tag{}
 
 	var requestedStrategyType domain.TypeEnum
 
 	convertStrategyMock := &convertStrategyMock{}
-	convertStrategyMock.On("Convert", mock.Anything).Return(tagMock, nil)
+	convertStrategyMock.On("Convert", mock.Anything).Return(tag, nil)
 
 	getConvertStrategy = func(typeEnum domain.TypeEnum) (strategies.ConvertStrategy, error) {
 		requestedStrategyType = typeEnum
@@ -111,7 +117,7 @@ func TestUpdateRunShouldGetStrategyToConvertTagIntoNewTagType(t *testing.T) {
 	updatePresenterMock.On("Show", mock.Anything).Return(nil)
 
 	updateDaoMock := &updateDaoMock{}
-	updateDaoMock.On("Get", mock.Anything).Return(tagMock, nil)
+	updateDaoMock.On("Get", mock.Anything).Return(tag, nil)
 	updateDaoMock.On("Save", mock.Anything, mock.Anything).Return(nil)
 
 	data := UpdateData{
@@ -125,12 +131,12 @@ func TestUpdateRunShouldGetStrategyToConvertTagIntoNewTagType(t *testing.T) {
 
 func TestUpdateRunShouldCallConvertWithTagOnStrategy(t *testing.T) {
 	newType := domain.Contact
-	tagMock := &tagMock{}
+	tag := domain.Tag{}
 
 	var requestedStrategyType domain.TypeEnum
 
 	convertStrategyMock := &convertStrategyMock{}
-	convertStrategyMock.On("Convert", tagMock).Return(tagMock, nil)
+	convertStrategyMock.On("Convert", tag).Return(tag, nil)
 
 	getConvertStrategy = func(typeEnum domain.TypeEnum) (strategies.ConvertStrategy, error) {
 		requestedStrategyType = typeEnum
@@ -141,7 +147,7 @@ func TestUpdateRunShouldCallConvertWithTagOnStrategy(t *testing.T) {
 	updatePresenterMock.On("Show", mock.Anything).Return(nil)
 
 	updateDaoMock := &updateDaoMock{}
-	updateDaoMock.On("Get", mock.Anything).Return(tagMock, nil)
+	updateDaoMock.On("Get", mock.Anything).Return(tag, nil)
 	updateDaoMock.On("Save", mock.Anything, mock.Anything).Return(nil)
 
 	data := UpdateData{
@@ -156,7 +162,7 @@ func TestUpdateRunShouldCallConvertWithTagOnStrategy(t *testing.T) {
 func TestUpdateRunShouldReturnErrorIfGetConvertStrategyReturnsError(t *testing.T) {
 	const getConvertStrategyError = "get convert strategy error"
 	newType := domain.Contact
-	tagMock := &tagMock{}
+	tag := domain.Tag{}
 
 	var requestedStrategyType domain.TypeEnum
 
@@ -169,7 +175,7 @@ func TestUpdateRunShouldReturnErrorIfGetConvertStrategyReturnsError(t *testing.T
 	updatePresenterMock.On("Show", mock.Anything).Return(nil)
 
 	updateDaoMock := &updateDaoMock{}
-	updateDaoMock.On("Get", mock.Anything).Return(tagMock, nil)
+	updateDaoMock.On("Get", mock.Anything).Return(tag, nil)
 
 	data := UpdateData{
 		Type: &newType,
@@ -184,12 +190,12 @@ func TestUpdateRunShouldReturnErrorIfStrategyConvertReturnsError(t *testing.T) {
 	const convertError = "convert error"
 
 	newType := domain.Contact
-	tagMock := &tagMock{}
+	tag := domain.Tag{}
 
 	var requestedStrategyType domain.TypeEnum
 
 	convertStrategyMock := &convertStrategyMock{}
-	convertStrategyMock.On("Convert", mock.Anything).Return(tagMock, errors.New(convertError))
+	convertStrategyMock.On("Convert", mock.Anything).Return(tag, errors.New(convertError))
 
 	getConvertStrategy = func(typeEnum domain.TypeEnum) (strategies.ConvertStrategy, error) {
 		requestedStrategyType = typeEnum
@@ -200,7 +206,7 @@ func TestUpdateRunShouldReturnErrorIfStrategyConvertReturnsError(t *testing.T) {
 	updatePresenterMock.On("Show", mock.Anything).Return(nil)
 
 	updateDaoMock := &updateDaoMock{}
-	updateDaoMock.On("Get", mock.Anything).Return(tagMock, nil)
+	updateDaoMock.On("Get", mock.Anything).Return(tag, nil)
 	updateDaoMock.On("Save", mock.Anything, mock.Anything).Return(nil)
 
 	data := UpdateData{
@@ -215,13 +221,13 @@ func TestUpdateRunShouldReturnErrorIfStrategyConvertReturnsError(t *testing.T) {
 func TestUpdateRunShouldSaveUpdatedTagUsingOriginalName(t *testing.T) {
 	const originalName = domain.Name("original name")
 	newType := domain.Contact
-	updatedTagMock := &tagMock{}
-	tagMock := &tagMock{}
+	updatedTag := domain.CreateContact(originalName)
+	tag := domain.CreateLabel(originalName)
 
 	var requestedStrategyType domain.TypeEnum
 
 	convertStrategyMock := &convertStrategyMock{}
-	convertStrategyMock.On("Convert", mock.Anything).Return(updatedTagMock, nil)
+	convertStrategyMock.On("Convert", mock.Anything).Return(updatedTag, nil)
 
 	getConvertStrategy = func(typeEnum domain.TypeEnum) (strategies.ConvertStrategy, error) {
 		requestedStrategyType = typeEnum
@@ -232,8 +238,8 @@ func TestUpdateRunShouldSaveUpdatedTagUsingOriginalName(t *testing.T) {
 	updatePresenterMock.On("Show", mock.Anything).Return(nil)
 
 	updateDaoMock := &updateDaoMock{}
-	updateDaoMock.On("Get", mock.Anything).Return(tagMock, nil)
-	updateDaoMock.On("Save", originalName, updatedTagMock).Return(nil)
+	updateDaoMock.On("Get", mock.Anything).Return(tag, nil)
+	updateDaoMock.On("Save", originalName, updatedTag).Return(nil)
 
 	data := UpdateData{
 		OriginalName: originalName,
@@ -250,13 +256,12 @@ func TestUpdateRunShouldReturnErrorIfSaveUpdatedTagReturnsError(t *testing.T) {
 
 	newType := domain.Contact
 	const originalName = domain.Name("original name")
-	updatedTagMock := &tagMock{}
-	tagMock := &tagMock{}
+	tag := domain.Tag{}
 
 	var requestedStrategyType domain.TypeEnum
 
 	convertStrategyMock := &convertStrategyMock{}
-	convertStrategyMock.On("Convert", mock.Anything).Return(updatedTagMock, nil)
+	convertStrategyMock.On("Convert", mock.Anything).Return(domain.Tag{}, nil)
 
 	getConvertStrategy = func(typeEnum domain.TypeEnum) (strategies.ConvertStrategy, error) {
 		requestedStrategyType = typeEnum
@@ -267,7 +272,7 @@ func TestUpdateRunShouldReturnErrorIfSaveUpdatedTagReturnsError(t *testing.T) {
 	updatePresenterMock.On("Show", mock.Anything).Return(nil)
 
 	updateDaoMock := &updateDaoMock{}
-	updateDaoMock.On("Get", mock.Anything).Return(tagMock, nil)
+	updateDaoMock.On("Get", mock.Anything).Return(tag, nil)
 	updateDaoMock.On("Save", mock.Anything, mock.Anything).Return(errors.New(saveError))
 
 	data := UpdateData{
@@ -283,13 +288,13 @@ func TestUpdateRunShouldReturnErrorIfSaveUpdatedTagReturnsError(t *testing.T) {
 func TestUpdateRunShouldCallPresenterShowTag(t *testing.T) {
 	newType := domain.Contact
 	const originalName = domain.Name("original name")
-	updatedTagMock := &tagMock{}
-	tagMock := &tagMock{}
+	updatedTag := domain.CreateContact(originalName)
+	tag := domain.CreateLabel(originalName)
 
 	var requestedStrategyType domain.TypeEnum
 
 	convertStrategyMock := &convertStrategyMock{}
-	convertStrategyMock.On("Convert", mock.Anything).Return(updatedTagMock, nil)
+	convertStrategyMock.On("Convert", mock.Anything).Return(updatedTag, nil)
 
 	getConvertStrategy = func(typeEnum domain.TypeEnum) (strategies.ConvertStrategy, error) {
 		requestedStrategyType = typeEnum
@@ -297,10 +302,10 @@ func TestUpdateRunShouldCallPresenterShowTag(t *testing.T) {
 	}
 
 	updatePresenterMock := &updatePresenterMock{}
-	updatePresenterMock.On("Show", updatedTagMock).Return(nil)
+	updatePresenterMock.On("Show", updatedTag).Return(nil)
 
 	updateDaoMock := &updateDaoMock{}
-	updateDaoMock.On("Get", mock.Anything).Return(tagMock, nil)
+	updateDaoMock.On("Get", mock.Anything).Return(tag, nil)
 	updateDaoMock.On("Save", mock.Anything, mock.Anything).Return(nil)
 
 	data := UpdateData{
@@ -318,13 +323,12 @@ func TestUpdateRunShouldReturnErrorIfPresenterShowTagReturnsError(t *testing.T) 
 
 	newType := domain.Contact
 	const originalName = domain.Name("original name")
-	updatedTagMock := &tagMock{}
-	tagMock := &tagMock{}
+	tag := domain.Tag{}
 
 	var requestedStrategyType domain.TypeEnum
 
 	convertStrategyMock := &convertStrategyMock{}
-	convertStrategyMock.On("Convert", mock.Anything).Return(updatedTagMock, nil)
+	convertStrategyMock.On("Convert", mock.Anything).Return(domain.Tag{}, nil)
 
 	getConvertStrategy = func(typeEnum domain.TypeEnum) (strategies.ConvertStrategy, error) {
 		requestedStrategyType = typeEnum
@@ -335,7 +339,7 @@ func TestUpdateRunShouldReturnErrorIfPresenterShowTagReturnsError(t *testing.T) 
 	updatePresenterMock.On("Show", mock.Anything).Return(errors.New(presenterError))
 
 	updateDaoMock := &updateDaoMock{}
-	updateDaoMock.On("Get", mock.Anything).Return(tagMock, nil)
+	updateDaoMock.On("Get", mock.Anything).Return(tag, nil)
 	updateDaoMock.On("Save", mock.Anything, mock.Anything).Return(nil)
 
 	data := UpdateData{

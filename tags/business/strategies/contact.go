@@ -12,10 +12,8 @@ func init() {
 type contactStrategy struct {
 }
 
-var domainCreateContact = domain.CreateContact
-
 func (cs contactStrategy) Create(name domain.Name) (domain.Tag, error) {
-	return domainCreateContact(name), nil
+	return domain.CreateContact(name), nil
 }
 
 func (cs contactStrategy) Convert(tag domain.Tag) (domain.Tag, error) {

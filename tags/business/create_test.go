@@ -1,14 +1,16 @@
 package business
 
 import (
-	"github.com/open-gtd/server/tags/domain"
 	"testing"
-	"github.com/stretchr/testify/assert"
-	"github.com/open-gtd/server/tags/business/strategies"
 
-	"github.com/stretchr/testify/mock"
+	"github.com/open-gtd/server/tags/business/strategies"
+	"github.com/open-gtd/server/tags/domain"
+	"github.com/stretchr/testify/assert"
+
 	"errors"
+
 	tagsErrors "github.com/open-gtd/server/tags/business/errors"
+	"github.com/stretchr/testify/mock"
 )
 
 func TestCreateRunShouldReturnError_IfGetCreateStrategyReturnsError(t *testing.T) {
@@ -31,9 +33,9 @@ func TestCreateRunShouldReturnError_IfStrategyCreateReturnsError(t *testing.T) {
 	strategyMock.
 		On("Create", mock.Anything).
 		Return(
-		&tagMock{},
-		errors.New(strategyError),
-	)
+			domain.Tag{},
+			errors.New(strategyError),
+		)
 
 	createData := CreateData{Type: domain.Label}
 
@@ -47,15 +49,15 @@ func TestCreateRunShouldPassTagCreatedByStrategyToDaoInsert(t *testing.T) {
 	strategyMock := &createStrategyMock{}
 	strategies.RegisterCreateStrategy(domain.Label, strategyMock)
 
-	tagMock := &tagMock{}
+	tag := domain.Tag{}
 	strategyMock.
 		On("Create", mock.Anything).
-		Return(tagMock, nil)
+		Return(tag, nil)
 
 	const daoError = "dao error"
 	createDaoMock := &createDaoMock{}
 	createDaoMock.
-		On("Insert", tagMock).
+		On("Insert", tag).
 		Return(errors.New(daoError))
 
 	createData := CreateData{Type: domain.Label}
@@ -71,7 +73,7 @@ func TestCreateRunShouldReturnError_IfDaoInsertReturnsError(t *testing.T) {
 
 	strategyMock.
 		On("Create", mock.Anything).
-		Return(&tagMock{}, nil)
+		Return(domain.Tag{}, nil)
 
 	const daoError = "dao error"
 	createDaoMock := &createDaoMock{}
@@ -92,7 +94,7 @@ func TestCreateRunShouldCallPresenterNotUnique_IfDaoInsertReturnsNotUniqueError(
 
 	strategyMock.
 		On("Create", mock.Anything).
-		Return(&tagMock{}, nil)
+		Return(domain.Tag{}, nil)
 
 	createDaoMock := &createDaoMock{}
 	createDaoMock.
@@ -115,7 +117,7 @@ func TestCreateRunShouldReturnError_IfPresenterShowNotUniqueReturnsError(t *test
 
 	strategyMock.
 		On("Create", mock.Anything).
-		Return(&tagMock{}, nil)
+		Return(domain.Tag{}, nil)
 
 	createDaoMock := &createDaoMock{}
 	createDaoMock.
@@ -139,7 +141,7 @@ func TestCreateRunShouldReturnError_IfPresenterShowReturnsError(t *testing.T) {
 
 	strategyMock.
 		On("Create", mock.Anything).
-		Return(&tagMock{}, nil)
+		Return(domain.Tag{}, nil)
 
 	createDaoMock := &createDaoMock{}
 	createDaoMock.
@@ -164,10 +166,10 @@ func TestCreateRunShouldPassCreatedTagToPresenter(t *testing.T) {
 	strategyMock := &createStrategyMock{}
 	strategies.RegisterCreateStrategy(domain.Label, strategyMock)
 
-	tagMock := &tagMock{}
+	tag := domain.Tag{}
 	strategyMock.
 		On("Create", mock.Anything).
-		Return(tagMock, nil)
+		Return(tag, nil)
 
 	createDaoMock := &createDaoMock{}
 	createDaoMock.
@@ -176,7 +178,7 @@ func TestCreateRunShouldPassCreatedTagToPresenter(t *testing.T) {
 
 	const presenterError = "presenterError"
 	createPresenterMock := &createPresenterMock{}
-	createPresenterMock.On("Show", tagMock).Return(nil)
+	createPresenterMock.On("Show", tag).Return(nil)
 
 	createLoggerMock := &createLoggerMock{}
 	createLoggerMock.On("TagCreated", mock.Anything)
@@ -192,10 +194,10 @@ func TestCreateRunShouldLogCreatedTag(t *testing.T) {
 	strategyMock := &createStrategyMock{}
 	strategies.RegisterCreateStrategy(domain.Label, strategyMock)
 
-	tagMock := &tagMock{}
+	tag := domain.Tag{}
 	strategyMock.
 		On("Create", mock.Anything).
-		Return(tagMock, nil)
+		Return(tag, nil)
 
 	createDaoMock := &createDaoMock{}
 	createDaoMock.
@@ -207,7 +209,7 @@ func TestCreateRunShouldLogCreatedTag(t *testing.T) {
 	createPresenterMock.On("Show", mock.Anything).Return(nil)
 
 	createLoggerMock := &createLoggerMock{}
-	createLoggerMock.On("TagCreated", tagMock)
+	createLoggerMock.On("TagCreated", tag)
 
 	createData := CreateData{Type: domain.Label}
 	NewCreate(createPresenterMock, createDaoMock, createLoggerMock).Run(createData)

@@ -8,29 +8,19 @@ import (
 )
 
 func TestAreaStrategyCreate(t *testing.T) {
-	tagMock := &tagMock{}
-
-	domainCreateArea = func(name domain.Name) domain.Tag {
-		return tagMock
-	}
-
 	sut := areaStrategy{}
 	tag, err := sut.Create(domain.Name("tagName"))
 
-	assert.Equal(t, tagMock, tag)
+	assert.Equal(t, domain.Area, tag.GetType())
 	assert.Nil(t, err)
 }
 
 func TestAreaStrategyConvert(t *testing.T) {
-	tagMock := &tagMock{}
+	tag := domain.CreateLabel("Name")
 
 	sut := areaStrategy{}
+	tag, err := sut.Convert(tag)
 
-	tagMock.On("ConvertToArea")
-
-	tag, err := sut.Convert(tagMock)
-
-	tagMock.AssertExpectations(t)
-	assert.Equal(t, tagMock, tag)
+	assert.Equal(t, domain.Area, tag.GetType())
 	assert.Nil(t, err)
 }

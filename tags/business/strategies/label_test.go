@@ -8,29 +8,20 @@ import (
 )
 
 func TestLabelStrategyCreate(t *testing.T) {
-	tagMock := &tagMock{}
-
-	domainCreateLabel = func(name domain.Name) domain.Tag {
-		return tagMock
-	}
-
 	sut := labelStrategy{}
 	tag, err := sut.Create(domain.Name("tagName"))
 
-	assert.Equal(t, tagMock, tag)
+	assert.Equal(t, domain.Label, tag.GetType())
 	assert.Nil(t, err)
 }
 
 func TestLabelStrategyConvert(t *testing.T) {
-	tagMock := &tagMock{}
+	tag := domain.CreateContact(domain.Name("tagName"))
 
 	sut := labelStrategy{}
 
-	tagMock.On("ConvertToLabel")
+	label, err := sut.Convert(tag)
 
-	tag, err := sut.Convert(tagMock)
-
-	tagMock.AssertExpectations(t)
-	assert.Equal(t, tagMock, tag)
+	assert.Equal(t, domain.Label, label.GetType())
 	assert.Nil(t, err)
 }

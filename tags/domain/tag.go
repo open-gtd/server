@@ -2,7 +2,7 @@ package domain
 
 type (
 	TypeEnum uint8
-	Name string
+	Name     string
 )
 
 const (
@@ -12,70 +12,60 @@ const (
 	Contact
 )
 
-type tag struct {
-	original_name Name
-	name          Name
-	t             TypeEnum
+type Tag struct {
+	originalName Name
+	name         Name
+	t            TypeEnum
 }
 
-func (tag *tag) Rename(name Name) {
+func (tag *Tag) Rename(name Name) {
 	tag.name = name
 }
 
-func (tag *tag) ConvertToLabel() {
+func (tag *Tag) ConvertToLabel() {
 	tag.t = Label
 }
 
-func (tag *tag) ConvertToArea() {
+func (tag *Tag) ConvertToArea() {
 	tag.t = Area
 }
 
-func (tag *tag) ConvertToContact() {
+func (tag *Tag) ConvertToContact() {
 	tag.t = Contact
 }
 
-func (t tag) GetType() TypeEnum {
-	return t.t
+func (tag Tag) GetType() TypeEnum {
+	return tag.t
 }
 
-func (t tag) GetOriginalName() Name {
-	return t.original_name
+func (tag Tag) GetOriginalName() Name {
+	return tag.originalName
 }
 
-func (t tag) GetName() Name {
-	return t.name
-}
-
-type Tag interface {
-	Rename(name Name)
-	ConvertToLabel()
-	ConvertToArea()
-	ConvertToContact()
-	GetType() TypeEnum
-	GetOriginalName() Name
-	GetName() Name
+func (tag Tag) GetName() Name {
+	return tag.name
 }
 
 func CreateLabel(name Name) Tag {
-	return &tag{
-		original_name: name,
-		name:          name,
-		t:             Label,
+	return Tag{
+		originalName: name,
+		name:         name,
+		t:            Label,
 	}
 }
 
 func CreateArea(name Name) Tag {
-	return &tag{
-		original_name: name,
-		name:          name,
-		t:             Area,
+	return Tag{
+		originalName: name,
+		name:         name,
+		t:            Area,
 	}
 }
 
 func CreateContact(name Name) Tag {
-	return &tag{
-		original_name: name,
-		name:          name,
-		t:             Contact,
+	return Tag{
+		originalName: name,
+		name:         name,
+		t:            Contact,
 	}
 }

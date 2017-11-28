@@ -8,29 +8,20 @@ import (
 )
 
 func TestContactStrategyCreate(t *testing.T) {
-	tagMock := &tagMock{}
-
-	domainCreateContact = func(name domain.Name) domain.Tag {
-		return tagMock
-	}
-
 	sut := contactStrategy{}
 	tag, err := sut.Create(domain.Name("tagName"))
 
-	assert.Equal(t, tagMock, tag)
+	assert.Equal(t, domain.Contact, tag.GetType())
 	assert.Nil(t, err)
 }
 
 func TestContactStrategyConvert(t *testing.T) {
-	tagMock := &tagMock{}
+	tag := domain.CreateContact(domain.Name("tagName"))
 
 	sut := contactStrategy{}
 
-	tagMock.On("ConvertToContact")
+	label, err := sut.Convert(tag)
 
-	tag, err := sut.Convert(tagMock)
-
-	tagMock.AssertExpectations(t)
-	assert.Equal(t, tagMock, tag)
+	assert.Equal(t, domain.Contact, label.GetType())
 	assert.Nil(t, err)
 }

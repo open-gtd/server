@@ -14,7 +14,7 @@ func ConvertAllToDomain(tags []storage.Tag) ([]domain.Tag, error) {
 	for index, tag := range tags {
 		dTag, err := ConvertToDomain(tag)
 		if err != nil {
-			return nil, err
+			return []domain.Tag{}, err
 		}
 
 		result[index] = dTag
@@ -26,7 +26,7 @@ func ConvertAllToDomain(tags []storage.Tag) ([]domain.Tag, error) {
 func ConvertToDomain(tag storage.Tag) (domain.Tag, error) {
 	s, err := strategies.GetCreateStrategy(tag.Type)
 	if err != nil {
-		return nil, err
+		return domain.Tag{}, err
 	}
 
 	return s.Create(domain.Name(tag.Name))

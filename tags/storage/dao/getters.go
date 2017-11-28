@@ -10,10 +10,10 @@ func GetTagByName(dao storage.Dao, name domain.Name) (domain.Tag, error) {
 	tag, err := dao.Get(string(name))
 	if err != nil {
 		if err.Error() == storage.NotFoundError {
-			return nil, errors.NewNotFound()
+			return domain.Tag{}, errors.NewNotFound()
 		}
 
-		return nil, err
+		return domain.Tag{}, err
 	}
 
 	return ConvertToDomain(tag)

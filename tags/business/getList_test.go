@@ -1,11 +1,12 @@
 package business
 
 import (
-	"testing"
-	"github.com/stretchr/testify/mock"
 	"errors"
-	"github.com/stretchr/testify/assert"
+	"testing"
+
 	"github.com/open-gtd/server/tags/domain"
+	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/mock"
 )
 
 func TestGetListRunShouldCallDaoGet(t *testing.T) {
@@ -47,8 +48,8 @@ func TestGetListRunShouldReturnErrorIfPresenterShowReturnsError(t *testing.T) {
 
 func TestGetListRunShouldCallPresenterShowWithTagsFromDao(t *testing.T) {
 	getListDaoMock := &getListDaoMock{}
-	tagMock := &tagMock{}
-	tags := []domain.Tag{tagMock}
+	tag := domain.Tag{}
+	tags := []domain.Tag{tag}
 	getListDaoMock.On("Get", mock.Anything).Return(tags, nil)
 
 	getListPresenterMock := &getListPresenterMock{}
