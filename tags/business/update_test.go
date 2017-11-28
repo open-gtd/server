@@ -133,13 +133,10 @@ func TestUpdateRunShouldCallConvertWithTagOnStrategy(t *testing.T) {
 	newType := domain.Contact
 	tag := domain.Tag{}
 
-	var requestedStrategyType domain.TypeEnum
-
 	convertStrategyMock := &convertStrategyMock{}
 	convertStrategyMock.On("Convert", tag).Return(tag, nil)
 
 	getConvertStrategy = func(typeEnum domain.TypeEnum) (strategies.ConvertStrategy, error) {
-		requestedStrategyType = typeEnum
 		return convertStrategyMock, nil
 	}
 
@@ -164,10 +161,7 @@ func TestUpdateRunShouldReturnErrorIfGetConvertStrategyReturnsError(t *testing.T
 	newType := domain.Contact
 	tag := domain.Tag{}
 
-	var requestedStrategyType domain.TypeEnum
-
 	getConvertStrategy = func(typeEnum domain.TypeEnum) (strategies.ConvertStrategy, error) {
-		requestedStrategyType = typeEnum
 		return nil, errors.New(getConvertStrategyError)
 	}
 
@@ -224,13 +218,10 @@ func TestUpdateRunShouldSaveUpdatedTagUsingOriginalName(t *testing.T) {
 	updatedTag := domain.CreateContact(originalName)
 	tag := domain.CreateLabel(originalName)
 
-	var requestedStrategyType domain.TypeEnum
-
 	convertStrategyMock := &convertStrategyMock{}
 	convertStrategyMock.On("Convert", mock.Anything).Return(updatedTag, nil)
 
 	getConvertStrategy = func(typeEnum domain.TypeEnum) (strategies.ConvertStrategy, error) {
-		requestedStrategyType = typeEnum
 		return convertStrategyMock, nil
 	}
 
@@ -258,13 +249,10 @@ func TestUpdateRunShouldReturnErrorIfSaveUpdatedTagReturnsError(t *testing.T) {
 	const originalName = domain.Name("original name")
 	tag := domain.Tag{}
 
-	var requestedStrategyType domain.TypeEnum
-
 	convertStrategyMock := &convertStrategyMock{}
 	convertStrategyMock.On("Convert", mock.Anything).Return(domain.Tag{}, nil)
 
 	getConvertStrategy = func(typeEnum domain.TypeEnum) (strategies.ConvertStrategy, error) {
-		requestedStrategyType = typeEnum
 		return convertStrategyMock, nil
 	}
 
@@ -291,13 +279,10 @@ func TestUpdateRunShouldCallPresenterShowTag(t *testing.T) {
 	updatedTag := domain.CreateContact(originalName)
 	tag := domain.CreateLabel(originalName)
 
-	var requestedStrategyType domain.TypeEnum
-
 	convertStrategyMock := &convertStrategyMock{}
 	convertStrategyMock.On("Convert", mock.Anything).Return(updatedTag, nil)
 
 	getConvertStrategy = func(typeEnum domain.TypeEnum) (strategies.ConvertStrategy, error) {
-		requestedStrategyType = typeEnum
 		return convertStrategyMock, nil
 	}
 
@@ -325,13 +310,10 @@ func TestUpdateRunShouldReturnErrorIfPresenterShowTagReturnsError(t *testing.T) 
 	const originalName = domain.Name("original name")
 	tag := domain.Tag{}
 
-	var requestedStrategyType domain.TypeEnum
-
 	convertStrategyMock := &convertStrategyMock{}
 	convertStrategyMock.On("Convert", mock.Anything).Return(domain.Tag{}, nil)
 
 	getConvertStrategy = func(typeEnum domain.TypeEnum) (strategies.ConvertStrategy, error) {
-		requestedStrategyType = typeEnum
 		return convertStrategyMock, nil
 	}
 
