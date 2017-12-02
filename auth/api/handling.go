@@ -5,7 +5,7 @@ import (
 	"github.com/open-gtd/server/auth/business"
 )
 
-type ControllerFactoryFunc func(api.Request, api.Response) (business.Controller, api.ControllerDestroyFunc, error)
+type ControllerFactoryFunc func(api.Request, api.Response) (business.Controller, api.ControllerDestroyer, error)
 
 type controller struct {
 	rq         api.Request
@@ -34,14 +34,14 @@ func (ch controllerHandler) Handle(rq api.Request, rs api.Response) error {
 	}
 
 	dc := api.DestroyableController{
-		C:   c,
-		Cdf: cdf,
+		C:  c,
+		Cd: cdf,
 	}
 
-	return handleRequest(dc, rq, rs)
+	return handleRequest(dc, rs)
 }
 
-func (ch controllerHandler) createController(rq api.Request, rs api.Response) (api.Controller, api.ControllerDestroyFunc, error) {
+func (ch controllerHandler) createController(rq api.Request, rs api.Response) (api.Controller, api.ControllerDestroyer, error) {
 	innerController, destroy, nil := ch.controllerFactory(rq, rs)
 
 	c := &controller{

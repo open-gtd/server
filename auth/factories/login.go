@@ -9,7 +9,7 @@ import (
 	"github.com/open-gtd/server/auth/storage/dao"
 )
 
-func Login(rq api.Request, rs api.Response) (business.Controller, api.ControllerDestroyFunc, error) {
+func Login(rq api.Request, rs api.Response) (business.Controller, api.ControllerDestroyer, error) {
 	//conn, err := Dao()
 	//if err != nil {
 	//	return nil, nil, err
@@ -22,7 +22,5 @@ func Login(rq api.Request, rs api.Response) (business.Controller, api.Controller
 			dao.NewLogin(), //conn),
 			logging.NewLogin(),
 		),
-	), func() error {
-		return nil //returnDao(conn)
-	}, nil
+	), api.NullDestroyer{}, nil
 }

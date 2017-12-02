@@ -9,7 +9,7 @@ import (
 	"github.com/open-gtd/server/tags/storage/dao"
 )
 
-func Create(rq api.Request, rs api.Response) (business.Controller, api.ControllerDestroyFunc, error) {
+func Create(rq api.Request, rs api.Response) (business.Controller, api.ControllerDestroyer, error) {
 
 	conn, err := getDao()
 	if err != nil {
@@ -23,7 +23,5 @@ func Create(rq api.Request, rs api.Response) (business.Controller, api.Controlle
 			dao.NewCreate(conn),
 			logging.NewCreate(),
 		),
-	), func() error {
-		return returnDao(conn)
-	}, nil
+	), connectionDestroyer{conn:conn}, nil
 }

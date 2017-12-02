@@ -88,9 +88,10 @@ func (s dao) Delete(name string) error {
 	return nil
 }
 
+var mongoConnect = mgo.Dial
 func CreateDao(url string, database string, collection string) (storage.Dao, error) {
 	s := dao{}
-	session, err := mgo.Dial(url)
+	session, err := mongoConnect(url)
 	if err != nil {
 		return nil, err
 	}

@@ -3,22 +3,25 @@ package factories
 import (
 	"errors"
 
-	"github.com/jolestar/go-commons-pool"
+	commonsPool "github.com/jolestar/go-commons-pool"
 	"github.com/open-gtd/server/config"
 	"github.com/open-gtd/server/tags/storage"
 	"github.com/open-gtd/server/tags/storage/mongo"
+	"github.com/open-gtd/server/pool"
 )
 
 var c = config.GetReader()
 
-var p = pool.NewObjectPool(
-	pool.NewPooledObjectFactorySimple(
+var createDao = mongo.CreateDao
+
+var daoPool pool.ObjectPool = commonsPool.NewObjectPool(
+	commonsPool.NewPooledObjectFactorySimple(
 		func() (interface{}, error) {
 
 			host := c.GetString("tags.database.host")
 			database := c.GetString("tags.database.database")
 			collection := c.GetString("tags.database.collection")
-			dao, err := mongo.CreateDao(
+			dao, err := createDao(
 				host,
 				database,
 				collection,
@@ -29,23 +32,19 @@ var p = pool.NewObjectPool(
 			return dao, nil
 		},
 	),
-	pool.NewDefaultPoolConfig(),
+	commonsPool.NewDefaultPoolConfig(),
 )
 
 func Dao() (storage.Dao, error) {
-	obj, err := p.BorrowObject()
+	obj, err := daoPool.BorrowObject()
 	if err != nil {
 		return nil, err
 	}
 
 	dao, ok := obj.(storage.Dao)
 	if ok != true {
-		return nil, errors.New("object in pool is in wrong type, should never happen")
+		return nil, errors.New("object in commonsPool is in wrong type, should never happen")
 	}
 
 	return dao, nil
-}
-
-func returnDao(dao storage.Dao) error {
-	return p.ReturnObject(dao)
 }

@@ -12,11 +12,13 @@ func TestLogin(t *testing.T) {
 	rq := &requestMock{}
 	rs := &responseMock{}
 
-	c, cdf, _ := Login(rq, rs)
+	c, cd, _ := Login(rq, rs)
 
 	var i business.LoginController
 	assert.Implements(t, &i, c)
 
-	var ecdf api.ControllerDestroyFunc
-	assert.IsType(t, ecdf, cdf)
+	assert.NotNil(t, cd)
+
+	var controllerDestroyer api.NullDestroyer
+	assert.IsType(t, controllerDestroyer, cd)
 }

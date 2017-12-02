@@ -46,8 +46,7 @@ func TestControllerHandler_Handle_ShouldCallControllerRun(t *testing.T) {
 
 	tc.On("Run").Return(nil)
 
-	var controllerDestroyFunc api.ControllerDestroyFunc
-	cfm.On("CreateController", rq, rs).Return(tc, controllerDestroyFunc, nil)
+	cfm.On("CreateController", rq, rs).Return(tc, api.NullDestroyer{}, nil)
 
 	ch := NewControllerHandler(cfm.CreateController)
 
@@ -67,8 +66,7 @@ func TestControllerHandler_Handle_ShouldReturnError_IfControllerRunReturnsError(
 
 	tc.On("Run").Return(errors.New(someError))
 
-	var controllerDestroyFunc api.ControllerDestroyFunc
-	cfm.On("CreateController", rq, rs).Return(tc, controllerDestroyFunc, nil)
+	cfm.On("CreateController", rq, rs).Return(tc, api.NullDestroyer{}, nil)
 
 	ch := NewControllerHandler(cfm.CreateController)
 
@@ -86,9 +84,7 @@ func TestControllerHandler_Handle_ShouldReturnError_IfControllerFactoryReturnsEr
 	rq := requestMock{}
 	rs := responseMock{}
 
-	//var controller business.Controller
-	var controllerDestroyFunc api.ControllerDestroyFunc
-	cfm.On("CreateController", rq, rs).Return(tc, controllerDestroyFunc, errors.New(someError))
+	cfm.On("CreateController", rq, rs).Return(tc, api.NullDestroyer{}, errors.New(someError))
 
 	ch := NewControllerHandler(cfm.CreateController)
 

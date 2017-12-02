@@ -2,11 +2,11 @@ package api
 
 import "github.com/stretchr/testify/mock"
 
-type factoryMock struct {
+type destroyerMock struct {
 	mock.Mock
 }
 
-func (t factoryMock) Destroy() error {
+func (t destroyerMock) Destroy() error {
 	args := t.Called()
 	return args.Error(0)
 }

@@ -8,7 +8,7 @@ import (
 	"github.com/open-gtd/server/tags/storage/dao"
 )
 
-func GetList(rq api.Request, rs api.Response) (business.Controller, api.ControllerDestroyFunc, error) {
+func GetList(rq api.Request, rs api.Response) (business.Controller, api.ControllerDestroyer, error) {
 	conn, err := getDao()
 	if err != nil {
 		return nil, nil, err
@@ -20,7 +20,5 @@ func GetList(rq api.Request, rs api.Response) (business.Controller, api.Controll
 			presenters.NewGetList(rs),
 			dao.NewGetList(conn),
 		),
-	), func() error {
-		return returnDao(conn)
-	}, nil
+	), connectionDestroyer{conn:conn}, nil
 }

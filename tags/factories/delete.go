@@ -8,7 +8,7 @@ import (
 	"github.com/open-gtd/server/tags/storage/dao"
 )
 
-func Delete(rq api.Request, rs api.Response) (business.Controller, api.ControllerDestroyFunc, error) {
+func Delete(rq api.Request, rs api.Response) (business.Controller, api.ControllerDestroyer, error) {
 
 	conn, err := getDao()
 	if err != nil {
@@ -21,7 +21,5 @@ func Delete(rq api.Request, rs api.Response) (business.Controller, api.Controlle
 			presenters.NewDelete(rs, GetBus()),
 			dao.NewDelete(conn),
 		),
-	), func() error {
-		return returnDao(conn)
-	}, nil
+	), connectionDestroyer{conn:conn}, nil
 }
