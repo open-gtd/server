@@ -11,11 +11,11 @@ import (
 	"github.com/open-gtd/server/tags/storage/mongo"
 )
 
-var c = config.GetReader()
-
 var p = pool.NewObjectPool(
 	pool.NewPooledObjectFactorySimple(
 		func() (interface{}, error) {
+
+			c := config.GetReader()
 
 			host := c.GetString("tags.database.host")
 			database := c.GetString("tags.database.database")
