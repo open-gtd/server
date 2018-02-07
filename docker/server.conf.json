@@ -1,0 +1,11 @@
+{
+  "port": "80",
+
+  "tags": {
+    "database": {
+      "host": "mgo",
+      "database": "open-gtd",
+      "collection": "tags"
+    }
+  }
+}

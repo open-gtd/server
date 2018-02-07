@@ -19,5 +19,5 @@ vendor/
 .idea/
 build/
 
-server.conf.json
+./server.conf.json
 coverage.txt
