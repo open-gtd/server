@@ -1,0 +1,11 @@
+version: '3'
+services:
+  mgo:
+    image: mongo
+
+  app:
+    build: .
+    links:
+      - mgo
+    ports:
+     - "5000:80"

@@ -3,6 +3,8 @@ package factories
 import (
 	"errors"
 
+	"fmt"
+
 	"github.com/jolestar/go-commons-pool"
 	"github.com/open-gtd/server/config"
 	"github.com/open-gtd/server/tags/storage"
@@ -24,7 +26,7 @@ var p = pool.NewObjectPool(
 				collection,
 			)
 			if err != nil {
-				return nil, err
+				return nil, errors.New(fmt.Sprintf("Failed to connect to '%v' MongoDB.", host))
 			}
 			return dao, nil
 		},

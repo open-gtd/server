@@ -17,6 +17,9 @@
 
 vendor/
 .idea/
+build/
+
+Dockerfile
 
 server.conf.json
 coverage.txt

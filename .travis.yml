@@ -8,11 +8,25 @@ go:
 env:
   CODECLIMATE_REPO_TOKEN: 45dadc0bf946392609a519855018c4926e339508f92fa7c00955d055cc2477e7
 
+services:
+  - docker
+
+before_install:
+  - sudo apt-get update
+  - sudo apt-get -y -o Dpkg::Options::="--force-confnew" install docker-ce
+  - sudo rm /usr/local/bin/docker-compose
+  - curl -L https://github.com/docker/compose/releases/download/1.18.0/docker-compose-`uname -s`-`uname -m` > docker-compose
+  - chmod +x docker-compose
+  - sudo mv docker-compose /usr/local/bin
+
 install:
   - ./tools/dep ensure
 
 script:
   - ./tools/test.sh
+  - ./tools/build.sh
+  - docker-compose build
+  - docker-compose up -d
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)
