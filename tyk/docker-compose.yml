@@ -1,0 +1,37 @@
+version: '3'
+
+services:
+  tyk_redis:
+    image: redis
+
+  tyk_mongo:
+    image: mongo
+
+  tyk_gateway:
+    image: tykio/tyk-gateway
+    links:
+      - tyk_redis
+    healthcheck:
+      test: ["CMD", "echo 'db.stats().ok' | mongo 192.168.5.51:30000/test --quiet"]
+      interval: 1m30s
+      timeout: 10s
+      retries: 3
+    ports:
+      - 8080:8080
+#    volumes:
+#      - ./tyk.standalone.conf:/opt/tyk-gateway/tyk.conf
+#      - ./apps:/opt/tyk-gateway/apps
+
+  tyk_dashboard:
+    image: tykio/tyk-dashboard
+    healthcheck:
+      test: ["CMD", "echo 'db.stats().ok' | mongo 192.168.5.51:30000/test --quiet"]
+      interval: 1m30s
+      timeout: 10s
+      retries: 3
+    links:
+      - tyk_redis
+      - tyk_mongo
+      - tyk_gateway
+    ports:
+      - 3000:3000
